@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"No need for tests, my code is perfect\" && exit 1",
-    "start": "webpack-dev-server --content-base app/ --hot",
+    "watch": "NODE_ENV=development webpack-dev-server --content-base app/ --hot",
+    "prestart": "npm run build",
+    "start": "http-server build",
     "build": "NODE_ENV=production webpack --progress --colors -p && cp app/index.html build/index.html"
   },
   "repository": {
