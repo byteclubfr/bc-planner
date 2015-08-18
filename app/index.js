@@ -1,5 +1,4 @@
-import App from './app'
+import Root from './containers/root'
 import React from 'react'
 
-
-React.render(<App />, document.getElementById('container'))
+React.render(<Root />, document.getElementById('container'))
