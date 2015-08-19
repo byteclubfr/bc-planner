@@ -1,7 +1,9 @@
 import React, { Component, PropTypes } from 'react'
-import MonthList from './month-list'
 import { buildMonthsRange } from '../utils/date'
 import { Map } from 'immutable'
+
+import Filters from './filters'
+import MonthList from './month-list'
 
 export default class App extends Component {
 
@@ -24,7 +26,12 @@ export default class App extends Component {
 
     const range = buildMonthsRange(startMonth, endMonth)
 
-    return <MonthList events={this.props.events} range={range} />
+    return (
+      <div>
+        <Filters />
+        <MonthList events={this.props.events} range={range} />
+      </div>
+    )
   }
 
 }
