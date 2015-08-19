@@ -27,6 +27,18 @@ const sampleEvents = [
   },
   {
     id: uuid(),
+    type: 'bootcamp',
+    confirmed: true,
+    start: '2015-09-14',
+    end: '2015-09-18',
+    clubber: 'Thomas',
+    subject: 'Angular',
+    place: 'Paris',
+    // TODO generate
+    title: 'Bootcamp Angular Paris'
+  },
+  {
+    id: uuid(),
     type: 'formation-inter',
     confirmed: false,
     start: '2015-10-21',

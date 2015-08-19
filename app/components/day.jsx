@@ -2,7 +2,9 @@ import '../styles/day'
 
 import React, { Component, PropTypes } from 'react'
 import moment from 'moment'
-import { inclusiveIsBetween } from './../utils/date'
+import classNames from 'classnames'
+
+import { inclusiveIsBetween, isWeekend } from './../utils/date'
 
 export default class Day extends Component {
 
@@ -12,16 +14,17 @@ export default class Day extends Component {
   }
 
   render () {
+    const { date } = this.props
     const events = this.props.events.filter(event =>
-      inclusiveIsBetween(this.props.date, event.start, event.end)
+      inclusiveIsBetween(date, event.start, event.end)
     )
 
     return (
-      <div className="day">
-        <header className="day-date">{this.props.date.format('DD dd')}</header>
+      <div className={classNames("day", { 'day-weekend': isWeekend(date) })}>
+        <header className="day-date">{date.format('dd DD')}</header>
         <ul className="event-list">
           {events.map(event => (
-            <li key={event.id}><strong>{event.title}</strong> ({event.start} - {event.end})</li>
+            <li key={event.id}>{event.title}</li>
           ))}
         </ul>
       </div>

@@ -1,18 +1,16 @@
 .day
   border 1px solid #eee
   display flex
-  ul
-    padding .5em
 
 .day-date
-  border-right 1px solid #ddd
   font-size .8em
   min-width 3em
   padding .5em
   text-align right
 
+
 .day-weekend
-  background #eee !important
+  background #ddd !important
 
 .event-list
   list-style none

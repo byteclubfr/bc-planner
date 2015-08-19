@@ -17,3 +17,7 @@ export function buildMonthsRange (start, [endYear, endMonth]) {
 export function inclusiveIsBetween (date, start, end, granularity = 'day') {
   return date.isSame(start, granularity) || date.isSame(end, granularity) || date.isBetween(start, end, granularity)
 }
+
+export function isWeekend (date){
+  return date.isoWeekday() >= 6
+}
