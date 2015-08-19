@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "lint": "eslint app",
-    "test": "echo \"No need for tests, my code is perfect\" && exit 1",
-    "watch": "NODE_ENV=development webpack-dev-server --content-base app/ --hot",
+    "test": "echo \"No need for tests, ze code iz perfect\" && exit 1",
+    "watch": "NODE_ENV=development webpack-dev-server",
     "prestart": "npm run build",
     "start": "http-server build",
     "build": "NODE_ENV=production webpack --progress --colors -p && cp app/index.html build/index.html"
