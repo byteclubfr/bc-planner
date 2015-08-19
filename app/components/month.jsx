@@ -1,9 +1,10 @@
+import '../styles/month'
+
 import React, { Component, PropTypes } from 'react'
 import { Map } from 'immutable'
-import Month from './month'
 import moment from 'moment'
 
-export default class MonthList extends Component {
+export default class Month extends Component {
 
   static propTypes = {
     events: PropTypes.instanceOf(Map),
@@ -18,7 +19,7 @@ export default class MonthList extends Component {
 
     return (
       <div className="month">
-        <strong>{date.format('MMMM YYYY')}</strong>
+        <header className="month-title">{date.format('MMMM YYYY')}</header>
 
         <ul>
           {events.map(event => (
