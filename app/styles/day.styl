@@ -1,6 +1,7 @@
 .day
   border 1px solid #eee
   display flex
+
   ul
     padding .5em
 
@@ -15,6 +16,18 @@
   background #eee !important
 
 .event-list
+  flex-grow 1
   list-style none
   margin 0
   padding 0
+
+  li
+    display flex
+
+.event-title
+  flex-grow 1
+
+.event-gravatar
+
+  img
+    vertical-align center

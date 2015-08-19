@@ -1,0 +1,5 @@
+export default {
+  bruno: '1de6337421c1eac0227c88502b275952',
+  nicolas: '396445b6e14727dcb6b3d6a66d52b567',
+  thomas: '00045a0899ce378f822f64b62a284029'
+}

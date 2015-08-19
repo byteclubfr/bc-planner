@@ -4,6 +4,7 @@ import React, { Component, PropTypes } from 'react'
 import moment from 'moment'
 import classNames from 'classnames'
 
+import clubbers from './../constants/clubbers'
 import { inclusiveIsBetween, isWeekend } from './../utils/date'
 
 export default class Day extends Component {
@@ -20,11 +21,16 @@ export default class Day extends Component {
     )
 
     return (
-      <div className={classNames("day", { 'day-weekend': isWeekend(date) })}>
+      <div className={classNames('day', { 'day-weekend': isWeekend(date) })}>
         <header className="day-date">{date.format('dd DD')}</header>
         <ul className="event-list">
           {events.map(event => (
-            <li key={event.id}>{event.title}</li>
+            <li key={event.id}>
+              <span className="event-title">{event.title}</span>
+              <span className="event-gravatar">
+                {event.clubber ? <img alt={'gravatar ' + event.clubber} src={'http://gravatar.com/avatar/' + clubbers[event.clubber] + "?s=20" } /> : ''}
+              </span>
+            </li>
           ))}
         </ul>
       </div>

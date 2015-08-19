@@ -7,7 +7,7 @@ const sampleEvents = [
     confirmed: true,
     start: '2015-09-10',
     end: '2015-09-12',
-    clubber: 'Nicolas',
+    clubber: 'nicolas',
     subject: 'Node',
     place: 'Paris',
     // TODO generate
@@ -19,7 +19,7 @@ const sampleEvents = [
     confirmed: true,
     start: '2015-09-15',
     end: '2015-09-17',
-    clubber: 'Bruno',
+    clubber: 'bruno',
     subject: 'Angular',
     place: 'Paris',
     // TODO generate
@@ -31,7 +31,7 @@ const sampleEvents = [
     confirmed: true,
     start: '2015-09-14',
     end: '2015-09-18',
-    clubber: 'Thomas',
+    clubber: 'thomas',
     subject: 'Angular',
     place: 'Paris',
     // TODO generate
@@ -57,7 +57,7 @@ const sampleEvents = [
     end: '2015-11-10',
     subject: 'Immobox',
     place: null,
-    clubber: 'Thomas',
+    clubber: 'thomas',
     // TODO generate
     title: 'DEV Immobox'
   }
