@@ -29,14 +29,8 @@ export default class Month extends Component {
       <div className="month">
         <header className="month-title">{date.format('MMMM YYYY')}</header>
 
-        <ul>
-          {events.map(event => (
-            <li key={event.id}><strong>{event.title}</strong> ({event.start} - {event.end})</li>
-          ))}
-        </ul>
-
         {daysInMonth.map(day => (
-          <Day day={day + 1} />
+          <Day date={moment(date).date(day + 1)} events={events} />
         ))}
       </div>
     )

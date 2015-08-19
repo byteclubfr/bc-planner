@@ -13,3 +13,7 @@ export function buildMonthsRange (start, [endYear, endMonth]) {
 
   return range
 }
+
+export function inclusiveIsBetween (date, start, end, granularity = 'day') {
+  return date.isSame(start, granularity) || date.isSame(end, granularity) || date.isBetween(start, end, granularity)
+}
