@@ -10,17 +10,6 @@ export default class App extends Component {
     ui: PropTypes.object.isRequired
   }
 
-  constructor () {
-    super()
-    this.state = {
-      count: 0
-    }
-  }
-
-  onClick() {
-    this.setState({count: this.state.count + 1})
-  }
-
   componentDidMount () {
     this.props.actions.fetchEvents()
   }
@@ -34,10 +23,7 @@ export default class App extends Component {
 
     const range = buildMonthsRange(startMonth, endMonth)
 
-    return  <div>
-              <span onClick={::this.onClick}>Count = {this.state.count}</span>
-              <MonthList events={this.props.events.events} range={range} />
-            </div>
+    return <MonthList events={this.props.events.events} range={range} />
   }
 
 }
