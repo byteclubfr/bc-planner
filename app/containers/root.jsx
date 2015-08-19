@@ -32,7 +32,7 @@ const ConnectedApp = connect(mapStateToProps, mapDispatchToProps)(App)
 const store = applyMiddleware(
   thunkMiddleware, // lets us dispatch() functions
   loggerMiddleware // neat middleware that logs actions
-)(createStore)(combineReducers(reducers));
+)(createStore)(combineReducers(reducers))
 
 
 // Wrap root app

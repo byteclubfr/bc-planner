@@ -2,6 +2,7 @@ import '../styles/day'
 
 import React, { Component, PropTypes } from 'react'
 import classNames from 'classnames'
+import { Map } from 'immutable'
 
 import Gravatar from './gravatar'
 import EventBars from './event-bars'
