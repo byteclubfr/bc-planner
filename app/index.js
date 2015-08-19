@@ -1,6 +1,8 @@
-import Root from './containers/root'
+import './styles/index.styl'
+
 import React from 'react'
 import moment from 'moment'
+import Root from './containers/root'
 
 moment.locale('fr')
 

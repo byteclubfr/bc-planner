@@ -1,3 +1,5 @@
+/* eslint-env node */
+
 var path = require('path')
 var webpack = require('webpack')
 
@@ -32,18 +34,22 @@ module.exports = {
     new webpack.NoErrorsPlugin()
   ]),
   resolve: {
-    extensions: ['', '.js', '.jsx']
+    extensions: ['', '.js', '.jsx', '.styl']
   },
   module: {
-    loaders: [{
-      test: /\.jsx?$/,
-      loaders: ifprod(['babel'], ['react-hot', 'babel']),
-      exclude: /node_modules/
-    }]
+    loaders: [
+      {
+        test: /\.jsx?$/,
+        loaders: ifprod(['babel'], ['react-hot', 'babel']),
+        exclude: /node_modules/
+      },
+      {
+        test: /\.styl$/,
+        loaders: ['style', 'css', 'stylus']
+      }
+    ]
   }
-};
-
-
+}
 
 function ifprod (yes, nope) {
   return process.env.NODE_ENV === 'production' ? yes : nope

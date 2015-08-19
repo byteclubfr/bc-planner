@@ -1,5 +1,8 @@
+import '../styles/month-list'
+
 import React, { Component, PropTypes } from 'react'
 import { Map } from 'immutable'
+
 import Month from './month'
 
 
