@@ -28,7 +28,7 @@ export default class App extends Component {
 
     return (
       <div>
-        <Filters actions={this.props.actions} filters={this.props.ui.get('filters')}/>
+        <Filters actions={this.props.actions} filters={this.props.ui.get('filters')} nbMonths={range.length} />
         <MonthList events={this.props.events} filters={this.props.ui.get('filters')} range={range} />
       </div>
     )

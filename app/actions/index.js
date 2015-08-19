@@ -76,3 +76,10 @@ export function toggleFilter (filter) {
     filter
   }
 }
+
+export function changeNbMonths (nbMonths) {
+  return {
+    type: types.UI_CHANGE_NB_MONTHS,
+    nbMonths
+  }
+}

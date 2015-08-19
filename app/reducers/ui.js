@@ -39,6 +39,11 @@ export default (state = initialState, action) => {
     const newFilters = filters.set(action.filter, !filters.get(action.filter, false))
     return state.set('filters', newFilters)
 
+  case actions.UI_CHANGE_NB_MONTHS:
+    const startMonth = moment(state.get('startMonth'))
+    const newEndMonth = startMonth.add(action.nbMonths - 1, 'month')
+    return state.set('endMonth', newEndMonth.toArray())
+
   default: return state
   }
 }

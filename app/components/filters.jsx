@@ -9,7 +9,8 @@ import Gravatar from './gravatar'
 export default class Filters extends Component {
   static propTypes = {
     actions: PropTypes.object.isRequired,
-    filters: PropTypes.instanceOf(Map).isRequired
+    filters: PropTypes.instanceOf(Map).isRequired,
+    nbMonths: PropTypes.number.isRequired
   }
 
   clubberCheckbox (clubber, name) {
@@ -38,9 +39,23 @@ export default class Filters extends Component {
       <label>
         <input
           checked={filters.get(filter)}
-          onClick={() => this.props.actions.toggleFilter(filter)}
+          onChange={() => this.props.actions.toggleFilter(filter)}
           type="checkbox" />
         {label}
+      </label>
+    )
+  }
+
+  renderMonthsFilter () {
+    return (
+      <label>
+        <input
+          max={12}
+          min={1}
+          onChange={e => this.props.actions.changeNbMonths(e.target.value)}
+          type="number"
+          value={this.props.nbMonths} />
+        {'months'}
       </label>
     )
   }
@@ -52,6 +67,7 @@ export default class Filters extends Component {
         {this.renderFilterCheckbox('title', 'Title')}
         {this.renderFilterCheckbox('gravatar', 'Avatars')}
         {this.renderFilterCheckbox('bars', 'Bars')}
+        {this.renderMonthsFilter()}
       </div>
     )
   }

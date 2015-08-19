@@ -11,7 +11,7 @@ export default class Month extends Component {
 
   static propTypes = {
     date: PropTypes.any.isRequired,
-    events: PropTypes.instanceOf(Map),
+    events: PropTypes.instanceOf(Map).isRequired,
     filters: PropTypes.instanceOf(Map).isRequired
   }
 
