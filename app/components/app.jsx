@@ -28,8 +28,8 @@ export default class App extends Component {
 
     return (
       <div>
-        <Filters />
-        <MonthList events={this.props.events} range={range} />
+        <Filters actions={this.props.actions} filters={this.props.ui.get('filters')}/>
+        <MonthList events={this.props.events} filters={this.props.ui.get('filters')} range={range} />
       </div>
     )
   }

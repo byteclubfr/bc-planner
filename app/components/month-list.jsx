@@ -10,6 +10,7 @@ export default class MonthList extends Component {
 
   static propTypes = {
     events: PropTypes.instanceOf(Map),
+    filters: PropTypes.instanceOf(Map).isRequired,
     range: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired
   }
 
@@ -17,7 +18,7 @@ export default class MonthList extends Component {
     return (
       <div className="month-list">
         {this.props.range.map(month =>
-          <Month date={month} events={this.props.events} key={month} />
+          <Month date={month} events={this.props.events} filters={this.props.filters} key={month} />
         )}
       </div>
     )

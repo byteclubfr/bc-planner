@@ -11,7 +11,8 @@ export default class Month extends Component {
 
   static propTypes = {
     date: PropTypes.any.isRequired,
-    events: PropTypes.instanceOf(Map)
+    events: PropTypes.instanceOf(Map),
+    filters: PropTypes.instanceOf(Map).isRequired
   }
 
   render () {
@@ -30,7 +31,7 @@ export default class Month extends Component {
         <header className="month-title">{date.format('MMMM YYYY')}</header>
 
         {daysInMonth.map(day => moment(date).date(day + 1)).map(d =>
-          <Day date={d} events={events} key={d.format()} />
+          <Day date={d} events={events} filters={this.props.filters} key={d.format()} />
         )}
       </div>
     )

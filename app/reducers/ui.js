@@ -10,7 +10,12 @@ const initialState = Map({
   endMonth: today.add(5, 'month').toArray(),
   eventFormVisible: false,
   eventId: null,
-  fetching: false
+  fetching: false,
+  filters: Map({
+    title: true,
+    gravatar: true,
+    bars: true
+  })
 })
 
 export default (state = initialState, action) => {
@@ -28,6 +33,11 @@ export default (state = initialState, action) => {
 
   case actions.FETCHED_EVENTS: return state
     .set('fetching', false)
+
+  case actions.UI_TOGGLE_FILTER:
+    const filters = state.get('filters')
+    const newFilters = filters.set(action.filter, !filters.get(action.filter, false))
+    return state.set('filters', newFilters)
 
   default: return state
   }

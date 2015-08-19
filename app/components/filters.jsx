@@ -1,11 +1,17 @@
 import '../styles/filters'
 
-import React, { Component } from 'react'
+import React, { Component, PropTypes } from 'react'
+import { Map } from 'immutable'
 
 import clubbers from './../constants/clubbers'
 import Gravatar from './gravatar'
 
 export default class Filters extends Component {
+  static propTypes = {
+    actions: PropTypes.object.isRequired,
+    filters: PropTypes.instanceOf(Map).isRequired
+  }
+
   clubberCheckbox (clubber, name) {
     return (
       <label key={name} style={{backgroundColor: clubber.color}}>
@@ -16,11 +22,45 @@ export default class Filters extends Component {
     )
   }
 
+  renderClubbersFilter () {
+    return (
+      <div>
+        <strong>Filter by clubber</strong>
+        {clubbers.map(::this.clubberCheckbox).toArray()}
+      </div>
+    )
+  }
+
+  renderFilterCheckbox (filter, label) {
+    const { filters } = this.props
+
+    return (
+      <label>
+        <input
+          checked={filters.get(filter)}
+          onClick={() => this.props.actions.toggleFilter(filter)}
+          type="checkbox" />
+        {label}
+      </label>
+    )
+  }
+
+  renderDisplayOptions () {
+    return (
+      <div>
+        <strong>Show</strong>
+        {this.renderFilterCheckbox('title', 'Title')}
+        {this.renderFilterCheckbox('gravatar', 'Avatars')}
+        {this.renderFilterCheckbox('bars', 'Bars')}
+      </div>
+    )
+  }
+
   render () {
     return (
       <form className="filters">
-        <strong>Filter by clubber</strong>
-        {clubbers.map(::this.clubberCheckbox).toArray()}
+        {this.renderClubbersFilter()}
+        {this.renderDisplayOptions()}
       </form>
     )
   }

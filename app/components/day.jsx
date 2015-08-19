@@ -11,11 +11,24 @@ export default class Day extends Component {
 
   static propTypes = {
     date: PropTypes.object.isRequired,
-    events: PropTypes.arrayOf(PropTypes.object).isRequired
+    events: PropTypes.arrayOf(PropTypes.object).isRequired,
+    filters: PropTypes.instanceOf(Map).isRequired
+  }
+
+  renderTitle (event) {
+    return <span className="event-title">{event.title}</span>
+  }
+
+  renderGravatar (event) {
+    return (
+      <span className="event-gravatar">
+        <Gravatar clubberName={event.clubber} />
+      </span>
+    )
   }
 
   render () {
-    const { date } = this.props
+    const { date, filters } = this.props
     const events = this.props.events.filter(event =>
       inclusiveIsBetween(date, event.start, event.end)
     )
@@ -26,14 +39,12 @@ export default class Day extends Component {
         <ul className="event-list">
           {events.map(event => (
             <li key={event.id}>
-              <span className="event-title">{event.title}</span>
-              <span className="event-gravatar">
-                <Gravatar clubberName={event.clubber} />
-              </span>
+              {filters.get('title') ? this.renderTitle(event) : null}
+              {filters.get('gravatar') ? this.renderGravatar(event) : null}
             </li>
           ))}
         </ul>
-        <EventBars events={events} />
+        {filters.get('bars') ? <EventBars events={events} /> : null}
       </div>
     )
   }

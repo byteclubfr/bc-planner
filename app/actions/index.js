@@ -69,3 +69,10 @@ export function fetchedEvents (events) {
     events
   }
 }
+
+export function toggleFilter (filter) {
+  return {
+    type: types.UI_TOGGLE_FILTER,
+    filter
+  }
+}
