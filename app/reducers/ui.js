@@ -7,7 +7,7 @@ const today = moment()
 
 const initialState = Map({
   startMonth: today.toArray(),
-  endMonth: today.add(5, 'month').toArray(),
+  endMonth: moment(today).add(5, 'month').toArray(),
   eventFormVisible: false,
   eventId: null,
   fetching: false,
