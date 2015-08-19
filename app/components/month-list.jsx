@@ -17,7 +17,7 @@ export default class MonthList extends Component {
     return (
       <div className="month-list">
         {this.props.range.map(month =>
-          <Month events={this.props.events} month={month} />
+          <Month date={month} events={this.props.events} key={month} />
         )}
       </div>
     )
