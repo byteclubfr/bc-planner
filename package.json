@@ -4,6 +4,7 @@
   "description": "ByteClub Planner",
   "main": "index.js",
   "scripts": {
+    "lint": "eslint app",
     "test": "echo \"No need for tests, my code is perfect\" && exit 1",
     "watch": "NODE_ENV=development webpack-dev-server --content-base app/ --hot",
     "prestart": "npm run build",

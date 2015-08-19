@@ -20,6 +20,9 @@
     "spread": true
   },
   "rules": {
+    "indent": [2, 2],
+    "quotes": [1, "single", "avoid-escape"],
+    "semi": [1, "never"],
     "space-before-function-paren": [1, "always"],
     "react/jsx-curly-spacing": [1, "never"],
     "react/jsx-max-props-per-line": [1, { "maximum": 4 }],
