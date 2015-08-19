@@ -1,13 +1,11 @@
 import '../styles/day'
 
 import React, { Component, PropTypes } from 'react'
-import moment from 'moment'
 import classNames from 'classnames'
 
 import Gravatar from './gravatar'
-import { inclusiveIsBetween, isWeekend } from './../utils/date'
-
 import EventBars from './event-bars'
+import { inclusiveIsBetween, isWeekend } from './../utils/date'
 
 export default class Day extends Component {
 
@@ -35,7 +33,7 @@ export default class Day extends Component {
             </li>
           ))}
         </ul>
-        <EventBars clubbers={clubbers} events={events} />
+        <EventBars events={events} />
       </div>
     )
   }

@@ -2,34 +2,28 @@ import '../styles/day'
 
 import React, { Component, PropTypes } from 'react'
 
-import { Map } from 'immutable'
+import clubbers from '../constants/clubbers'
 
-const colors = Map({
-  'thomas':  '#ddc',
-  'nicolas': '#cdd',
-  'bruno':   '#dcd'
-})
 
 export default class EventBars extends Component {
 
   static propTypes = {
-    clubbers: PropTypes.object.isRequired,
     events: PropTypes.arrayOf(PropTypes.object).isRequired
   }
 
-  colorBar (color, clubberName) {
+  colorBar (clubber, clubberName) {
     const hasEvent = this.props.events.some(e => e.clubber === clubberName)
     const styles = hasEvent ? {
-      backgroundColor: color
+      backgroundColor: clubber.color
     } : {}
 
-    return <div className="event-bar" style={styles} />
+    return <div key={clubberName} className="event-bar" style={styles} />
   }
 
   render () {
     return (
       <footer className="event-bars">
-        {colors.map(::this.colorBar)}
+        {clubbers.map(::this.colorBar).toArray()}
       </footer>
     )
   }
