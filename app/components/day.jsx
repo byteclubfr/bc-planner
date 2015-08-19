@@ -10,7 +10,7 @@ import { inclusiveIsBetween, isWeekend } from './../utils/date'
 export default class Day extends Component {
 
   static propTypes = {
-    date: PropTypes.instanceOf(moment).isRequired,
+    date: PropTypes.object.isRequired,
     events: PropTypes.arrayOf(PropTypes.object).isRequired
   }
 
