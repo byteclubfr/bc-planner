@@ -22,7 +22,7 @@ export default class MonthList extends Component {
 
         <ul>
           {events.map(event => (
-            <li><strong>{event.title}</strong> ({event.start} - {event.end})</li>
+            <li key={event.id}><strong>{event.title}</strong> ({event.start} - {event.end})</li>
           ))}
         </ul>
       </div>
