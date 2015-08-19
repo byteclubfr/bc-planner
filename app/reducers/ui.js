@@ -1,11 +1,13 @@
 import * as actions from '../constants/actions'
 import identity from 'lodash/utility/identity'
+import moment from 'moment'
 
+
+const today = moment()
 
 const initialState = {
-  // TODO moment
-  startMonth: [2015, 7],
-  endMonth: [2016, 0],
+  startMonth: today.toArray(),
+  endMonth: today.add(6, 'month').toArray(),
   eventFormVisible: false,
   eventId: null,
   fetching: false

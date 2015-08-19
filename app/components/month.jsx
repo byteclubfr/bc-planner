@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { Map } from 'immutable'
 import Month from './month'
+import moment from 'moment'
 
 export default class MonthList extends Component {
 
@@ -10,17 +11,14 @@ export default class MonthList extends Component {
   }
 
   render () {
-    const [year, month] = this.props.month
+    const date = moment(this.props.month)
     const events = this.props.events.toArray().filter(event => {
-      // TODO moment
-      var dateStart = new Date(event.start)
-      var dateEnd = new Date(event.end)
-      return (dateStart.getFullYear() === year && dateStart.getMonth() === month) || (dateEnd.getFullYear() === year && dateEnd.getMonth() === month)
+      return date.isBetween(event.start, event.end)
     })
 
     return (
       <div className="month">
-        <strong>{month + 1} {year}</strong>
+        <strong>{date.format('MMMM YYYY')}</strong>
 
         <ul>
           {events.map(event => (

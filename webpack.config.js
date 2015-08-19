@@ -26,6 +26,8 @@ module.exports = {
     publicPath: '/' // script src = {publicPath}/bundle.js
   },
   plugins: ifprod([], [
+    // Load only required locales from moment
+    new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /fr/),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin()
   ]),
