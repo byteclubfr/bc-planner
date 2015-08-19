@@ -1,37 +1,23 @@
 import * as actions from '../constants/actions'
-import identity from 'lodash/utility/identity'
 import {Map} from 'immutable'
 
 
-const initialState = {
-  events: new Map()
-}
+const initialEvents = Map() // id:string => event:Event
 
+export default (events = initialEvents, action) => {
+  switch (action.type) {
 
-const reducers = {
+  case actions.CREATED_EVENT:
+  case actions.UPDATED_EVENT:
+    return events.set(action.event.id, action.event)
 
-  [actions.CREATED_EVENT]: (state, {event}) => ({
-    events: state.events.set(event.id, event)
-  }),
+  case actions.DELETED_EVENT:
+    return events.delete(action.eventId)
 
-  [actions.UPDATED_EVENT]: (state, {event}) => ({
-    events: state.events.set(event.id, event)
-  }),
+  case actions.FETCHED_EVENTS:
+    return Map(action.events.map(e => [e.id, e]))
 
-  [actions.DELETED_EVENT]: (state, {eventId}) => ({
-    events: state.events.delete(eventId)
-  }),
-
-  [actions.FETCHED_EVENTS]: (state, {events}) => ({
-    events: new Map(events.map(event => [event.id, event]))
-  })
-
-}
-
-
-export default (state = initialState, action) => {
-  var reducer = reducers[action.type] || identity
-  var newState = reducer(state, action)
-
-  return {...state, ...newState}
+  default:
+    return events
+  }
 }

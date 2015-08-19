@@ -1,13 +1,14 @@
 import React, { Component, PropTypes } from 'react'
 import MonthList from './month-list'
 import { buildMonthsRange } from '../utils/date'
+import { Map } from 'immutable'
 
 export default class App extends Component {
 
   static propTypes = {
     actions: PropTypes.object.isRequired,
-    events: PropTypes.object.isRequired,
-    ui: PropTypes.object.isRequired
+    events: PropTypes.instanceOf(Map).isRequired,
+    ui: PropTypes.instanceOf(Map).isRequired
   }
 
   componentDidMount () {
@@ -15,7 +16,7 @@ export default class App extends Component {
   }
 
   render () {
-    const {startMonth, endMonth, fetching} = this.props.ui
+    const {startMonth, endMonth, fetching} = this.props.ui.toObject()
 
     if (fetching) {
       return <strong>Fetching…</strong>
@@ -23,7 +24,7 @@ export default class App extends Component {
 
     const range = buildMonthsRange(startMonth, endMonth)
 
-    return <MonthList events={this.props.events.events} range={range} />
+    return <MonthList events={this.props.events} range={range} />
   }
 
 }
