@@ -12,7 +12,7 @@ export default class Day extends Component {
 
     return (
       <div className="day">
-        {this.props.day}
+        <header className="day-date">{this.props.day}</header>
       </div>
     )
   }
