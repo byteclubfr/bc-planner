@@ -7,6 +7,8 @@ import classNames from 'classnames'
 import Gravatar from './gravatar'
 import { inclusiveIsBetween, isWeekend } from './../utils/date'
 
+import EventBars from './event-bars'
+
 export default class Day extends Component {
 
   static propTypes = {
@@ -33,6 +35,7 @@ export default class Day extends Component {
             </li>
           ))}
         </ul>
+        <EventBars clubbers={clubbers} events={events} />
       </div>
     )
   }
