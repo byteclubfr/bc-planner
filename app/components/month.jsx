@@ -6,15 +6,19 @@ import moment from 'moment'
 export default class MonthList extends Component {
 
   static propTypes = {
-    events: PropTypes.instanceOf(Map),
-    month: PropTypes.arrayOf(PropTypes.number).isRequired
+    date: PropTypes.any.isRequired,
+    events: PropTypes.instanceOf(Map)
   }
 
   render () {
-    const date = moment(this.props.month)
-    const events = this.props.events.toArray().filter(event => {
-      return date.isBetween(event.start, event.end)
-    })
+    const date = moment(this.props.date)
+    const dateStart = moment(date).startOf('month')
+    const dateEnd = moment(date).endOf('month')
+    const events = this.props.events.toArray().filter(event =>
+      // Event occurs in this month if it starts before end of month AND it ends after start of month
+      // <=> end of month is after start of event AND start of month is before end of event
+      dateEnd.isAfter(event.start) && dateStart.isBefore(event.end)
+    )
 
     return (
       <div className="month">
