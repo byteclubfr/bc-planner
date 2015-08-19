@@ -16,7 +16,7 @@ export default class Month extends Component {
 
   render () {
     const date = moment(this.props.month)
-    const daysInMonth = range(1, date.daysInMonth())
+    const daysInMonth = range(date.daysInMonth())
     const events = this.props.events.toArray().filter(event => {
       return date.isBetween(event.start, event.end)
     })
@@ -32,7 +32,7 @@ export default class Month extends Component {
         </ul>
 
         {daysInMonth.map(day => (
-          <Day day={day} />
+          <Day day={day + 1} />
         ))}
       </div>
     )
