@@ -2,6 +2,7 @@
 
 var path = require('path')
 var webpack = require('webpack')
+var CompressionPlugin = require('compression-webpack-plugin')
 
 var port = process.env.PORT || 8080
 
@@ -27,7 +28,15 @@ module.exports = {
     filename: 'bundle.js',
     publicPath: '/' // script src = {publicPath}/bundle.js
   },
-  plugins: ifprod([], [
+  plugins: ifprod([
+    new CompressionPlugin({
+      asset: '{file}.gz',
+      algorithm: 'gzip',
+      regExp: /\.js$|\.html$/,
+      threshold: 10240,
+      minRatio: 0.8
+    })
+  ], [
     // Load only required locales from moment
     new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /fr/),
     new webpack.HotModuleReplacementPlugin(),
