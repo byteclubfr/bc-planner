@@ -26,16 +26,22 @@ export default class App extends Component {
     }
 
     const range = buildMonthsRange(startMonth, endMonth)
+    const filters = ui.get('filters')
+    const visibleClubbers = ui.get('visibleClubbers')
 
     return (
-      <div>
+      <main>
         <Filters
           actions={actions}
-          filters={ui.get('filters')}
+          filters={filters}
           nbMonths={range.length}
-          visibleClubbers={ui.get('visibleClubbers')} />
-        <MonthList events={events} filters={ui.get('filters')} range={range} />
-      </div>
+          visibleClubbers={visibleClubbers} />
+        <MonthList
+          events={events}
+          filters={filters}
+          range={range}
+          visibleClubbers={visibleClubbers} />
+      </main>
     )
   }
 

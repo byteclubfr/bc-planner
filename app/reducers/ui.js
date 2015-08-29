@@ -36,6 +36,13 @@ export default (state = initialState, action) => {
   case actions.FETCHED_EVENTS: return state
     .set('fetching', false)
 
+  case actions.UI_TOGGLE_CLUBBER:
+    const visibleClubbers = state.get('visibleClubbers')
+    const newVisibleClubbers = visibleClubbers.includes(action.clubber)
+      ? visibleClubbers.delete(action.clubber)
+      : visibleClubbers.add(action.clubber)
+    return state.set('visibleClubbers', newVisibleClubbers)
+
   case actions.UI_TOGGLE_FILTER:
     const filters = state.get('filters')
     const newFilters = filters.set(action.filter, !filters.get(action.filter, false))

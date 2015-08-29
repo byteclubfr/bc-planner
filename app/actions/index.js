@@ -70,6 +70,13 @@ export function fetchedEvents (events) {
   }
 }
 
+export function toggleClubber (clubber) {
+  return {
+    type: types.UI_TOGGLE_CLUBBER,
+    clubber
+  }
+}
+
 export function toggleFilter (filter) {
   return {
     type: types.UI_TOGGLE_FILTER,

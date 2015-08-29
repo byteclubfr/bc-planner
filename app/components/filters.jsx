@@ -15,11 +15,14 @@ export default class Filters extends Component {
   }
 
   clubberCheckbox (clubber, name) {
-    const { visibleClubbers } = this.props
+    const { actions, visibleClubbers } = this.props
 
     return (
       <label key={name} style={{backgroundColor: clubber.color}}>
-        <input checked={visibleClubbers.contains(name)} type="checkbox" />
+        <input
+          checked={visibleClubbers.includes(name)}
+          onChange={() => actions.toggleClubber(name)}
+          type="checkbox" />
         <Gravatar clubberName={name} />
         {name}
       </label>
