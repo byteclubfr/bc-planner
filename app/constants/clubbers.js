@@ -5,6 +5,10 @@ export default Map({
     gravatar: '1de6337421c1eac0227c88502b275952',
     color: '#eec'
   },
+  lilian: {
+    gravatar: '0a44ba96176080d4e2edf5cba23c1c9b',
+    color: '#cce'
+  },
   nicolas: {
     gravatar: '396445b6e14727dcb6b3d6a66d52b567',
     color: '#cee'
