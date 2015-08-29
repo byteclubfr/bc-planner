@@ -18,7 +18,7 @@ export default class Filters extends Component {
     const { actions, visibleClubbers } = this.props
 
     return (
-      <label key={name} style={{backgroundColor: clubber.color}}>
+      <label className="clubber-label" key={name} style={{backgroundColor: clubber.color}}>
         <input
           checked={visibleClubbers.includes(name)}
           onChange={() => actions.toggleClubber(name)}
