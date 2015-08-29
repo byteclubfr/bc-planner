@@ -1,7 +1,7 @@
 import '../styles/filters'
 
 import React, { Component, PropTypes } from 'react'
-import { Map } from 'immutable'
+import { Map, Set } from 'immutable'
 
 import clubbers from './../constants/clubbers'
 import Gravatar from './gravatar'
@@ -10,13 +10,16 @@ export default class Filters extends Component {
   static propTypes = {
     actions: PropTypes.object.isRequired,
     filters: PropTypes.instanceOf(Map).isRequired,
-    nbMonths: PropTypes.number.isRequired
+    nbMonths: PropTypes.number.isRequired,
+    visibleClubbers: PropTypes.instanceOf(Set).isRequired
   }
 
   clubberCheckbox (clubber, name) {
+    const { visibleClubbers } = this.props
+
     return (
       <label key={name} style={{backgroundColor: clubber.color}}>
-        <input type="checkbox" />
+        <input checked={visibleClubbers.contains(name)} type="checkbox" />
         <Gravatar clubberName={name} />
         {name}
       </label>

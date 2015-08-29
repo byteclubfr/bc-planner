@@ -18,7 +18,8 @@ export default class App extends Component {
   }
 
   render () {
-    const {startMonth, endMonth, fetching} = this.props.ui.toObject()
+    const { actions, events, ui } = this.props
+    const { startMonth, endMonth, fetching } = ui.toObject()
 
     if (fetching) {
       return <strong>Fetching…</strong>
@@ -28,8 +29,12 @@ export default class App extends Component {
 
     return (
       <div>
-        <Filters actions={this.props.actions} filters={this.props.ui.get('filters')} nbMonths={range.length} />
-        <MonthList events={this.props.events} filters={this.props.ui.get('filters')} range={range} />
+        <Filters
+          actions={actions}
+          filters={ui.get('filters')}
+          nbMonths={range.length}
+          visibleClubbers={ui.get('visibleClubbers')} />
+        <MonthList events={events} filters={ui.get('filters')} range={range} />
       </div>
     )
   }

@@ -1,7 +1,8 @@
-import * as actions from '../constants/actions'
 import moment from 'moment'
-import { Map } from 'immutable'
+import { Map, Set } from 'immutable'
 
+import * as actions from '../constants/actions'
+import clubbers from './../constants/clubbers'
 
 const today = moment()
 
@@ -15,7 +16,8 @@ const initialState = Map({
     title: true,
     gravatar: true,
     bars: true
-  })
+  }),
+  visibleClubbers: Set(clubbers.keys())
 })
 
 export default (state = initialState, action) => {

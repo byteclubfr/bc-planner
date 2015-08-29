@@ -17,7 +17,7 @@ export default class EventBars extends Component {
       backgroundColor: clubber.color
     } : {}
 
-    return <div key={clubberName} className="event-bar" style={styles} />
+    return <div className="event-bar" key={clubberName} style={styles} />
   }
 
   render () {
