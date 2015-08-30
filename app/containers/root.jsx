@@ -1,7 +1,7 @@
 import { Provider, connect } from 'react-redux'
 import { bindActionCreators, combineReducers, createStore, applyMiddleware } from 'redux'
 import thunkMiddleware from 'redux-thunk'
-import loggerMiddleware from 'redux-logger'
+import createLogger from 'redux-logger'
 
 import React, { Component } from 'react'
 import App from '../components/app'
@@ -31,7 +31,7 @@ const ConnectedApp = connect(mapStateToProps, mapDispatchToProps)(App)
 
 const store = applyMiddleware(
   thunkMiddleware, // lets us dispatch() functions
-  loggerMiddleware // neat middleware that logs actions
+  createLogger({ collapsed: true }) // neat middleware that logs actions
 )(createStore)(combineReducers(reducers))
 
 
