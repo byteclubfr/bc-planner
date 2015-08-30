@@ -1,5 +1,7 @@
 import uuid from 'uuid'
 
+import { calendarId, clientId, scopes } from '../constants/google-credentials'
+
 const sampleEvents = [
   {
     id: uuid(),
@@ -63,6 +65,31 @@ const sampleEvents = [
   }
 ]
 
+// TODO - remove
+function transformEvents (events) {
+  return events.map(function (event) {
+    event.title = event.summary
+    event.start = event.start.dateTime.slice(0, 10)
+    event.end = event.end.dateTime.slice(0, 10)
+    event.clubber = 'lilian'
+    return event
+  })
+}
+
+function onAuthorized () {
+  console.debug('gapi authorized')
+  gapi.client.load('calendar', 'v3')
+    .then(::console.debug('gapi calendar loaded'))
+}
+
+window.initGapi = function () {
+  gapi.auth.authorize({
+    client_id: clientId,
+    scope: scopes,
+    immediate: false
+  }, onAuthorized)
+}
+
 export default {
 
   insert: (data) => Promise.resolve({
@@ -72,9 +99,16 @@ export default {
 
   delete: (id) => Promise.resolve(),
 
-  list: ({startMonth, endMonth, maxResults = 2500} = {}) => Promise.resolve([
+  fakeList: ({startMonth, endMonth, maxResults = 2500} = {}) => Promise.resolve([
     ...sampleEvents
   ]),
+
+  list: ({startMonth, endMonth, maxResults = 2500} = {}) => {
+    return gapi.client.calendar.events.list({ calendarId })
+      .then(res => res.result.items)
+      // TODO - remove
+      .then(transformEvents)
+  },
 
   patch: (id, updates) => Promise.resolve({
     id: id,

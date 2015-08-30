@@ -14,7 +14,8 @@ export default class App extends Component {
   }
 
   componentDidMount () {
-    this.props.actions.fetchEvents()
+    // TODO
+    setTimeout(() => this.props.actions.fetchEvents(), 2000)
   }
 
   render () {

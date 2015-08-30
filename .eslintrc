@@ -4,6 +4,9 @@
   "plugins": [
     "react"
   ],
+  "globals": {
+    "gapi": true
+  },
   "env": {
     "browser": true,
     "es6": true
