@@ -1,6 +1,6 @@
+import moment from 'moment'
 import uuid from 'uuid'
 
-import clubbers from '../constants/clubbers'
 import { calendarId, clientId, scopes } from '../constants/google-credentials'
 
 const sampleEvents = [
@@ -66,9 +66,29 @@ const sampleEvents = [
   }
 ]
 
-// boundary: event.start || event.end
-function getDate (boundary) {
-  return boundary.date || boundary.dateTime.slice(0, 10)
+function getTitle (event) {
+  var title = event.summary
+  if (event.location) {
+    title += ` - ${event.location}`
+  }
+  return title
+}
+
+// boundary: 'start' || 'end'
+function getDate (event, boundary) {
+  var d
+  var date = event[boundary]
+  // all day event
+  if (date.date) {
+    // start is inclusive, end is exclusive
+    d = date.date
+    if (boundary === 'end') {
+      d = moment(d).subtract(1, 'days')
+    }
+  } else {
+    d = date.dateTime
+  }
+  return moment(d).format('YYYY-MM-DD')
 }
 
 // based on attendees
@@ -87,9 +107,9 @@ function getClubber (event) {
 // TODO - remove
 function transformEvents (events) {
   return events.map(function (event) {
-    event.title = event.summary
-    event.start = getDate(event.start)
-    event.end = getDate(event.end)
+    event.title = getTitle(event)
+    event.start = getDate(event, 'start')
+    event.end = getDate(event, 'end')
     event.clubber = getClubber(event)
     return event
   })
