@@ -1,7 +1,7 @@
 import '../styles/month-list'
 
 import React, { Component, PropTypes } from 'react'
-import { Map } from 'immutable'
+import { Map, Set } from 'immutable'
 
 import Month from './month'
 
@@ -11,7 +11,8 @@ export default class MonthList extends Component {
   static propTypes = {
     events: PropTypes.instanceOf(Map),
     filters: PropTypes.instanceOf(Map).isRequired,
-    range: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired
+    range: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
+    visibleClubbers: PropTypes.instanceOf(Set).isRequired
   }
 
   render () {
