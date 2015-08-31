@@ -65,12 +65,17 @@ const sampleEvents = [
   }
 ]
 
+// boundary: event.start || event.end
+function getDate (boundary) {
+  return boundary.date || boundary.dateTime.slice(0, 10)
+}
+
 // TODO - remove
 function transformEvents (events) {
   return events.map(function (event) {
     event.title = event.summary
-    event.start = event.start.dateTime.slice(0, 10)
-    event.end = event.end.dateTime.slice(0, 10)
+    event.start = getDate(event.start)
+    event.end = getDate(event.end)
     event.clubber = 'lilian'
     return event
   })
