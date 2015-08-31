@@ -24,7 +24,7 @@ export default class Day extends Component {
   renderGravatar (event) {
     return (
       <span className="event-gravatar">
-        <Gravatar clubberName={event.clubber} />
+        <Gravatar clubberEmail={event.clubber} />
       </span>
     )
   }

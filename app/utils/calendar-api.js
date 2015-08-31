@@ -1,5 +1,6 @@
 import uuid from 'uuid'
 
+import clubbers from '../constants/clubbers'
 import { calendarId, clientId, scopes } from '../constants/google-credentials'
 
 const sampleEvents = [
@@ -9,7 +10,7 @@ const sampleEvents = [
     confirmed: true,
     start: '2015-09-10',
     end: '2015-09-12',
-    clubber: 'nicolas',
+    clubber: 'naholyr@gmail.com',
     subject: 'Node',
     place: 'Paris',
     // TODO generate
@@ -21,7 +22,7 @@ const sampleEvents = [
     confirmed: true,
     start: '2015-09-15',
     end: '2015-09-17',
-    clubber: 'bruno',
+    clubber: 'delapouite@gmail.com',
     subject: 'Angular',
     place: 'Paris',
     // TODO generate
@@ -33,7 +34,7 @@ const sampleEvents = [
     confirmed: true,
     start: '2015-09-14',
     end: '2015-09-18',
-    clubber: 'thomas',
+    clubber: 'tmoyse@gmail.com',
     subject: 'Angular',
     place: 'Paris',
     // TODO generate
@@ -59,7 +60,7 @@ const sampleEvents = [
     end: '2015-11-10',
     subject: 'Immobox',
     place: null,
-    clubber: 'thomas',
+    clubber: 'tmoyse@gmail.com',
     // TODO generate
     title: 'DEV Immobox'
   }
@@ -70,13 +71,26 @@ function getDate (boundary) {
   return boundary.date || boundary.dateTime.slice(0, 10)
 }
 
+// based on attendees
+function getClubber (event) {
+  var clubber = 'lilian.martineau@gmail.com'
+  if (!event.attendees) return clubber
+
+  event.attendees.forEach(function (attendee) {
+    if (!attendee.optional) {
+      clubber = attendee.email
+    }
+  })
+  return clubber
+}
+
 // TODO - remove
 function transformEvents (events) {
   return events.map(function (event) {
     event.title = event.summary
     event.start = getDate(event.start)
     event.end = getDate(event.end)
-    event.clubber = 'lilian'
+    event.clubber = getClubber(event)
     return event
   })
 }

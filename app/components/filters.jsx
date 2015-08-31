@@ -14,17 +14,17 @@ export default class Filters extends Component {
     visibleClubbers: PropTypes.instanceOf(Set).isRequired
   }
 
-  clubberCheckbox (clubber, name) {
+  clubberCheckbox (clubber, email) {
     const { actions, visibleClubbers } = this.props
 
     return (
-      <label className="clubber-label" key={name} style={{backgroundColor: clubber.color}}>
+      <label className="clubber-label" key={email} style={{backgroundColor: clubber.color}}>
         <input
-          checked={visibleClubbers.includes(name)}
-          onChange={() => actions.toggleClubber(name)}
+          checked={visibleClubbers.includes(email)}
+          onChange={() => actions.toggleClubber(email)}
           type="checkbox" />
-        <Gravatar clubberName={name} />
-        {name}
+        <Gravatar clubberEmail={email} />
+        {clubber.name}
       </label>
     )
   }
