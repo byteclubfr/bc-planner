@@ -1,4 +1,11 @@
-import ui from './ui'
-import events from './events'
+import { combineReducers } from 'redux'
 
-export default {ui, events}
+import events from './events'
+import ui from './ui'
+
+const rootReducer = combineReducers({
+  events,
+  ui
+})
+
+export default rootReducer
