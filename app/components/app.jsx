@@ -1,5 +1,9 @@
+import '../styles/fx.styl'
+
 import React, { Component, PropTypes } from 'react'
+import classNames from 'classnames'
 import { Map } from 'immutable'
+
 import { buildMonthsRange } from '../utils/date'
 
 import EventForm from './event-form'
@@ -32,23 +36,25 @@ export default class App extends Component {
     const visibleClubbers = ui.get('visibleClubbers')
 
     return (
-      <main>
-        <h1>
-          BC Planner
-          <button className="event-form-open" disabled={eventFormVisible} onClick={actions.openEventForm}>Add Event</button>
-        </h1>
+      <div className={classNames('container', 'fx-container', { 'fx-menu-open': eventFormVisible })}>
         <EventForm actions={actions} visible={eventFormVisible} />
-        <Filters
-          actions={actions}
-          filters={filters}
-          nbMonths={range.length}
-          visibleClubbers={visibleClubbers} />
-        <MonthList
-          events={events}
-          filters={filters}
-          range={range}
-          visibleClubbers={visibleClubbers} />
-      </main>
+        <div className="fx-pusher"><div className="fx-content"><main className="fx-content-inner">
+          <h1>
+            BC Planner
+            <button className="event-form-open" disabled={eventFormVisible} onClick={actions.openEventForm}>Add Event</button>
+          </h1>
+          <Filters
+            actions={actions}
+            filters={filters}
+            nbMonths={range.length}
+            visibleClubbers={visibleClubbers} />
+          <MonthList
+            events={events}
+            filters={filters}
+            range={range}
+            visibleClubbers={visibleClubbers} />
+        </main></div></div>
+      </div>
     )
   }
 

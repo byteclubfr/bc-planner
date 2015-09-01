@@ -1,6 +1,7 @@
 import '../styles/event-form'
 
 import React, { Component, PropTypes } from 'react'
+import classNames from 'classnames'
 
 export default class EventForm extends Component {
 
@@ -10,26 +11,24 @@ export default class EventForm extends Component {
   }
 
   render () {
-    let style = {
-      display: this.props.visible ? 'block' : 'none'
-    }
-
     return (
-      <form className="event-form" onSubmit={false} style={style}>
+      <form className="event-form fx-menu" onSubmit={false}>
         <h2>
           Form
           <button className="event-form-close" onClick={::this.props.actions.closeEventForm} type="button">Close &times;</button>
         </h2>
-        <div>
-          From
-          <input type="date" />
-          to
-          <input type="date" />
-        </div>
-        <div><label>Summary <input /></label></div>
-        <div><label>Where <input /></label></div>
-        <div><label>Description <textarea /></label></div>
-        <div><button type="button">Save</button></div>
+          <label>
+            From
+            <input type="date" />
+          </label>
+          <label>
+            to
+            <input type="date" />
+          </label>
+        <label>Summary <input /></label>
+        <label>Where <input /></label>
+        <label>Description <textarea /></label>
+        <button className="event-form-save" type="button">Save</button>
       </form>
     )
   }
