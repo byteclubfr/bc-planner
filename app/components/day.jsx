@@ -11,6 +11,7 @@ import { inclusiveIsBetween, isWeekend } from './../utils/date'
 export default class Day extends Component {
 
   static propTypes = {
+    actions: PropTypes.object.isRequired,
     date: PropTypes.object.isRequired,
     events: PropTypes.arrayOf(PropTypes.object).isRequired,
     filters: PropTypes.instanceOf(Map).isRequired,
@@ -20,7 +21,7 @@ export default class Day extends Component {
   renderEvent (event) {
     const { filters } = this.props
     return (
-      <li className="event" key={event.id}>
+      <li className="event" key={event.id} onClick={() => this.props.actions.openEventForm(event.id)}>
         <div className="event-snippet">
           {filters.get('title') ? this.renderTitle(event) : null}
           {filters.get('location') ? this.renderLocation(event) : null}

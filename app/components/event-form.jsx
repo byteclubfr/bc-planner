@@ -7,19 +7,38 @@ export default class EventForm extends Component {
 
   static propTypes = {
     actions: PropTypes.object.isRequired,
+    event: PropTypes.object,
     visible: PropTypes.bool.isRequired
   }
 
   constructor (props) {
     super(props)
-    this.state = {
+    this.state = this.getBlankEvent()
+  }
+
+  getBlankEvent () {
+    return {
       event: {
         start: moment().format('YYYY-MM-DD'),
         end: moment().add(1, 'days').format('YYYY-MM-DD'),
+        summary: '',
+        location: '',
+        description: '',
         extendedProperties: {
           private: {}
         }
       }
+    }
+  }
+
+  componentWillReceiveProps (props) {
+    if (!props.event) {
+      this.setState(this.getBlankEvent())
+    } else {
+      this.setState({
+        ...this.state,
+        event: props.event
+      })
     }
   }
 
@@ -77,7 +96,11 @@ export default class EventForm extends Component {
 
   submit () {
     if (!this.isFormValid()) return
-    this.props.actions.createEvent(this.state.event)
+    if (this.state.event.id) {
+      this.props.actions.updateEvent(this.state.event.id, this.state.event)
+    } else {
+      this.props.actions.createEvent(this.state.event)
+    }
   }
 
   render () {
@@ -95,10 +118,10 @@ export default class EventForm extends Component {
           to
           <input name="end" onChange={::this.changeEnd} type="date" value={this.state.event.end} />
         </label>
-        <label>Summary <input name="summary" onChange={::this.changeSummary} /></label>
-        <label>Where <input name="location" onChange={::this.changeLocation} /></label>
-        <label>Description <textarea name="description" onChange={::this.changeDescription} /></label>
-        <label>Confirmed? <input name="confirmed" onChange={::this.changeConfirmed} type="checkbox" /></label>
+        <label>Summary <input name="summary" onChange={::this.changeSummary} value={this.state.event.summary} /></label>
+        <label>Where <input name="location" onChange={::this.changeLocation} value={this.state.event.location} /></label>
+        <label>Description <textarea name="description" onChange={::this.changeDescription} value={this.state.event.description} /></label>
+        <label>Confirmed? <input checked={this.state.event.extendedProperties.private.confirmed} name="confirmed" onChange={::this.changeConfirmed} type="checkbox" /></label>
         <button className="event-form-save" onClick={::this.submit} type="button">Save</button>
       </form>
     )

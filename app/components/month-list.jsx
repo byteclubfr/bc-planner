@@ -9,6 +9,7 @@ import Month from './month'
 export default class MonthList extends Component {
 
   static propTypes = {
+    actions: PropTypes.object.isRequired,
     events: PropTypes.instanceOf(Map),
     filters: PropTypes.instanceOf(Map).isRequired,
     range: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
@@ -20,6 +21,7 @@ export default class MonthList extends Component {
       <div className="month-list">
         {this.props.range.map(month =>
           <Month
+            actions={this.props.actions}
             date={month}
             events={this.props.events}
             filters={this.props.filters}

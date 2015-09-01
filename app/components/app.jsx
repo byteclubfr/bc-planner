@@ -34,10 +34,15 @@ export default class App extends Component {
     const range = buildMonthsRange(startMonth, endMonth)
     const filters = ui.get('filters')
     const visibleClubbers = ui.get('visibleClubbers')
+    const eventId = ui.get('eventId')
+    let editableEvent = eventId ? events.get(eventId) : null
 
     return (
       <div className={classNames('container', 'fx-container', { 'fx-menu-open': eventFormVisible })}>
-        <EventForm actions={actions} visible={eventFormVisible} />
+        <EventForm
+          actions={actions}
+          event={editableEvent}
+          visible={eventFormVisible} />
         <div className="fx-pusher"><div className="fx-content"><main className="fx-content-inner">
           <h1>
             BC Planner
@@ -49,6 +54,7 @@ export default class App extends Component {
             nbMonths={range.length}
             visibleClubbers={visibleClubbers} />
           <MonthList
+            actions={actions}
             events={events}
             filters={filters}
             range={range}

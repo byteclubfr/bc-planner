@@ -31,7 +31,7 @@ export function createdEvent (event) {
 export function updateEvent (eventId, formData) {
   return dispatch => {
     dispatch({type: types.UPDATE_EVENT, eventId, formData})
-    calendar.patch(eventId, formData).then(updatedEvent).then(dispatch)
+    calendar.update(eventId, formData).then(updatedEvent).then(dispatch)
   }
 }
 

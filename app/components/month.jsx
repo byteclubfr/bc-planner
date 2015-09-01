@@ -10,6 +10,7 @@ import Day from './day'
 export default class Month extends Component {
 
   static propTypes = {
+    actions: PropTypes.object.isRequired,
     date: PropTypes.any.isRequired,
     events: PropTypes.instanceOf(Map).isRequired,
     filters: PropTypes.instanceOf(Map).isRequired
@@ -32,6 +33,7 @@ export default class Month extends Component {
 
         {daysInMonth.map(day => moment(date).date(day + 1)).map(d =>
           <Day
+            actions={this.props.actions}
             date={d}
             events={events}
             filters={this.props.filters}
