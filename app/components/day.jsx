@@ -31,7 +31,14 @@ export default class Day extends Component {
   }
 
   renderTitle (event) {
-    return <div className="event-title">{event.title}</div>
+    return (
+      <div className="event-title">
+        <span className="event-confirmed" title="Event confirmed?">
+          {event.extendedProperties.private.confirmed ? '✓' : '✗'}
+        </span>
+        <span>{event.title}</span>
+      </div>
+    )
   }
 
   renderLocation (event) {

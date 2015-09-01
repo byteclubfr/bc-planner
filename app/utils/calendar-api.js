@@ -1,5 +1,6 @@
 import moment from 'moment'
 import uuid from 'uuid'
+import mapValues from 'lodash/object/mapValues'
 
 import { calendarId, clientId, scopes } from '../constants/google-credentials'
 
@@ -101,6 +102,19 @@ function getClubber (event) {
   return clubber
 }
 
+function getExtendedProps (event) {
+  if (!event.extendedProperties) {
+    return { private: {} }
+  }
+  // TODO
+  event.extendedProperties.private = mapValues(event.extendedProperties.private, (v) => {
+    if (v === 'true') return true
+    if (v === 'false') return false
+    return v
+  })
+  return event.extendedProperties
+}
+
 // TODO - remove
 // format server event -> client event
 function shapeServerEvent (event) {
@@ -108,6 +122,7 @@ function shapeServerEvent (event) {
   event.start = getDate(event, 'start')
   event.end = getDate(event, 'end')
   event.clubber = getClubber(event)
+  event.extendedProperties = getExtendedProps(event)
   return event
 }
 

@@ -15,21 +15,35 @@ export default class EventForm extends Component {
     this.state = {
       event: {
         start: moment().format('YYYY-MM-DD'),
-        end: moment().add(1, 'days').format('YYYY-MM-DD')
+        end: moment().add(1, 'days').format('YYYY-MM-DD'),
+        extendedProperties: {
+          private: {}
+        }
       }
     }
   }
 
   // proxy for set stage
-  setEvent (field, value) {
+  setEvent (key, value) {
     let state = {
       ...this.state,
       event: {
         ...this.state.event,
-        [field]: value
+        [key]: value
       }
     }
     this.setState(state)
+  }
+
+  setEventExtendedProps (key, value) {
+    let extendedProps = {
+      ...this.state.event.extendedProperties,
+      private: {
+        ...this.state.event.extendedProperties.private,
+        [key]: value
+      }
+    }
+    this.setEvent('extendedProperties', extendedProps)
   }
 
   changeStart (e) {
@@ -50,6 +64,10 @@ export default class EventForm extends Component {
 
   changeDescription (e) {
     this.setEvent('description', e.target.value)
+  }
+
+  changeConfirmed (e) {
+    this.setEventExtendedProps('confirmed', e.target.checked)
   }
 
   // TODO
@@ -80,6 +98,7 @@ export default class EventForm extends Component {
         <label>Summary <input name="summary" onChange={::this.changeSummary} /></label>
         <label>Where <input name="location" onChange={::this.changeLocation} /></label>
         <label>Description <textarea name="description" onChange={::this.changeDescription} /></label>
+        <label>Confirmed? <input name="confirmed" onChange={::this.changeConfirmed} type="checkbox" /></label>
         <button className="event-form-save" onClick={::this.submit} type="button">Save</button>
       </form>
     )
