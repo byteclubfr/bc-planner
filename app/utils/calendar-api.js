@@ -150,20 +150,6 @@ window.initGapi = function () {
 
 export default {
 
-  fakeInsert: (data) => Promise.resolve({
-    id: uuid(),
-    ...data
-  }),
-
-  fakeList: ({startMonth, endMonth, maxResults = 2500} = {}) => Promise.resolve([
-    ...sampleEvents
-  ]),
-
-  fakeUpdate: (id, updates) => Promise.resolve({
-    id: id,
-    ...updates
-  }),
-
   insert: (data) => {
     return gapi.client.calendar.events.insert({
       calendarId,
@@ -171,7 +157,12 @@ export default {
     }).then(res => shapeServerEvent(res.result), ::console.error)
   },
 
-  delete: (id) => Promise.resolve(),
+  delete: (eventId) => {
+    return gapi.client.calendar.events.delete({
+      calendarId,
+      eventId
+    })
+  },
 
   list: ({startMonth, endMonth, maxResults = 2500} = {}) => {
     return gapi.client.calendar.events.list({ calendarId })

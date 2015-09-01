@@ -103,6 +103,12 @@ export default class EventForm extends Component {
     }
   }
 
+  delete () {
+    if (this.state.event.id) {
+      this.props.actions.deleteEvent(this.state.event.id)
+    }
+  }
+
   render () {
     return (
       <form className="event-form fx-menu">
@@ -123,6 +129,7 @@ export default class EventForm extends Component {
         <label>Description <textarea name="description" onChange={::this.changeDescription} value={this.state.event.description} /></label>
         <label>Confirmed? <input checked={this.state.event.extendedProperties.private.confirmed} name="confirmed" onChange={::this.changeConfirmed} type="checkbox" /></label>
         <button className="event-form-save" onClick={::this.submit} type="button">Save</button>
+        {(this.state.event .id ? <button className="event-form-delete" onClick={::this.delete} type="button">Delete</button> : null)}
       </form>
     )
   }
