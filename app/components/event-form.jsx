@@ -3,6 +3,9 @@ import '../styles/event-form'
 import React, { Component, PropTypes } from 'react'
 import moment from 'moment'
 
+import clubbers from './../constants/clubbers'
+import Gravatar from './gravatar'
+
 export default class EventForm extends Component {
 
   static propTypes = {
@@ -24,6 +27,7 @@ export default class EventForm extends Component {
         summary: '',
         location: '',
         description: '',
+        attendees: [],
         extendedProperties: {
           private: {}
         }
@@ -89,6 +93,20 @@ export default class EventForm extends Component {
     this.setEventExtendedProps('confirmed', e.target.checked)
   }
 
+  toggleClubber (e) {
+    let attendees = []
+    if (e.target.checked) {
+      attendees = this.state.event.attendees.slice()
+      attendees.push({
+        email: e.target.value,
+        optional: false
+      })
+    } else {
+      attendees = this.state.event.attendees.filter(a => a.email !== e.target.value)
+    }
+    this.setEvent('attendees', attendees)
+  }
+
   // TODO
   isFormValid () {
     return true
@@ -109,11 +127,27 @@ export default class EventForm extends Component {
     }
   }
 
+  clubberCheckbox (clubber, email) {
+    let checked = this.state.event.attendees.some(a => a.email === email)
+
+    return (
+      <label className="clubber-label" key={email} style={{backgroundColor: clubber.color}}>
+        <input
+          checked={checked}
+          onChange={::this.toggleClubber}
+          type="checkbox"
+          value={email} />
+        <Gravatar email={email} />
+        {clubber.name}
+      </label>
+    )
+  }
+
   render () {
     return (
       <form className="event-form fx-menu">
         <h2>
-          Form
+          Event Form
           <button className="event-form-close" onClick={::this.props.actions.closeEventForm} type="button">Close &times;</button>
         </h2>
         <label>
@@ -128,6 +162,10 @@ export default class EventForm extends Component {
         <label>Where <input name="location" onChange={::this.changeLocation} value={this.state.event.location} /></label>
         <label>Description <textarea name="description" onChange={::this.changeDescription} value={this.state.event.description} /></label>
         <label>Confirmed? <input checked={this.state.event.extendedProperties.private.confirmed} name="confirmed" onChange={::this.changeConfirmed} type="checkbox" /></label>
+
+        <label>Clubbers</label>
+        {clubbers.map(::this.clubberCheckbox).toArray()}
+
         <button className="event-form-save" onClick={::this.submit} type="button">Save</button>
         {(this.state.event .id ? <button className="event-form-delete" onClick={::this.delete} type="button">Delete</button> : null)}
       </form>
