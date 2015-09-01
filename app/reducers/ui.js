@@ -27,6 +27,8 @@ export default (state = initialState, action) => {
     .set('eventFormVisible', true)
     .set('eventId', action.eventId)
 
+  // close form after submission
+  case actions.CREATED_EVENT:
   case actions.UI_CLOSE_EVENT_FORM: return state
     .set('eventFormVisible', false)
 

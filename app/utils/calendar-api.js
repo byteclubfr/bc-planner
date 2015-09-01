@@ -105,14 +105,20 @@ function getClubber (event) {
 }
 
 // TODO - remove
-function transformEvents (events) {
-  return events.map(function (event) {
-    event.title = getTitle(event)
-    event.start = getDate(event, 'start')
-    event.end = getDate(event, 'end')
-    event.clubber = getClubber(event)
-    return event
-  })
+// format server event -> client event
+function shapeServerEvent (event) {
+  event.title = getTitle(event)
+  event.start = getDate(event, 'start')
+  event.end = getDate(event, 'end')
+  event.clubber = getClubber(event)
+  return event
+}
+
+// format form event -> server event
+function shapeClientEvent (event) {
+  event.start = { date: event.start }
+  event.end = { date: moment(event.end).add(1, 'days').format('YYYY-MM-DD') }
+  return event
 }
 
 function onAuthorized () {
@@ -121,6 +127,7 @@ function onAuthorized () {
     .then(::console.debug('gapi calendar loaded'))
 }
 
+// JSONP callback
 window.initGapi = function () {
   gapi.auth.authorize({
     client_id: clientId,
@@ -131,10 +138,17 @@ window.initGapi = function () {
 
 export default {
 
-  insert: (data) => Promise.resolve({
+  insertFake: (data) => Promise.resolve({
     id: uuid(),
     ...data
   }),
+
+  insert: (data) => {
+    return gapi.client.calendar.events.insert({
+      calendarId,
+      resource: shapeClientEvent(data)
+    }).then(res => shapeServerEvent(res.result), ::console.error)
+  },
 
   delete: (id) => Promise.resolve(),
 
@@ -146,7 +160,7 @@ export default {
     return gapi.client.calendar.events.list({ calendarId })
       .then(res => res.result.items)
       // TODO - remove
-      .then(transformEvents)
+      .then(events => events.map(shapeServerEvent))
   },
 
   patch: (id, updates) => Promise.resolve({
