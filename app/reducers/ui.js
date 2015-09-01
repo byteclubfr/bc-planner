@@ -14,6 +14,7 @@ const initialState = Map({
   fetching: false,
   filters: Map({
     title: true,
+    location: false,
     gravatar: true,
     bars: true
   }),

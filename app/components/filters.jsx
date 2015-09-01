@@ -71,6 +71,7 @@ export default class Filters extends Component {
       <div>
         <strong>Show</strong>
         {this.renderFilterCheckbox('title', 'Title')}
+        {this.renderFilterCheckbox('location', 'Location')}
         {this.renderFilterCheckbox('gravatar', 'Avatars')}
         {this.renderFilterCheckbox('bars', 'Bars')}
         {this.renderMonthsFilter()}

@@ -15,11 +15,14 @@ export default class EventBars extends Component {
   colorBar (clubber, clubberName) {
     const hasEvent = this.props.events.some(e => e.clubber === clubberName)
     const styles = hasEvent ? {
-      backgroundColor: clubber.color,
-      opacity: this.props.visibleClubbers.includes(clubberName) ? 1 : 0.2
+      backgroundColor: clubber.color
     } : {}
 
-    return <div className="event-bar" key={clubberName} style={styles} />
+    return (
+      this.props.visibleClubbers.includes(clubberName)
+      ? <div className="event-bar" key={clubberName} style={styles} />
+      : null
+    )
   }
 
   render () {

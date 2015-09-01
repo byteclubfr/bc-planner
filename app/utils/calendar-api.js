@@ -68,9 +68,6 @@ const sampleEvents = [
 
 function getTitle (event) {
   var title = event.summary
-  if (event.location) {
-    title += ` - ${event.location}`
-  }
   return title
 }
 

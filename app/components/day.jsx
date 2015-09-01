@@ -17,15 +17,32 @@ export default class Day extends Component {
     visibleClubbers: PropTypes.instanceOf(Set).isRequired
   }
 
+  renderEvent (event) {
+    const { filters } = this.props
+    return (
+      <li className="event" key={event.id}>
+        <div className="event-snippet">
+          {filters.get('title') ? this.renderTitle(event) : null}
+          {filters.get('location') ? this.renderLocation(event) : null}
+        </div>
+        {filters.get('gravatar') ? this.renderGravatar(event) : null}
+      </li>
+    )
+  }
+
   renderTitle (event) {
-    return <span className="event-title">{event.title}</span>
+    return <div className="event-title">{event.title}</div>
+  }
+
+  renderLocation (event) {
+    return <div className="event-location">{event.location}</div>
   }
 
   renderGravatar (event) {
     return (
-      <span className="event-gravatar">
+      <div className="event-gravatar">
         <Gravatar clubberEmail={event.clubber} />
-      </span>
+      </div>
     )
   }
 
@@ -38,14 +55,9 @@ export default class Day extends Component {
 
     return (
       <div className={classNames('day', { 'day-weekend': isWeekend(date) })}>
-        <header className="day-date">{date.format('dd DD')}</header>
+        <header className="day-date">{date.format('dd')[0]} {date.format('DD')}</header>
         <ul className="event-list">
-          {events.map(event => (
-            <li className={classNames('event', { 'event-faded': !event.visible })} key={event.id}>
-              {filters.get('title') ? this.renderTitle(event) : null}
-              {filters.get('gravatar') ? this.renderGravatar(event) : null}
-            </li>
-          ))}
+          {events.map(event => (event.visible ? this.renderEvent(event) : null))}
         </ul>
         {filters.get('bars') ? <EventBars events={events} visibleClubbers={visibleClubbers} /> : null}
       </div>
