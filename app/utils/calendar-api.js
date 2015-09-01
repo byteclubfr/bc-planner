@@ -89,17 +89,13 @@ function getDate (event, boundary) {
   return moment(d).format('YYYY-MM-DD')
 }
 
-// based on attendees
+// based on attendees for now
 function getClubber (event) {
-  var clubber = 'lilian.martineau@gmail.com'
-  if (!event.attendees) return clubber
+  if (!event.attendees) return ['lilian.martineau@gmail.com']
 
-  event.attendees.forEach(function (attendee) {
-    if (!attendee.optional) {
-      clubber = attendee.email
-    }
-  })
-  return clubber
+  return event.attendees
+    .filter(a => !a.optionnal)
+    .map(a => a.email)
 }
 
 function getExtendedProps (event) {
@@ -121,7 +117,7 @@ function shapeServerEvent (event) {
   event.title = getTitle(event)
   event.start = getDate(event, 'start')
   event.end = getDate(event, 'end')
-  event.clubber = getClubber(event)
+  event.clubbers = getClubber(event)
   event.extendedProperties = getExtendedProps(event)
   return event
 }

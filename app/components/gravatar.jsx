@@ -7,9 +7,9 @@ import clubbers from './../constants/clubbers'
 export default class Gravatar extends Component {
 
   render () {
-    const { clubberEmail } = this.props
+    const { email } = this.props
 
-    return clubberEmail ? <img alt={'gravatar ' + clubberEmail} src={'http://gravatar.com/avatar/' + clubbers.get(clubberEmail).gravatar + '?s=20'} /> : <span />
+    return email ? <img alt={'gravatar ' + email} src={'http://gravatar.com/avatar/' + clubbers.get(email).gravatar + '?s=20'} /> : <span />
   }
 
 }

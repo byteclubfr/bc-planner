@@ -12,15 +12,15 @@ export default class EventBars extends Component {
     visibleClubbers: PropTypes.instanceOf(Set).isRequired
   }
 
-  colorBar (clubber, clubberName) {
-    const hasEvent = this.props.events.some(e => e.clubber === clubberName)
+  colorBar (clubber, clubberEmail) {
+    const hasEvent = this.props.events.some(e => !!~e.clubbers.indexOf(clubberEmail))
     const styles = hasEvent ? {
       backgroundColor: clubber.color
     } : {}
 
     return (
-      this.props.visibleClubbers.includes(clubberName)
-      ? <div className="event-bar" key={clubberName} style={styles} />
+      this.props.visibleClubbers.includes(clubberEmail)
+      ? <div className="event-bar" key={clubberEmail} style={styles} />
       : null
     )
   }

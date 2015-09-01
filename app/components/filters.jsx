@@ -23,7 +23,7 @@ export default class Filters extends Component {
           checked={visibleClubbers.includes(email)}
           onChange={() => actions.toggleClubber(email)}
           type="checkbox" />
-        <Gravatar clubberEmail={email} />
+        <Gravatar email={email} />
         {clubber.name}
       </label>
     )

@@ -26,7 +26,7 @@ export default class Day extends Component {
           {filters.get('title') ? this.renderTitle(event) : null}
           {filters.get('location') ? this.renderLocation(event) : null}
         </div>
-        {filters.get('gravatar') ? this.renderGravatar(event) : null}
+        {filters.get('gravatar') ? this.renderGravatars(event) : null}
       </li>
     )
   }
@@ -46,20 +46,33 @@ export default class Day extends Component {
     return <div className="event-location">{event.location}</div>
   }
 
-  renderGravatar (event) {
+  renderGravatars (event) {
+    let clubbers = event.clubbers.filter(c => this.props.visibleClubbers.includes(c))
+
     return (
-      <div className="event-gravatar">
-        <Gravatar clubberEmail={event.clubber} />
+      <div className="event-gravatars">
+        {(clubbers.map(clubber => {
+          return (
+            <span className="event-gravatar" key={clubber}>
+              <Gravatar email={clubber} />
+            </span>
+          )
+        }))}
       </div>
     )
   }
 
   render () {
     const { date, filters, visibleClubbers } = this.props
-    const events = this.props.events.filter(event =>
-      inclusiveIsBetween(date, event.start, event.end)
-    )
-    .map(event => { event.visible = visibleClubbers.includes(event.clubber); return event })
+    const events = this.props.events
+      .filter(event =>
+        inclusiveIsBetween(date, event.start, event.end)
+      )
+      .map(event => {
+        let intersection = visibleClubbers.intersect(event.clubbers)
+        event.visible = Boolean(intersection.count())
+        return event
+      })
 
     return (
       <div className={classNames('day', { 'day-weekend': isWeekend(date) })}>
