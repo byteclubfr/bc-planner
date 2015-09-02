@@ -1,6 +1,5 @@
+import { Map } from 'immutable'
 import * as actions from '../constants/actions'
-import {Map} from 'immutable'
-
 
 const initialEvents = Map() // id:string => event:Event
 

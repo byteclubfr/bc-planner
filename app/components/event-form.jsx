@@ -1,6 +1,9 @@
 import '../styles/event-form'
+import '../styles/react-tags'
 
 import React, { Component, PropTypes } from 'react'
+import { WithContext as ReactTags } from 'react-tag-input'
+import { Set } from 'immutable'
 import moment from 'moment'
 
 import clubbers from './../constants/clubbers'
@@ -11,6 +14,7 @@ export default class EventForm extends Component {
   static propTypes = {
     actions: PropTypes.object.isRequired,
     event: PropTypes.object,
+    tags: PropTypes.instanceOf(Set).isRequired,
     visible: PropTypes.bool.isRequired
   }
 
@@ -29,7 +33,9 @@ export default class EventForm extends Component {
         description: '',
         attendees: [],
         extendedProperties: {
-          shared: {}
+          shared: {
+            tags: []
+          }
         }
       }
     }
@@ -41,7 +47,16 @@ export default class EventForm extends Component {
     } else {
       this.setState({
         ...this.state,
-        event: props.event
+        event: {
+          ...props.event,
+          extendedProperties : {
+            shared: {
+              ...props.event.extendedProperties.shared,
+              // format needed by ReactTags
+              tags: (props.event.extendedProperties.shared.tags || []).map(t => ({ id: t, text: t }))
+            }
+          }
+        }
       })
     }
   }
@@ -114,6 +129,10 @@ export default class EventForm extends Component {
 
   submit () {
     if (!this.isFormValid()) return
+
+    // transform tags back to a simple array
+    this.state.event.extendedProperties.shared.tags = this.getTags().map(t => t.text)
+
     if (this.state.event.id) {
       this.props.actions.updateEvent(this.state.event.id, this.state.event)
     } else {
@@ -128,7 +147,7 @@ export default class EventForm extends Component {
   }
 
   clubberCheckbox (clubber, email) {
-    let checked = this.state.event.attendees.some(a => a.email === email)
+    let checked = (this.state.event.attendees || []).some(a => a.email === email)
 
     return (
       <label className="clubber-label" key={email} style={{backgroundColor: clubber.color}}>
@@ -141,6 +160,30 @@ export default class EventForm extends Component {
         {clubber.name}
       </label>
     )
+  }
+
+  getTags () {
+    return this.state.event.extendedProperties.shared.tags || []
+  }
+
+  handleAddTag (tag) {
+    var tags = this.getTags()
+    tags.push({ id: tag, text: tag })
+    this.setEventExtendedProps('tags', tags)
+  }
+
+  handleDeleteTag (i) {
+    var tags = this.getTags()
+    tags.splice(i, 1)
+    this.setEventExtendedProps('tags', tags)
+  }
+
+  handleDragTag (tag, curPos, newPos) {
+    var tags = this.getTags()
+    // mutate
+    tags.splice(curPos, 1)
+    tags.splice(newPos, 0, tag)
+    this.setEventExtendedProps('tags', tags)
   }
 
   render () {
@@ -167,6 +210,14 @@ export default class EventForm extends Component {
 
         <label>Clubbers</label>
         {clubbers.map(::this.clubberCheckbox).toArray()}
+
+        <label>Tags</label>
+        <ReactTags
+          handleAddition={::this.handleAddTag}
+          handleDelete={::this.handleDeleteTag}
+          handleDrag={::this.handleDragTag}
+          suggestions={this.props.tags.toArray()}
+          tags={this.getTags()} />
 
         <button className="event-form-save" onClick={::this.submit} type="button">Save</button>
         {(this.state.event .id ? <button className="event-form-delete" onClick={::this.delete} type="button">Delete</button> : null)}

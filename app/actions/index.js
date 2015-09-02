@@ -90,3 +90,11 @@ export function changeNbMonths (nbMonths) {
     nbMonths
   }
 }
+
+export function toggleTag (tag) {
+  return {
+    type: types.UI_TOGGLE_TAG,
+    tag
+  }
+}
+

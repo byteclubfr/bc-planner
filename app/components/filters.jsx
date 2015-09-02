@@ -11,6 +11,7 @@ export default class Filters extends Component {
     actions: PropTypes.object.isRequired,
     filters: PropTypes.instanceOf(Map).isRequired,
     nbMonths: PropTypes.number.isRequired,
+    tags: PropTypes.array,
     visibleClubbers: PropTypes.instanceOf(Set).isRequired
   }
 
@@ -66,15 +67,40 @@ export default class Filters extends Component {
     )
   }
 
+  tagCheckbox (tag) {
+    const { actions, hiddenTags } = this.props
+
+    return (
+      <label className="tag-filter" key={tag}>
+        <input
+          checked={!hiddenTags.includes(tag)}
+          onChange={() => actions.toggleTag(tag)}
+          type="checkbox" />
+        {tag}
+      </label>
+    )
+  }
+
+  renderTagsFilter () {
+    return (
+      <span className="tag-filters">
+        <strong>Tags</strong>
+        {this.props.tags.map(::this.tagCheckbox).toArray()}
+      </span>
+    )
+  }
+
   renderDisplayOptions () {
     return (
       <div>
         <strong>Show</strong>
         {this.renderFilterCheckbox('title', 'Title')}
         {this.renderFilterCheckbox('location', 'Location')}
+        {this.renderFilterCheckbox('tags', 'Tags')}
         {this.renderFilterCheckbox('gravatar', 'Avatars')}
         {this.renderFilterCheckbox('bars', 'Bars')}
         {this.renderMonthsFilter()}
+        {this.renderTagsFilter()}
       </div>
     )
   }

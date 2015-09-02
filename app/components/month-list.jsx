@@ -12,6 +12,7 @@ export default class MonthList extends Component {
     actions: PropTypes.object.isRequired,
     events: PropTypes.instanceOf(Map),
     filters: PropTypes.instanceOf(Map).isRequired,
+    hiddenTags: PropTypes.instanceOf(Set).isRequired,
     range: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
     visibleClubbers: PropTypes.instanceOf(Set).isRequired
   }
@@ -25,6 +26,7 @@ export default class MonthList extends Component {
             date={month}
             events={this.props.events}
             filters={this.props.filters}
+            hiddenTags={this.props.hiddenTags}
             key={month}
             visibleClubbers={this.props.visibleClubbers} />
         )}

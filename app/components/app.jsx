@@ -2,7 +2,7 @@ import '../styles/fx.styl'
 
 import React, { Component, PropTypes } from 'react'
 import classNames from 'classnames'
-import { Map } from 'immutable'
+import { Map, Set } from 'immutable'
 
 import { buildMonthsRange } from '../utils/date'
 
@@ -15,6 +15,7 @@ export default class App extends Component {
   static propTypes = {
     actions: PropTypes.object.isRequired,
     events: PropTypes.instanceOf(Map).isRequired,
+    tags: PropTypes.instanceOf(Set).isRequired,
     ui: PropTypes.instanceOf(Map).isRequired
   }
 
@@ -24,7 +25,7 @@ export default class App extends Component {
   }
 
   render () {
-    const { actions, events, ui } = this.props
+    const { actions, events, tags, ui } = this.props
     const { startMonth, endMonth, eventFormVisible, fetching } = ui.toObject()
 
     if (fetching) {
@@ -34,6 +35,7 @@ export default class App extends Component {
     const range = buildMonthsRange(startMonth, endMonth)
     const filters = ui.get('filters')
     const visibleClubbers = ui.get('visibleClubbers')
+    const hiddenTags = ui.get('hiddenTags')
     const eventId = ui.get('eventId')
     let editableEvent = eventId ? events.get(eventId) : null
 
@@ -42,6 +44,7 @@ export default class App extends Component {
         <EventForm
           actions={actions}
           event={editableEvent}
+          tags={tags}
           visible={eventFormVisible} />
         <div className="fx-pusher"><div className="fx-content"><main className="fx-content-inner">
           <h1>
@@ -51,12 +54,15 @@ export default class App extends Component {
           <Filters
             actions={actions}
             filters={filters}
+            hiddenTags={hiddenTags}
             nbMonths={range.length}
+            tags={tags}
             visibleClubbers={visibleClubbers} />
           <MonthList
             actions={actions}
             events={events}
             filters={filters}
+            hiddenTags={hiddenTags}
             range={range}
             visibleClubbers={visibleClubbers} />
         </main></div></div>

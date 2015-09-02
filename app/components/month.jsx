@@ -1,7 +1,7 @@
 import '../styles/month'
 
 import React, { Component, PropTypes } from 'react'
-import { Map } from 'immutable'
+import { Map, Set } from 'immutable'
 import moment from 'moment'
 import range from 'lodash/utility/range'
 
@@ -13,7 +13,9 @@ export default class Month extends Component {
     actions: PropTypes.object.isRequired,
     date: PropTypes.any.isRequired,
     events: PropTypes.instanceOf(Map).isRequired,
-    filters: PropTypes.instanceOf(Map).isRequired
+    filters: PropTypes.instanceOf(Map).isRequired,
+    hiddenTags: PropTypes.instanceOf(Set).isRequired,
+    visibleClubbers: PropTypes.instanceOf(Set).isRequired
   }
 
   render () {
@@ -37,6 +39,7 @@ export default class Month extends Component {
             date={d}
             events={events}
             filters={this.props.filters}
+            hiddenTags={this.props.hiddenTags}
             key={d.format()}
             visibleClubbers={this.props.visibleClubbers} />
         )}

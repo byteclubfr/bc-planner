@@ -4,69 +4,6 @@ import mapValues from 'lodash/object/mapValues'
 
 import { calendarId, clientId, scopes } from '../constants/google-credentials'
 
-const sampleEvents = [
-  {
-    id: uuid(),
-    type: 'formation-intra',
-    confirmed: true,
-    start: '2015-09-10',
-    end: '2015-09-12',
-    clubber: 'naholyr@gmail.com',
-    subject: 'Node',
-    place: 'Paris',
-    // TODO generate
-    title: 'INTRA Node Paris'
-  },
-  {
-    id: uuid(),
-    type: 'formation-inter',
-    confirmed: true,
-    start: '2015-09-15',
-    end: '2015-09-17',
-    clubber: 'delapouite@gmail.com',
-    subject: 'Angular',
-    place: 'Paris',
-    // TODO generate
-    title: 'INTER Angular Paris'
-  },
-  {
-    id: uuid(),
-    type: 'bootcamp',
-    confirmed: true,
-    start: '2015-09-14',
-    end: '2015-09-18',
-    clubber: 'tmoyse@gmail.com',
-    subject: 'Angular',
-    place: 'Paris',
-    // TODO generate
-    title: 'Bootcamp Angular Paris'
-  },
-  {
-    id: uuid(),
-    type: 'formation-inter',
-    confirmed: false,
-    start: '2015-10-21',
-    end: '2015-10-22',
-    subject: 'React',
-    place: 'Toulouse',
-    clubber: null,
-    // TODO generate
-    title: 'INTER React Toulouse'
-  },
-  {
-    id: uuid(),
-    type: 'dev',
-    confirmed: false,
-    start: '2015-10-30',
-    end: '2015-11-10',
-    subject: 'Immobox',
-    place: null,
-    clubber: 'tmoyse@gmail.com',
-    // TODO generate
-    title: 'DEV Immobox'
-  }
-]
-
 function getTitle (event) {
   var title = event.summary
   return title
@@ -103,9 +40,10 @@ function getExtendedProps (event) {
     return { shared: {} }
   }
   // TODO
-  event.extendedProperties.shared = mapValues(event.extendedProperties.shared, (v) => {
+  event.extendedProperties.shared = mapValues(event.extendedProperties.shared, (v, k) => {
     if (v === 'true') return true
     if (v === 'false') return false
+    if (k === 'tags') return v.split(',')
     return v
   })
   return event.extendedProperties
@@ -126,6 +64,7 @@ function shapeServerEvent (event) {
 function shapeClientEvent (event) {
   event.start = { date: event.start }
   event.end = { date: moment(event.end).add(1, 'days').format('YYYY-MM-DD') }
+  event.extendedProperties.shared.tags = event.extendedProperties.shared.tags.join()
   return event
 }
 

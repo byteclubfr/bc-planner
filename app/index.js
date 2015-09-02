@@ -17,8 +17,9 @@ moment.locale('fr')
 
 function mapStateToProps (state) {
   return {
-    ui: state.ui,
-    events: state.events
+    events: state.events,
+    tags: state.tags,
+    ui: state.ui
   }
 }
 
