@@ -1,9 +1,53 @@
 import './styles/index.styl'
 
-import React from 'react'
 import moment from 'moment'
-import Root from './containers/root'
+import React from 'react'
+import { bindActionCreators, createStore, applyMiddleware } from 'redux'
+import { Provider, connect } from 'react-redux'
+import thunkMiddleware from 'redux-thunk'
+import createLogger from 'redux-logger'
+
+import App from './components/app'
+import reducer from './reducers'
+import * as actions from './actions'
 
 moment.locale('fr')
 
-React.render(<Root />, document.getElementById('root'))
+// Connect App to Redux boilerplate
+
+function mapStateToProps (state) {
+  return {
+    ui: state.ui,
+    events: state.events
+  }
+}
+
+function mapDispatchToProps (dispatch) {
+  return {
+    actions: bindActionCreators(actions, dispatch)
+  }
+}
+
+// Configure store
+
+const store = applyMiddleware(
+  thunkMiddleware, // lets us dispatch() functions
+  createLogger({ collapsed: true }) // neat middleware that logs actions
+)(createStore)(reducer)
+
+if (module.hot) {
+  // Enable Webpack hot module replacement for reducers
+  module.hot.accept('./reducers', () => {
+    const nextRootReducer = require('./reducers/index')
+    store.replaceReducer(nextRootReducer)
+  })
+}
+
+const ConnectedApp = connect(mapStateToProps, mapDispatchToProps)(App)
+
+React.render(
+  <Provider store={store}>
+    {() => <ConnectedApp />}
+  </Provider>
+, document.getElementById('root')
+)
