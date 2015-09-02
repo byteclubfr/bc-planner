@@ -37,7 +37,7 @@ export default class Day extends Component {
     return (
       <div className="event-title">
         <span className="event-confirmed" title="Event confirmed?">
-          {event.extendedProperties.shared.confirmed ? '✓' : '✗'}
+          {event._confirmed ? '✓' : '✗'}
         </span>
         <span>{event.title}</span>
       </div>
@@ -49,14 +49,13 @@ export default class Day extends Component {
   }
 
   renderTags (event) {
-    let tags = event.extendedProperties.shared.tags
-    if (!tags) return null
+    if (!event._tags) return null
 
-    return <div className="event-tags">{tags.sort().join(', ')}</div>
+    return <div className="event-tags">{event._tags.sort().join(', ')}</div>
   }
 
   renderGravatars (event) {
-    let clubbers = event.clubbers.filter(c => this.props.visibleClubbers.includes(c))
+    let clubbers = event._clubbers.filter(c => this.props.visibleClubbers.includes(c))
 
     return (
       <div className="event-gravatars">
@@ -78,8 +77,8 @@ export default class Day extends Component {
         inclusiveIsBetween(date, event.start, event.end)
       )
       .map(event => {
-        let hasClubber = Boolean(visibleClubbers.intersect(event.clubbers).count())
-        let tags = event.extendedProperties.shared.tags || []
+        let hasClubber = Boolean(visibleClubbers.intersect(event._clubbers).count())
+        let tags = event._tags || []
         let hasTag = !tags.length || hiddenTags.intersect(tags).count() !== tags.length
         event.visible = hasClubber && hasTag
         return event

@@ -13,7 +13,7 @@ export default class EventBars extends Component {
   }
 
   colorBar (clubber, clubberEmail) {
-    const hasEvent = this.props.events.some(e => !!~e.clubbers.indexOf(clubberEmail))
+    const hasEvent = this.props.events.some(e => !!~e._clubbers.indexOf(clubberEmail))
     const styles = hasEvent ? {
       backgroundColor: clubber.color
     } : {}

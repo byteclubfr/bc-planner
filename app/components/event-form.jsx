@@ -32,11 +32,10 @@ export default class EventForm extends Component {
         location: '',
         description: '',
         attendees: [],
-        extendedProperties: {
-          shared: {
-            tags: []
-          }
-        }
+
+        _clubbers: [],
+        _confirmed: false,
+        _tags: []
       }
     }
   }
@@ -49,13 +48,8 @@ export default class EventForm extends Component {
         ...this.state,
         event: {
           ...props.event,
-          extendedProperties : {
-            shared: {
-              ...props.event.extendedProperties.shared,
-              // format needed by ReactTags
-              tags: (props.event.extendedProperties.shared.tags || []).map(t => ({ id: t, text: t }))
-            }
-          }
+          // format needed by ReactTags
+          _tags: (props.event._tags || []).map(t => ({ id: t, text: t }))
         }
       })
     }
@@ -71,17 +65,6 @@ export default class EventForm extends Component {
       }
     }
     this.setState(state)
-  }
-
-  setEventExtendedProps (key, value) {
-    let extendedProps = {
-      ...this.state.event.extendedProperties,
-      shared: {
-        ...this.state.event.extendedProperties.shared,
-        [key]: value
-      }
-    }
-    this.setEvent('extendedProperties', extendedProps)
   }
 
   changeStart (e) {
@@ -105,7 +88,7 @@ export default class EventForm extends Component {
   }
 
   changeConfirmed (e) {
-    this.setEventExtendedProps('confirmed', e.target.checked)
+    this.setEvent('_confirmed', e.target.checked)
   }
 
   toggleClubber (e) {
@@ -131,7 +114,7 @@ export default class EventForm extends Component {
     if (!this.isFormValid()) return
 
     // transform tags back to a simple array
-    this.state.event.extendedProperties.shared.tags = this.getTags().map(t => t.text)
+    this.state.event._tags = this.getTags().map(t => t.text)
 
     if (this.state.event.id) {
       this.props.actions.updateEvent(this.state.event.id, this.state.event)
@@ -144,6 +127,30 @@ export default class EventForm extends Component {
     if (this.state.event.id) {
       this.props.actions.deleteEvent(this.state.event.id)
     }
+  }
+
+  getTags () {
+    return this.state.event._tags || []
+  }
+
+  handleAddTag (tag) {
+    var tags = this.getTags()
+    tags.push({ id: tag, text: tag })
+    this.setEvent('_tags', tags)
+  }
+
+  handleDeleteTag (i) {
+    var tags = this.getTags()
+    tags.splice(i, 1)
+    this.setEvent('_tags', tags)
+  }
+
+  handleDragTag (tag, curPos, newPos) {
+    var tags = this.getTags()
+    // mutate
+    tags.splice(curPos, 1)
+    tags.splice(newPos, 0, tag)
+    this.setEvent('_tags', tags)
   }
 
   clubberCheckbox (clubber, email) {
@@ -162,33 +169,7 @@ export default class EventForm extends Component {
     )
   }
 
-  getTags () {
-    return this.state.event.extendedProperties.shared.tags || []
-  }
-
-  handleAddTag (tag) {
-    var tags = this.getTags()
-    tags.push({ id: tag, text: tag })
-    this.setEventExtendedProps('tags', tags)
-  }
-
-  handleDeleteTag (i) {
-    var tags = this.getTags()
-    tags.splice(i, 1)
-    this.setEventExtendedProps('tags', tags)
-  }
-
-  handleDragTag (tag, curPos, newPos) {
-    var tags = this.getTags()
-    // mutate
-    tags.splice(curPos, 1)
-    tags.splice(newPos, 0, tag)
-    this.setEventExtendedProps('tags', tags)
-  }
-
   render () {
-    const extendedProperties = this.state.event.extendedProperties.shared
-
     return (
       <form className="event-form fx-menu">
         <h2>
@@ -206,7 +187,7 @@ export default class EventForm extends Component {
         <label>Summary <input name="summary" onChange={::this.changeSummary} value={this.state.event.summary} /></label>
         <label>Where <input name="location" onChange={::this.changeLocation} value={this.state.event.location} /></label>
         <label>Description <textarea name="description" onChange={::this.changeDescription} value={this.state.event.description} /></label>
-        <label>Confirmed? <input checked={extendedProperties.confirmed} name="confirmed" onChange={::this.changeConfirmed} type="checkbox" /></label>
+        <label>Confirmed? <input checked={this.state.event._confirmed} name="confirmed" onChange={::this.changeConfirmed} type="checkbox" /></label>
 
         <label>Clubbers</label>
         {clubbers.map(::this.clubberCheckbox).toArray()}

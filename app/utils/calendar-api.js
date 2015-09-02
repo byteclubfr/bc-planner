@@ -1,6 +1,6 @@
 import moment from 'moment'
 import uuid from 'uuid'
-import mapValues from 'lodash/object/mapValues'
+import { mapKeys, mapValues } from 'lodash/object'
 
 import { calendarId, clientId, scopes } from '../constants/google-credentials'
 
@@ -35,18 +35,12 @@ function getClubber (event) {
     .map(a => a.email)
 }
 
-function getExtendedProps (event) {
-  if (!event.extendedProperties) {
-    return { shared: {} }
-  }
-  // TODO
-  event.extendedProperties.shared = mapValues(event.extendedProperties.shared, (v, k) => {
-    if (v === 'true') return true
-    if (v === 'false') return false
-    if (k === 'tags') return v.split(',')
-    return v
-  })
-  return event.extendedProperties
+function extendedPropertiesToUnder (event) {
+  if (!event.extendedProperties) return event
+
+  let exProps = mapValues(event.extendedProperties.shared, JSON.parse)
+  exProps = mapKeys(exProps, (v, k) => '_' + k)
+  return {...event, ...exProps}
 }
 
 // TODO - remove
@@ -55,16 +49,32 @@ function shapeServerEvent (event) {
   event.title = getTitle(event)
   event.start = getDate(event, 'start')
   event.end = getDate(event, 'end')
-  event.clubbers = getClubber(event)
-  event.extendedProperties = getExtendedProps(event)
+
+  // client only props with under
+  event._clubbers = getClubber(event)
+  event = extendedPropertiesToUnder(event)
   return event
 }
 
 // format form event -> server event
 function shapeClientEvent (event) {
+  event = { ...event }
   event.start = { date: event.start }
   event.end = { date: moment(event.end).add(1, 'days').format('YYYY-MM-DD') }
-  event.extendedProperties.shared.tags = event.extendedProperties.shared.tags.join()
+  if (!event.extendedProperties) event.extendedProperties = {}
+
+  // move back under props in shared
+  event.extendedProperties.shared = {
+    ...event.extendedProperties.shared,
+    confirmed: event._confirmed,
+    tags: JSON.stringify(event._tags)
+  }
+
+  // TODO
+  delete event._clubbers
+  delete event._confirmed
+  delete event._tags
+
   return event
 }
 
