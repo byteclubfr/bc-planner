@@ -35,7 +35,7 @@ export default class Day extends Component {
     return (
       <div className="event-title">
         <span className="event-confirmed" title="Event confirmed?">
-          {event.extendedProperties.private.confirmed ? '✓' : '✗'}
+          {event.extendedProperties.shared.confirmed ? '✓' : '✗'}
         </span>
         <span>{event.title}</span>
       </div>

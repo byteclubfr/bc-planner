@@ -29,7 +29,7 @@ export default class EventForm extends Component {
         description: '',
         attendees: [],
         extendedProperties: {
-          private: {}
+          shared: {}
         }
       }
     }
@@ -61,8 +61,8 @@ export default class EventForm extends Component {
   setEventExtendedProps (key, value) {
     let extendedProps = {
       ...this.state.event.extendedProperties,
-      private: {
-        ...this.state.event.extendedProperties.private,
+      shared: {
+        ...this.state.event.extendedProperties.shared,
         [key]: value
       }
     }
@@ -144,6 +144,8 @@ export default class EventForm extends Component {
   }
 
   render () {
+    const extendedProperties = this.state.event.extendedProperties.shared
+
     return (
       <form className="event-form fx-menu">
         <h2>
@@ -161,7 +163,7 @@ export default class EventForm extends Component {
         <label>Summary <input name="summary" onChange={::this.changeSummary} value={this.state.event.summary} /></label>
         <label>Where <input name="location" onChange={::this.changeLocation} value={this.state.event.location} /></label>
         <label>Description <textarea name="description" onChange={::this.changeDescription} value={this.state.event.description} /></label>
-        <label>Confirmed? <input checked={this.state.event.extendedProperties.private.confirmed} name="confirmed" onChange={::this.changeConfirmed} type="checkbox" /></label>
+        <label>Confirmed? <input checked={extendedProperties.confirmed} name="confirmed" onChange={::this.changeConfirmed} type="checkbox" /></label>
 
         <label>Clubbers</label>
         {clubbers.map(::this.clubberCheckbox).toArray()}

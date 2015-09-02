@@ -100,10 +100,10 @@ function getClubber (event) {
 
 function getExtendedProps (event) {
   if (!event.extendedProperties) {
-    return { private: {} }
+    return { shared: {} }
   }
   // TODO
-  event.extendedProperties.private = mapValues(event.extendedProperties.private, (v) => {
+  event.extendedProperties.shared = mapValues(event.extendedProperties.shared, (v) => {
     if (v === 'true') return true
     if (v === 'false') return false
     return v
