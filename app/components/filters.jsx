@@ -12,7 +12,8 @@ export default class Filters extends Component {
     filters: PropTypes.instanceOf(Map).isRequired,
     nbMonths: PropTypes.number.isRequired,
     tags: PropTypes.array,
-    visibleClubbers: PropTypes.instanceOf(Set).isRequired
+    visibleClubbers: PropTypes.instanceOf(Set).isRequired,
+    withTags: PropTypes.instanceOf(Set).isRequired
   }
 
   clubberCheckbox (clubber, email) {
@@ -68,12 +69,12 @@ export default class Filters extends Component {
   }
 
   tagCheckbox (tag) {
-    const { actions, hiddenTags } = this.props
+    const { actions, withTags } = this.props
 
     return (
       <label className="tag-filter" key={tag}>
         <input
-          checked={!hiddenTags.includes(tag)}
+          checked={withTags.includes(tag)}
           onChange={() => actions.toggleTag(tag)}
           type="checkbox" />
         {tag}

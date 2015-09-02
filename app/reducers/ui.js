@@ -20,7 +20,7 @@ const initialState = Map({
     bars: true
   }),
   visibleClubbers: Set(clubbers.keys()),
-  hiddenTags: Set()
+  withTags: Set()
 })
 
 export default (state = initialState, action) => {
@@ -57,11 +57,11 @@ export default (state = initialState, action) => {
     return state.set('filters', newFilters)
 
   case actions.UI_TOGGLE_TAG:
-    const hiddenTags = state.get('hiddenTags')
-    const newHiddenTags = hiddenTags.includes(action.tag)
-      ? hiddenTags.delete(action.tag)
-      : hiddenTags.add(action.tag)
-    return state.set('hiddenTags', newHiddenTags)
+    const withTags = state.get('withTags')
+    const newWithTags = withTags.includes(action.tag)
+      ? withTags.delete(action.tag)
+      : withTags.add(action.tag)
+    return state.set('withTags', newWithTags)
 
   case actions.UI_CHANGE_NB_MONTHS:
     const startMonth = moment(state.get('startMonth'))

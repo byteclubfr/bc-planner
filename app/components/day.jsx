@@ -15,8 +15,8 @@ export default class Day extends Component {
     date: PropTypes.object.isRequired,
     events: PropTypes.arrayOf(PropTypes.object).isRequired,
     filters: PropTypes.instanceOf(Map).isRequired,
-    hiddenTags: PropTypes.instanceOf(Set).isRequired,
-    visibleClubbers: PropTypes.instanceOf(Set).isRequired
+    visibleClubbers: PropTypes.instanceOf(Set).isRequired,
+    withTags: PropTypes.instanceOf(Set).isRequired
   }
 
   renderEvent (event) {
@@ -71,7 +71,7 @@ export default class Day extends Component {
   }
 
   render () {
-    const { date, filters, hiddenTags, visibleClubbers } = this.props
+    const { date, filters, withTags, visibleClubbers } = this.props
     const events = this.props.events
       .filter(event =>
         inclusiveIsBetween(date, event.start, event.end)
@@ -79,7 +79,7 @@ export default class Day extends Component {
       .map(event => {
         let hasClubber = Boolean(visibleClubbers.intersect(event._clubbers).count())
         let tags = event._tags || []
-        let hasTag = !tags.length || hiddenTags.intersect(tags).count() !== tags.length
+        let hasTag = !Boolean(withTags.count()) || withTags.intersect(tags).count() === withTags.count()
         event.visible = hasClubber && hasTag
         return event
       })

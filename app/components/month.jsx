@@ -14,8 +14,8 @@ export default class Month extends Component {
     date: PropTypes.any.isRequired,
     events: PropTypes.instanceOf(Map).isRequired,
     filters: PropTypes.instanceOf(Map).isRequired,
-    hiddenTags: PropTypes.instanceOf(Set).isRequired,
-    visibleClubbers: PropTypes.instanceOf(Set).isRequired
+    visibleClubbers: PropTypes.instanceOf(Set).isRequired,
+    withTags: PropTypes.instanceOf(Set).isRequired
   }
 
   render () {
@@ -39,9 +39,9 @@ export default class Month extends Component {
             date={d}
             events={events}
             filters={this.props.filters}
-            hiddenTags={this.props.hiddenTags}
             key={d.format()}
-            visibleClubbers={this.props.visibleClubbers} />
+            visibleClubbers={this.props.visibleClubbers}
+            withTags={this.props.withTags} />
         )}
       </div>
     )

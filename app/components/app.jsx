@@ -35,7 +35,7 @@ export default class App extends Component {
     const range = buildMonthsRange(startMonth, endMonth)
     const filters = ui.get('filters')
     const visibleClubbers = ui.get('visibleClubbers')
-    const hiddenTags = ui.get('hiddenTags')
+    const withTags = ui.get('withTags')
     const eventId = ui.get('eventId')
     let editableEvent = eventId ? events.get(eventId) : null
 
@@ -54,17 +54,17 @@ export default class App extends Component {
           <Filters
             actions={actions}
             filters={filters}
-            hiddenTags={hiddenTags}
             nbMonths={range.length}
             tags={tags}
-            visibleClubbers={visibleClubbers} />
+            visibleClubbers={visibleClubbers}
+            withTags={withTags} />
           <MonthList
             actions={actions}
             events={events}
             filters={filters}
-            hiddenTags={hiddenTags}
             range={range}
-            visibleClubbers={visibleClubbers} />
+            visibleClubbers={visibleClubbers}
+            withTags={withTags} />
         </main></div></div>
       </div>
     )
