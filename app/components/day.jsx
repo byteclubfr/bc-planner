@@ -3,6 +3,7 @@ import '../styles/day'
 import React, { Component, PropTypes } from 'react'
 import classNames from 'classnames'
 import { Map, Set } from 'immutable'
+import moment from 'moment'
 
 import Gravatar from './gravatar'
 import EventBars from './event-bars'
@@ -23,6 +24,7 @@ export default class Day extends Component {
     const { filters } = this.props
     return (
       <li className="event" key={event.id} onClick={() => this.props.actions.openEventForm(event.id)}>
+        {this.renderPopOver(event)}
         <div className="event-snippet">
           {filters.get('title') ? this.renderTitle(event) : null}
           {filters.get('location') ? this.renderLocation(event) : null}
@@ -66,6 +68,30 @@ export default class Day extends Component {
             </span>
           )
         }))}
+      </div>
+    )
+  }
+
+  renderDates (event) {
+    let f = 'ddd D MMM'
+
+    return (
+      <div className="event-dates">
+        {moment(event.start).format(f)}
+        {event.start !== event.end ? ' - ' + moment(event.end).format(f) : null}
+      </div>
+    )
+  }
+
+  renderPopOver (event) {
+    return (
+      <div className="event-pop-over">
+        {this.renderTitle(event)}
+        {this.renderDates(event)}
+        {this.renderGravatars(event)}
+        {this.renderLocation(event)}
+        {this.renderTags(event)}
+        <div className="event-description">{event.description}</div>
       </div>
     )
   }
