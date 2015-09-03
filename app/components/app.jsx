@@ -49,7 +49,7 @@ export default class App extends Component {
         <div className="fx-pusher"><div className="fx-content"><main className="fx-content-inner">
           <h1>
             BC Planner
-            <button className="event-form-open" disabled={eventFormVisible} onClick={actions.openEventForm}>Add Event</button>
+            <button className="event-form-open" disabled={eventFormVisible} onClick={actions.openEventForm}>Add Event +</button>
           </h1>
           <Filters
             actions={actions}

@@ -1,6 +1,7 @@
 .event-form
   background #ecc
   border-right 2px solid #eee
+  padding 1em
 
   h2
     display flex
@@ -20,14 +21,17 @@
   input[type="checkbox"]
     width auto
 
-  button
-    background #e77
-    border 2px solid #eee
-    color #fff
-    cursor pointer
-    font-weight bold
+// buttons
 
-  button:hover
+.event-form-open, .event-form-close,
+.event-form-save, .event-form-delete
+  background #e77
+  border 2px solid #eee
+  border-radius 5px
+  color #fff
+  cursor pointer
+  font-weight bold
+  &:hover
     background #e55
 
 .event-form-open, .event-form-close
@@ -41,3 +45,12 @@
   .event-form-delete
     background #999
     margin-top 3em
+
+.event-form-clubbers
+  display flex
+
+.event-form-clubber
+  text-align center
+  width 25%
+  span
+    display block

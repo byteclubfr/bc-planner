@@ -157,7 +157,7 @@ export default class EventForm extends Component {
     let checked = (this.state.event.attendees || []).some(a => a.email === email)
 
     return (
-      <label className="clubber-label" key={email} style={{backgroundColor: clubber.color}}>
+      <label className="event-form-clubber clubber-label" key={email} style={{backgroundColor: clubber.color}}>
         <input
           checked={checked}
           onChange={::this.toggleClubber}
@@ -190,7 +190,9 @@ export default class EventForm extends Component {
         <label>Confirmed? <input checked={this.state.event._confirmed} name="confirmed" onChange={::this.changeConfirmed} type="checkbox" /></label>
 
         <label>Clubbers</label>
-        {clubbers.map(::this.clubberCheckbox).toArray()}
+        <div className="event-form-clubbers">
+          {clubbers.map(::this.clubberCheckbox).toArray()}
+        </div>
 
         <label>Tags</label>
         <ReactTags
