@@ -78,10 +78,19 @@ function shapeClientEvent (event) {
   return event
 }
 
+// FIXME Promise resolved from outside == deferred == bad practice
+let setReady = null
+const promiseOfReady = new Promise(resolve => setReady = resolve)
+
+export function onReady () {
+  return promiseOfReady
+}
+
 function onAuthorized () {
   console.debug('gapi authorized')
   gapi.client.load('calendar', 'v3')
     .then(::console.debug('gapi calendar loaded'))
+    .then(setReady) // promiseOfReady is resolved now
 }
 
 // JSONP callback

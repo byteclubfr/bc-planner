@@ -11,6 +11,9 @@ import Filters from './filters'
 import MainLoader from './main-loader'
 import MonthList from './month-list'
 
+import { onReady } from '../utils/calendar-api'
+
+
 export default class App extends Component {
 
   static propTypes = {
@@ -21,8 +24,7 @@ export default class App extends Component {
   }
 
   componentDidMount () {
-    // TODO
-    setTimeout(() => this.props.actions.fetchEvents(), 2000)
+    onReady().then(() => this.props.actions.fetchEvents())
   }
 
   closeEventForm () {

@@ -44,6 +44,8 @@ if (module.hot) {
   })
 }
 
+// Wrap app
+
 const ConnectedApp = connect(mapStateToProps, mapDispatchToProps)(App)
 
 React.render(
