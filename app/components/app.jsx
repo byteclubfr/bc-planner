@@ -25,6 +25,11 @@ export default class App extends Component {
     setTimeout(() => this.props.actions.fetchEvents(), 2000)
   }
 
+  closeEventForm () {
+    if (!this.props.ui.toObject().eventFormVisible) return
+    this.props.actions.closeEventForm()
+  }
+
   render () {
     const { actions, events, tags, ui } = this.props
     const { startMonth, endMonth, eventFormVisible, fetching } = ui.toObject()
@@ -38,7 +43,9 @@ export default class App extends Component {
     let editableEvent = eventId ? events.get(eventId) : null
 
     return (
-      <div className={classNames('container', 'fx-container', { 'fx-menu-open': eventFormVisible })}>
+      <div
+        className={classNames('container', 'fx-container', { 'fx-menu-open': eventFormVisible })}
+        onClick={::this.closeEventForm}>
         {fetching ? <MainLoader /> : null}
         <EventForm
           actions={actions}
