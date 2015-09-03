@@ -11,7 +11,7 @@ const initialState = Map({
   endMonth: moment(today).add(5, 'month').toArray(),
   eventFormVisible: false,
   eventId: null,
-  fetching: false,
+  fetching: true,
   filters: Map({
     title: true,
     location: false,

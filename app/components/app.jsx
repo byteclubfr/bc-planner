@@ -8,6 +8,7 @@ import { buildMonthsRange } from '../utils/date'
 
 import EventForm from './event-form'
 import Filters from './filters'
+import MainLoader from './main-loader'
 import MonthList from './month-list'
 
 export default class App extends Component {
@@ -28,19 +29,17 @@ export default class App extends Component {
     const { actions, events, tags, ui } = this.props
     const { startMonth, endMonth, eventFormVisible, fetching } = ui.toObject()
 
-    if (fetching) {
-      return <strong>Fetching…</strong>
-    }
-
     const range = buildMonthsRange(startMonth, endMonth)
     const filters = ui.get('filters')
     const visibleClubbers = ui.get('visibleClubbers')
     const withTags = ui.get('withTags')
     const eventId = ui.get('eventId')
+
     let editableEvent = eventId ? events.get(eventId) : null
 
     return (
       <div className={classNames('container', 'fx-container', { 'fx-menu-open': eventFormVisible })}>
+        {fetching ? <MainLoader /> : null}
         <EventForm
           actions={actions}
           event={editableEvent}
