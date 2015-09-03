@@ -89,7 +89,7 @@ window.initGapi = function () {
   gapi.auth.authorize({
     client_id: clientId,
     scope: scopes,
-    immediate: true
+    immediate: false
   }, onAuthorized)
 }
 

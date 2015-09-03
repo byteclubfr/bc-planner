@@ -1,5 +1,6 @@
 import moment from 'moment'
 import { Map, Set } from 'immutable'
+import { toggle } from './../utils/immutable'
 
 import * as actions from '../constants/actions'
 import clubbers from './../constants/clubbers'
@@ -45,11 +46,7 @@ export default (state = initialState, action) => {
     .set('fetching', false)
 
   case actions.UI_TOGGLE_CLUBBER:
-    const visibleClubbers = state.get('visibleClubbers')
-    const newVisibleClubbers = visibleClubbers.includes(action.clubber)
-      ? visibleClubbers.delete(action.clubber)
-      : visibleClubbers.add(action.clubber)
-    return state.set('visibleClubbers', newVisibleClubbers)
+    return state.set('visibleClubbers', toggle(state.get('visibleClubbers'), action.clubber))
 
   case actions.UI_TOGGLE_FILTER:
     const filters = state.get('filters')
@@ -57,11 +54,7 @@ export default (state = initialState, action) => {
     return state.set('filters', newFilters)
 
   case actions.UI_TOGGLE_TAG:
-    const withTags = state.get('withTags')
-    const newWithTags = withTags.includes(action.tag)
-      ? withTags.delete(action.tag)
-      : withTags.add(action.tag)
-    return state.set('withTags', newWithTags)
+    return state.set('withTags', toggle(state.get('withTags'), action.tag))
 
   case actions.UI_CHANGE_NB_MONTHS:
     const startMonth = moment(state.get('startMonth'))
