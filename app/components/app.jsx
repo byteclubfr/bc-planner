@@ -43,16 +43,15 @@ export default class App extends Component {
     let editableEvent = eventId ? events.get(eventId) : null
 
     return (
-      <div
-        className={classNames('container', 'fx-container', { 'fx-menu-open': eventFormVisible })}
-        onClick={::this.closeEventForm}>
+      <div className={classNames('container', 'fx-container', { 'fx-menu-open': eventFormVisible })}>
         {fetching ? <MainLoader /> : null}
         <EventForm
           actions={actions}
           event={editableEvent}
           tags={tags}
           visible={eventFormVisible} />
-        <div className="fx-pusher"><div className="fx-content"><main className="fx-content-inner">
+        <div className="fx-pusher" onClick={::this.closeEventForm}>
+        <div className="fx-content"><main className="fx-content-inner">
           <h1>
             BC Planner
             <button className="event-form-open" disabled={eventFormVisible} onClick={actions.openEventForm}>Add Event +</button>
