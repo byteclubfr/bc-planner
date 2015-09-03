@@ -23,6 +23,7 @@
 
 .event
   display flex
+  position relative
   &:hover
     background #ddd
     cursor pointer
@@ -50,13 +51,15 @@
 // pop over
 
 .event-pop-over
-  background #fff
-  border 1px solid #eee
+  background #eee
+  border 1px solid #ccc
   box-shadow 0px 5px 5px rgba(0, 0, 0, .1)
   display none
-  min-width 10em
+  left 100%
+  min-width 15em
   padding 1em
   position absolute
+  z-index 1
 
   .event-title
     font-size 1.2em
