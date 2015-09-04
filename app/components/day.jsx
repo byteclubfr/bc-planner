@@ -14,7 +14,7 @@ export default class Day extends Component {
   static propTypes = {
     actions: PropTypes.object.isRequired,
     date: PropTypes.object.isRequired,
-    events: PropTypes.arrayOf(PropTypes.object).isRequired,
+    events: PropTypes.instanceOf(Map).isRequired,
     filters: PropTypes.instanceOf(Map).isRequired,
     visibleClubbers: PropTypes.instanceOf(Set).isRequired,
     withTags: PropTypes.instanceOf(Set).isRequired

@@ -23,7 +23,7 @@ export default class Month extends Component {
     const daysInMonth = range(date.daysInMonth())
     const dateStart = moment(date).startOf('month')
     const dateEnd = moment(date).endOf('month')
-    const events = this.props.events.toArray().filter(event =>
+    const events = this.props.events.filter(event =>
       // Event occurs in this month if it starts before end of month AND it ends after start of month
       // <=> end of month is after start of event AND start of month is before end of event
       dateEnd.isAfter(event.start) && dateStart.isBefore(event.end)
