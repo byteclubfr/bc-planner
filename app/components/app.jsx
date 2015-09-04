@@ -8,6 +8,7 @@ import { buildMonthsRange } from '../utils/date'
 
 import EventForm from './event-form'
 import Filters from './filters'
+import MainHeader from './main-header'
 import MainLoader from './main-loader'
 import MonthList from './month-list'
 
@@ -30,10 +31,6 @@ export default class App extends Component {
   closeEventForm () {
     if (!this.props.ui.toObject().eventFormVisible) return
     this.props.actions.closeEventForm()
-  }
-
-  changeSearch (e) {
-    this.props.actions.search(e.target.value)
   }
 
   render () {
@@ -73,19 +70,10 @@ export default class App extends Component {
           visible={eventFormVisible} />
         <div className="fx-pusher" onClick={::this.closeEventForm}>
         <div className="fx-content"><main className="fx-content-inner">
-          <header className="main-header">
-            <div className="header-left">
-              <h1>BC Planner</h1>
-              <button className="event-form-open" disabled={eventFormVisible} onClick={actions.openEventForm}>Add Event +</button>
-            </div>
-            <div className="header-right">
-              <input
-                onChange={::this.changeSearch}
-                placeholder="search"
-                type="search"
-                value={search} />
-            </div>
-          </header>
+          <MainHeader
+            actions={actions}
+            eventFormVisible={eventFormVisible}
+            search={search} />
           <Filters
             actions={actions}
             filters={filters}
