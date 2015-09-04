@@ -73,7 +73,7 @@ export default class App extends Component {
           visible={eventFormVisible} />
         <div className="fx-pusher" onClick={::this.closeEventForm}>
         <div className="fx-content"><main className="fx-content-inner">
-          <header>
+          <header className="main-header">
             <div className="header-left">
               <h1>BC Planner</h1>
               <button className="event-form-open" disabled={eventFormVisible} onClick={actions.openEventForm}>Add Event +</button>
