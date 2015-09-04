@@ -12,6 +12,7 @@ const initialState = Map({
   endMonth: moment(today).add(5, 'month').toArray(),
   eventFormVisible: false,
   eventId: null,
+  search: '',
   fetching: true,
   filters: Map({
     title: true,
@@ -60,6 +61,9 @@ export default (state = initialState, action) => {
     const startMonth = moment(state.get('startMonth'))
     const newEndMonth = startMonth.add(action.nbMonths - 1, 'month')
     return state.set('endMonth', newEndMonth.toArray())
+
+  case actions.UI_SEARCH: return state
+    .set('search', action.search)
 
   default: return state
   }

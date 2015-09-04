@@ -4,6 +4,7 @@ export const UI_TOGGLE_CLUBBER = 'UI_TOGGLE_CLUBBER'
 export const UI_TOGGLE_FILTER = 'UI_TOGGLE_FILTER'
 export const UI_CHANGE_NB_MONTHS = 'UI_CHANGE_NB_MONTHS'
 export const UI_TOGGLE_TAG = 'UI_TOGGLE_TAG'
+export const UI_SEARCH = 'UI_SEARCH'
 
 export const CREATE_EVENT = 'CREATE_EVENT'
 export const UPDATE_EVENT = 'UPDATE_EVENT'

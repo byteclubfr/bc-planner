@@ -98,3 +98,9 @@ export function toggleTag (tag) {
   }
 }
 
+export function search (search) {
+  return {
+    type: types.UI_SEARCH,
+    search
+  }
+}
