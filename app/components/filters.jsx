@@ -31,15 +31,6 @@ export default class Filters extends Component {
     )
   }
 
-  renderClubbersFilter () {
-    return (
-      <div className="clubber-filters">
-        <strong>Filter by clubber</strong>
-        {clubbers.map(::this.clubberCheckbox).toArray()}
-      </div>
-    )
-  }
-
   renderFilterCheckbox (filter, label) {
     const { filters } = this.props
 
@@ -82,28 +73,39 @@ export default class Filters extends Component {
     )
   }
 
-  renderTagsFilter () {
-    const tags = this.props.tags.toArray().sort()
+  // fieldset
 
+  renderClubbersFilter () {
     return (
-      <div className="tag-filters">
-        <strong>Tags</strong>
-        {tags.sort().map(::this.tagCheckbox)}
-      </div>
+      <fieldset className="clubbers-filter">
+        <legend>Clubbers</legend>
+        {clubbers.map(::this.clubberCheckbox).toArray()}
+      </fieldset>
     )
   }
 
   renderDisplayOptions () {
     return (
-      <div className="display-options">
-        <strong>Show</strong>
+      <fieldset className="display-options">
+        <legend>Show</legend>
         {this.renderFilterCheckbox('title', 'Title')}
         {this.renderFilterCheckbox('location', 'Location')}
         {this.renderFilterCheckbox('tags', 'Tags')}
         {this.renderFilterCheckbox('gravatar', 'Avatars')}
         {this.renderFilterCheckbox('bars', 'Bars')}
         {this.renderMonthsFilter()}
-      </div>
+      </fieldset>
+    )
+  }
+
+  renderTagsFilter () {
+    const tags = this.props.tags.toArray().sort()
+
+    return (
+      <fieldset className="tags-filter">
+        <legend>Tags</legend>
+        {tags.sort().map(::this.tagCheckbox)}
+      </fieldset>
     )
   }
 
