@@ -11,7 +11,7 @@ export default class Filters extends Component {
     actions: PropTypes.object.isRequired,
     filters: PropTypes.instanceOf(Map).isRequired,
     nbMonths: PropTypes.number.isRequired,
-    tags: PropTypes.array,
+    tags: PropTypes.instanceOf(Set),
     visibleClubbers: PropTypes.instanceOf(Set).isRequired,
     withTags: PropTypes.instanceOf(Set).isRequired
   }
@@ -33,7 +33,7 @@ export default class Filters extends Component {
 
   renderClubbersFilter () {
     return (
-      <div>
+      <div className="clubber-filters">
         <strong>Filter by clubber</strong>
         {clubbers.map(::this.clubberCheckbox).toArray()}
       </div>
@@ -83,17 +83,19 @@ export default class Filters extends Component {
   }
 
   renderTagsFilter () {
+    const tags = this.props.tags.toArray().sort()
+
     return (
-      <span className="tag-filters">
+      <div className="tag-filters">
         <strong>Tags</strong>
-        {this.props.tags.map(::this.tagCheckbox).toArray()}
-      </span>
+        {tags.sort().map(::this.tagCheckbox)}
+      </div>
     )
   }
 
   renderDisplayOptions () {
     return (
-      <div>
+      <div className="display-options">
         <strong>Show</strong>
         {this.renderFilterCheckbox('title', 'Title')}
         {this.renderFilterCheckbox('location', 'Location')}
@@ -101,7 +103,6 @@ export default class Filters extends Component {
         {this.renderFilterCheckbox('gravatar', 'Avatars')}
         {this.renderFilterCheckbox('bars', 'Bars')}
         {this.renderMonthsFilter()}
-        {this.renderTagsFilter()}
       </div>
     )
   }
@@ -111,6 +112,7 @@ export default class Filters extends Component {
       <form className="filters">
         {this.renderClubbersFilter()}
         {this.renderDisplayOptions()}
+        {this.renderTagsFilter()}
       </form>
     )
   }

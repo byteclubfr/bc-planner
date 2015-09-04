@@ -134,6 +134,7 @@ export default class EventForm extends Component {
   }
 
   handleAddTag (tag) {
+    tag = tag.toLowerCase()
     var tags = this.getTags()
     tags.push({ id: tag, text: tag })
     this.setEvent('_tags', tags)
