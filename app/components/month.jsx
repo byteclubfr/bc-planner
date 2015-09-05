@@ -18,6 +18,15 @@ export default class Month extends Component {
     withTags: PropTypes.instanceOf(Set).isRequired
   }
 
+  shouldComponentUpdate (nextProps) {
+    return !(
+      this.props.events === nextProps.events &&
+      this.props.filters === nextProps.filters &&
+      this.props.visibleClubbers === nextProps.visibleClubbers &&
+      this.props.withTags === nextProps.withTags
+    )
+  }
+
   render () {
     const date = moment(this.props.date)
     const daysInMonth = range(date.daysInMonth())
