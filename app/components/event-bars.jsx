@@ -13,9 +13,7 @@ export default class EventBars extends Component {
   }
 
   colorBar (clubber, clubberEmail) {
-    const hasEvent = this.props.events.some(e => {
-      return e.visible && !!~e._clubbers.indexOf(clubberEmail)
-    })
+    const hasEvent = this.props.events.some(e => Boolean(~e._clubbers.indexOf(clubberEmail)))
     const styles = hasEvent ? {
       backgroundColor: clubber.color
     } : {}
