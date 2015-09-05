@@ -2,7 +2,7 @@ import '../styles/day'
 
 import React, { Component, PropTypes } from 'react'
 import classNames from 'classnames'
-import { Map, Set } from 'immutable'
+import { Map, Set, is } from 'immutable'
 
 import Event from './event'
 import EventBars from './event-bars'
@@ -17,6 +17,15 @@ export default class Day extends Component {
     filters: PropTypes.instanceOf(Map).isRequired,
     visibleClubbers: PropTypes.instanceOf(Set).isRequired,
     withTags: PropTypes.instanceOf(Set).isRequired
+  }
+
+  shouldComponentUpdate (nextProps) {
+    return !(
+      is(this.props.events, nextProps.events),
+      this.props.filters === nextProps.filters &&
+      this.props.visibleClubbers === nextProps.visibleClubbers &&
+      this.props.withTags === nextProps.withTags
+    )
   }
 
   render () {
