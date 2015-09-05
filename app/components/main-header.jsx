@@ -1,10 +1,12 @@
 import React, { Component, PropTypes } from 'react'
+import { Map } from 'immutable'
 
 export default class MainLoader extends Component {
 
   static propTypes = {
     actions: PropTypes.object.isRequired,
     eventFormVisible: PropTypes.bool.isRequired,
+    events: PropTypes.instanceOf(Map).isRequired,
     search: PropTypes.string.isRequired
   }
 
@@ -13,7 +15,7 @@ export default class MainLoader extends Component {
   }
 
   render () {
-    const { actions, eventFormVisible, search } = this.props
+    const { actions, events, eventFormVisible, search } = this.props
 
     return (
       <header className="main-header">
@@ -23,6 +25,9 @@ export default class MainLoader extends Component {
             className="event-form-open"
             disabled={eventFormVisible}
             onClick={actions.openEventForm}>Add Event +</button>
+        </div>
+        <div className="header-center">
+          <h2>{events.count()} events fetched</h2>
         </div>
         <div className="header-right">
           <input

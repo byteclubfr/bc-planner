@@ -73,6 +73,7 @@ export default class App extends Component {
           <MainHeader
             actions={actions}
             eventFormVisible={eventFormVisible}
+            events={events}
             search={search} />
           <Filters
             actions={actions}
