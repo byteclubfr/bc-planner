@@ -21,7 +21,7 @@ export default class Day extends Component {
 
   shouldComponentUpdate (nextProps) {
     return !(
-      is(this.props.events, nextProps.events),
+      is(this.props.events, nextProps.events) &&
       this.props.filters === nextProps.filters &&
       this.props.visibleClubbers === nextProps.visibleClubbers &&
       this.props.withTags === nextProps.withTags
