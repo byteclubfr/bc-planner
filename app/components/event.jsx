@@ -12,6 +12,14 @@ export default class Event extends Component {
     visibleClubbers: PropTypes.instanceOf(Set).isRequired
   }
 
+  shouldComponentUpdate (nextProps) {
+    return !(
+      this.props.event === nextProps.event &&
+      this.props.filters === nextProps.filters &&
+      this.props.visibleClubbers === nextProps.visibleClubbers
+    )
+  }
+
   renderTitle (event) {
     return (
       <div className="event-title">
