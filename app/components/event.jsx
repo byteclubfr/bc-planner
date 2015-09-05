@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react'
+import { Map, Set } from 'immutable'
 import moment from 'moment'
 
 import Gravatar from './gravatar'

@@ -1,14 +1,14 @@
 import '../styles/day'
 
 import React, { Component, PropTypes } from 'react'
-import { Set } from 'immutable'
+import { Map, Set } from 'immutable'
 
 import clubbers from '../constants/clubbers'
 
 export default class EventBars extends Component {
 
   static propTypes = {
-    events: PropTypes.arrayOf(PropTypes.object).isRequired,
+    events: PropTypes.instanceOf(Map).isRequired,
     visibleClubbers: PropTypes.instanceOf(Set).isRequired
   }
 

@@ -45,7 +45,7 @@ export default class Day extends Component {
       <div className={classNames('day', { 'day-weekend': isWeekend(date) })}>
         <header className="day-date">{date.format('dd')[0]} {date.format('DD')}</header>
         <ul className="event-list">
-          {events.map(event => <Event action={actions} event={event} filters={filters} visibleClubbers={visibleClubbers} />)}
+          {events.map(event => <Event actions={actions} event={event} filters={filters} visibleClubbers={visibleClubbers} />)}
         </ul>
         {filters.get('bars') ? <EventBars events={events} visibleClubbers={visibleClubbers} /> : null}
       </div>
