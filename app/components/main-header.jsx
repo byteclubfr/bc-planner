@@ -7,6 +7,7 @@ export default class MainLoader extends Component {
     actions: PropTypes.object.isRequired,
     eventFormVisible: PropTypes.bool.isRequired,
     events: PropTypes.instanceOf(Map).isRequired,
+    filteredEvents: PropTypes.instanceOf(Map).isRequired,
     search: PropTypes.string.isRequired
   }
 
@@ -15,7 +16,7 @@ export default class MainLoader extends Component {
   }
 
   render () {
-    const { actions, events, eventFormVisible, search } = this.props
+    const { actions, events, eventFormVisible, filteredEvents, search } = this.props
 
     return (
       <header className="main-header">
@@ -27,7 +28,7 @@ export default class MainLoader extends Component {
             onClick={actions.openEventForm}>Add Event +</button>
         </div>
         <div className="header-center">
-          <h2>{events.count()} events fetched</h2>
+          <h2 title="filtered / total">Events: {filteredEvents.count()} / {events.count()}</h2>
         </div>
         <div className="header-right">
           <input

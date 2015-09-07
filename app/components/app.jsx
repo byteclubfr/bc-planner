@@ -48,8 +48,15 @@ export default class App extends Component {
 
     let editableEvent = eventId ? events.get(eventId) : null
 
+    let filteredEvents = events.filter(event => {
+      let tags = event._tags || []
+      let hasClubber = Boolean(visibleClubbers.intersect(event._clubbers).count())
+      let hasTag = !Boolean(withTags.count()) || withTags.intersect(tags).count() === withTags.count()
+      return hasClubber && hasTag
+    })
+
     if (search) {
-      events = events.filter(event => {
+      filteredEvents = filteredEvents.filter(event => {
         let fullText = [
           event.summary,
           event.description,
@@ -74,6 +81,7 @@ export default class App extends Component {
             actions={actions}
             eventFormVisible={eventFormVisible}
             events={events}
+            filteredEvents={filteredEvents}
             search={search} />
           <Filters
             actions={actions}
@@ -84,7 +92,7 @@ export default class App extends Component {
             withTags={withTags} />
           <MonthList
             actions={actions}
-            events={events}
+            events={filteredEvents}
             filters={filters}
             range={range}
             visibleClubbers={visibleClubbers}

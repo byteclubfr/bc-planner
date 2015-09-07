@@ -40,7 +40,7 @@ export default class Month extends Component {
 
     return (
       <div className="month">
-        <header className="month-title">{date.format('MMMM YYYY')}</header>
+        <header className="month-title">{date.format('MMMM YYYY')} ({events.count()})</header>
 
         {daysInMonth.map(day => moment(date).date(day + 1)).map(d =>
           <Day

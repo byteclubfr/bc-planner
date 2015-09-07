@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react'
+import classNames from 'classnames'
 import { Map, Set } from 'immutable'
 import moment from 'moment'
 
@@ -10,14 +11,16 @@ export default class Event extends Component {
     actions: PropTypes.object.isRequired,
     event: PropTypes.object.isRequired,
     filters: PropTypes.instanceOf(Map).isRequired,
-    visibleClubbers: PropTypes.instanceOf(Set).isRequired
+    visibleClubbers: PropTypes.instanceOf(Set).isRequired,
+    withTags: PropTypes.instanceOf(Set).isRequired
   }
 
   shouldComponentUpdate (nextProps) {
     return !(
       this.props.event === nextProps.event &&
       this.props.filters === nextProps.filters &&
-      this.props.visibleClubbers === nextProps.visibleClubbers
+      this.props.visibleClubbers === nextProps.visibleClubbers &&
+      this.props.withTags === nextProps.withTags
     )
   }
 
@@ -33,13 +36,18 @@ export default class Event extends Component {
   }
 
   renderLocation (event) {
-    return <div className="event-location">{event.location}</div>
+    return <div className="event-location">@{event.location}</div>
+  }
+
+  renderTag (tag) {
+    let selTag = this.props.withTags.includes(tag)
+    return <li className={classNames('event-tag', { 'event-tag-selected': selTag })}>{tag}</li>
   }
 
   renderTags (event) {
     if (!event._tags) return null
 
-    return <div className="event-tags">{event._tags.sort().join(', ')}</div>
+    return <ul className="event-tags">{event._tags.sort().map(::this.renderTag)}</ul>
   }
 
   renderGravatars (event) {
