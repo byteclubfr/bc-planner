@@ -28,7 +28,7 @@ export default class EventBars extends Component {
   render () {
     return (
       <footer className="event-bars">
-        {clubbers.map(::this.colorBar).toArray()}
+        {clubbers.map(::this.colorBar)}
       </footer>
     )
   }

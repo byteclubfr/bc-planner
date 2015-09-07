@@ -47,7 +47,7 @@ export default class Day extends Component {
         <ul className="event-list">
           {events.map(event => <Event actions={actions} event={event} filters={filters} visibleClubbers={visibleClubbers} />)}
         </ul>
-        {filters.get('bars') ? <EventBars events={events} visibleClubbers={visibleClubbers} /> : null}
+        {filters.get('bars') && events.count() ? <EventBars events={events} visibleClubbers={visibleClubbers} /> : null}
       </div>
     )
   }
