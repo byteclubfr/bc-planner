@@ -15,6 +15,13 @@
 .day-weekend
   background #eee !important
 
+.day-today
+  background #fbfbef
+  border 1px solid #ccc
+  .day-date
+    border-right 1px solid #ccc
+    font-weight bold
+
 .event-list
   flex-grow 1
   list-style none
@@ -48,18 +55,24 @@
   background #ddd
   font-weight bold
 
+.event-gravatars
+  white-space nowrap
+
 .event-gravatar
   display inline-block
+
   img
     display block
     vertical-align middle
 
 .event-bars
-  width 20px
-  margin -1px 0
   display flex
+  margin -1px 0
+  min-width 20px
+  width 20px
+
   .event-bar
-    flex-basis 12%
+    flex-basis 25%
     flex-grow 1
 
 // pop over
@@ -82,7 +95,6 @@
   .event-dates, .event-location, .event-tags
     font-size 1em
     margin .5em 0
-
 
 .event:hover
   .event-pop-over

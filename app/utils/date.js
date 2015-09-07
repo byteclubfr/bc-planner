@@ -1,3 +1,5 @@
+import moment from 'moment'
+
 export function buildMonthsRange (start, [endYear, endMonth]) {
   let [currYear, currMonth] = start
   let range = [[currYear, currMonth]]
@@ -20,4 +22,8 @@ export function inclusiveIsBetween (date, start, end, granularity = 'day') {
 
 export function isWeekend (date){
   return date.isoWeekday() >= 6
+}
+
+export function isToday (date) {
+  return moment().isSame(date, 'day')
 }

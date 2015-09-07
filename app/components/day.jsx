@@ -6,7 +6,7 @@ import { Map, Set, is } from 'immutable'
 
 import Event from './event'
 import EventBars from './event-bars'
-import { inclusiveIsBetween, isWeekend } from './../utils/date'
+import { inclusiveIsBetween, isToday, isWeekend } from './../utils/date'
 
 export default class Day extends Component {
 
@@ -35,8 +35,13 @@ export default class Day extends Component {
         inclusiveIsBetween(date, event.start, event.end)
       )
 
+    let klass = classNames('day', {
+      'day-weekend': isWeekend(date),
+      'day-today': isToday(date)
+    })
+
     return (
-      <div className={classNames('day', { 'day-weekend': isWeekend(date) })}>
+      <div className={klass}>
         <header className="day-date">{date.format('dd')[0]} {date.format('DD')}</header>
         <ul className="event-list">
           {events.map(event =>

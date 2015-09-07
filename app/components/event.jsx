@@ -51,7 +51,7 @@ export default class Event extends Component {
   }
 
   renderGravatars (event) {
-    let clubbers = event._clubbers.filter(c => this.props.visibleClubbers.includes(c))
+    let clubbers = event._clubbers.filter(c => this.props.visibleClubbers.includes(c)).sort()
 
     return (
       <div className="event-gravatars">
