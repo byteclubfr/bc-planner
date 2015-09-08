@@ -6,6 +6,8 @@ var CompressionPlugin = require('compression-webpack-plugin')
 
 var port = process.env.PORT || 8080
 
+var skipMomentLocales = new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /fr/);
+
 module.exports = {
   devServer: {
     port: port,
@@ -29,6 +31,7 @@ module.exports = {
     publicPath: '/' // script src = {publicPath}/bundle.js
   },
   plugins: ifprod([
+    skipMomentLocales,
     new CompressionPlugin({
       asset: '{file}.gz',
       algorithm: 'gzip',
@@ -37,8 +40,7 @@ module.exports = {
       minRatio: 0.8
     })
   ], [
-    // Load only required locales from moment
-    new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /fr/),
+    skipMomentLocales,
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin()
   ]),
