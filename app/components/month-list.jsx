@@ -17,6 +17,13 @@ export default class MonthList extends Component {
     withTags: PropTypes.instanceOf(Set).isRequired
   }
 
+  shouldComponentUpdate (nextProps) {
+    var { events, range } = this.props
+    var newRange = range.join() !== nextProps.range.join()
+    var noNewEvents = !events.count() && !nextProps.events.count()
+    return newRange || !noNewEvents
+  }
+
   render () {
     return (
       <div className="month-list">
