@@ -36,6 +36,8 @@ export default class Event extends Component {
   }
 
   renderLocation (event) {
+    if (!event.location) return null
+
     return <div className="event-location">@{event.location}</div>
   }
 
