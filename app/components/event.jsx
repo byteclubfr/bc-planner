@@ -41,7 +41,12 @@ export default class Event extends Component {
 
   renderTag (tag) {
     let selTag = this.props.withTags.includes(tag)
-    return <li className={classNames('event-tag', { 'event-tag-selected': selTag })}>{tag}</li>
+    return (
+      <li className={classNames('event-tag', { 'event-tag-selected': selTag })}
+          key={tag}>
+        {tag}
+      </li>
+    )
   }
 
   renderTags (event) {
