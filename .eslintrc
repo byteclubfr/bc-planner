@@ -5,7 +5,8 @@
     "react"
   ],
   "globals": {
-    "gapi": true
+    "gapi": true,
+    "__DEV__": true
   },
   "env": {
     "browser": true,

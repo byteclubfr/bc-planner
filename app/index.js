@@ -4,7 +4,7 @@ import moment from 'moment'
 import React from 'react'
 import { bindActionCreators, createStore, applyMiddleware } from 'redux'
 import { Provider, connect } from 'react-redux'
-import thunkMiddleware from 'redux-thunk'
+import thunkMiddleware from 'redux-thunk' // lets us dispatch() functions
 import createLogger from 'redux-logger'
 
 import App from './components/app'
@@ -31,12 +31,13 @@ function mapDispatchToProps (dispatch) {
 
 // Configure store
 
-const store = applyMiddleware(
-  thunkMiddleware, // lets us dispatch() functions
-  createLogger({ collapsed: true }) // neat middleware that logs actions
-)(createStore)(reducer)
+var middlewares = __DEV__
+  ? applyMiddleware(thunkMiddleware, createLogger({ collapsed: true }))
+  : applyMiddleware(thunkMiddleware)
 
-if (module.hot) {
+const store = middlewares(createStore)(reducer)
+
+if (__DEV__ && module.hot) {
   // Enable Webpack hot module replacement for reducers
   module.hot.accept('./reducers', () => {
     const nextRootReducer = require('./reducers/index')

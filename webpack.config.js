@@ -32,6 +32,7 @@ module.exports = {
   },
   plugins: ifprod([
     skipMomentLocales,
+    new webpack.DefinePlugin({ '__DEV__': false }),
     new CompressionPlugin({
       asset: '{file}.gz',
       algorithm: 'gzip',
@@ -41,6 +42,7 @@ module.exports = {
     })
   ], [
     skipMomentLocales,
+    new webpack.DefinePlugin({ '__DEV__': true }),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin()
   ]),
