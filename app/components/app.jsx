@@ -4,6 +4,7 @@ import React, { Component, PropTypes } from 'react'
 import classNames from 'classnames'
 import { Map, Set } from 'immutable'
 
+import clubbers from '../constants/clubbers'
 import { buildMonthsRange } from '../utils/date'
 
 import EventForm from './event-form'
@@ -45,15 +46,18 @@ export default class App extends Component {
     const search = ui.get('search')
 
     let { events } = this.props
+    let filteredEvents = events
 
     let editableEvent = eventId ? events.get(eventId) : null
 
-    let filteredEvents = events.filter(event => {
-      let tags = event._tags || []
-      let hasClubber = Boolean(visibleClubbers.intersect(event._clubbers).count())
-      let hasTag = !Boolean(withTags.count()) || withTags.intersect(tags).count() === withTags.count()
-      return hasClubber && hasTag
-    })
+    if (visibleClubbers.count() != clubbers.count() || withTags.count()) {
+      filteredEvents = events.filter(event => {
+        let tags = event._tags || []
+        let hasClubber = Boolean(visibleClubbers.intersect(event._clubbers).count())
+        let hasTag = !Boolean(withTags.count()) || withTags.intersect(tags).count() === withTags.count()
+        return hasClubber && hasTag
+      })
+    }
 
     if (search) {
       filteredEvents = filteredEvents.filter(event => {
