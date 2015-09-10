@@ -56,7 +56,8 @@ export default class App extends Component {
         let tags = event._tags || []
         let hasClubber = Boolean(visibleClubbers.intersect(event._clubbers).count())
         let hasTag = !Boolean(withTags.count()) || withTags.intersect(tags).count() === withTags.count()
-        let c = (event._confirmed && confirmed === 1) || (!event._confirmed && confirmed === -1)
+        let c = !confirmed || (event._confirmed && confirmed === 1) || (!event._confirmed && confirmed === -1)
+        console.log(hasClubber, hasTag, c)
         return hasClubber && hasTag && c
       })
     }
