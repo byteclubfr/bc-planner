@@ -91,6 +91,13 @@ export function changeNbMonths (nbMonths) {
   }
 }
 
+export function changeConfirmed (confirmed) {
+  return {
+    type: types.UI_CHANGE_CONFIRMED,
+    confirmed
+  }
+}
+
 export function toggleTag (tag) {
   return {
     type: types.UI_TOGGLE_TAG,

@@ -12,7 +12,6 @@ const initialState = Map({
   endMonth: moment(today).add(5, 'month').toArray(),
   eventFormVisible: false,
   eventId: null,
-  search: '',
   fetching: true,
   filters: Map({
     title: true,
@@ -21,6 +20,9 @@ const initialState = Map({
     gravatar: true,
     bars: true
   }),
+  // three state range input -1 0 1
+  confirmed: 0,
+  search: '',
   visibleClubbers: Set(clubbers.keys()),
   withTags: Set()
 })
@@ -61,6 +63,9 @@ export default (state = initialState, action) => {
     const startMonth = moment(state.get('startMonth'))
     const newEndMonth = startMonth.add(action.nbMonths - 1, 'month')
     return state.set('endMonth', newEndMonth.toArray())
+
+  case actions.UI_CHANGE_CONFIRMED: return state
+    .set('confirmed', action.confirmed)
 
   case actions.UI_SEARCH: return state
     .set('search', action.search)

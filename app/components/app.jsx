@@ -44,18 +44,20 @@ export default class App extends Component {
     const withTags = ui.get('withTags')
     const eventId = ui.get('eventId')
     const search = ui.get('search')
+    const confirmed = ui.get('confirmed')
 
     let { events } = this.props
     let filteredEvents = events
 
     let editableEvent = eventId ? events.get(eventId) : null
 
-    if (visibleClubbers.count() != clubbers.count() || withTags.count()) {
+    if (visibleClubbers.count() != clubbers.count() || withTags.count() || confirmed) {
       filteredEvents = events.filter(event => {
         let tags = event._tags || []
         let hasClubber = Boolean(visibleClubbers.intersect(event._clubbers).count())
         let hasTag = !Boolean(withTags.count()) || withTags.intersect(tags).count() === withTags.count()
-        return hasClubber && hasTag
+        let c = (event._confirmed && confirmed === 1) || (!event._confirmed && confirmed === -1)
+        return hasClubber && hasTag && c
       })
     }
 
@@ -89,6 +91,7 @@ export default class App extends Component {
             search={search} />
           <Filters
             actions={actions}
+            confirmed={confirmed}
             filters={filters}
             nbMonths={range.length}
             tags={tags}

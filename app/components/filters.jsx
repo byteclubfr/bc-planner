@@ -9,6 +9,7 @@ import Gravatar from './gravatar'
 export default class Filters extends Component {
   static propTypes = {
     actions: PropTypes.object.isRequired,
+    confirmed: PropTypes.number.isRequired,
     filters: PropTypes.instanceOf(Map).isRequired,
     nbMonths: PropTypes.number.isRequired,
     tags: PropTypes.instanceOf(Set),
@@ -98,6 +99,26 @@ export default class Filters extends Component {
     )
   }
 
+  renderConfirmedFilter () {
+    const { confirmed } = this.props
+
+    return (
+      <fieldset className="confirmed-filter">
+        <legend>Confirmed?</legend>
+        <label style={{ 'fontWeight': confirmed === -1 ? 'bold' : 'normal' }}>No</label>
+        <label>
+          <input
+            max="1"
+            min="-1"
+            onChange={e => this.props.actions.changeConfirmed(Number(e.target.value))}
+            type="range"
+            value={confirmed} />
+        </label>
+        <label style={{ 'fontWeight': confirmed === 1 ? 'bold' : 'normal' }}>Yes</label>
+      </fieldset>
+    )
+  }
+
   renderTagsFilter () {
     const tags = this.props.tags.toArray().sort()
 
@@ -114,6 +135,7 @@ export default class Filters extends Component {
       <form className="filters">
         {this.renderClubbersFilter()}
         {this.renderDisplayOptions()}
+        {this.renderConfirmedFilter()}
         {this.renderTagsFilter()}
       </form>
     )
