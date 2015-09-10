@@ -93,6 +93,7 @@ export default class Event extends Component {
         {this.renderLocation(event)}
         {this.renderTags(event)}
         <div className="event-description">{event.description}</div>
+        <div className="event-updated">Last update: {moment(event.updated).fromNow()}</div>
       </div>
     )
   }
