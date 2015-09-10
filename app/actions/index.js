@@ -91,6 +91,14 @@ export function changeNbMonths (nbMonths) {
   }
 }
 
+// way = previous or next
+export function changeStartMonth (way) {
+  return {
+    type: types.UI_CHANGE_START_MONTH,
+    way
+  }
+}
+
 export function changeConfirmed (confirmed) {
   return {
     type: types.UI_CHANGE_CONFIRMED,

@@ -27,6 +27,10 @@ export default class MonthList extends Component {
   render () {
     return (
       <div className="month-list">
+        <button
+          className="month-list-previous"
+          onClick={() => this.props.actions.changeStartMonth('previous')}
+          title="◀ Prev month">◀</button>
         {this.props.range.map(month =>
           <Month
             actions={this.props.actions}
@@ -37,6 +41,10 @@ export default class MonthList extends Component {
             visibleClubbers={this.props.visibleClubbers}
             withTags={this.props.withTags} />
         )}
+        <button
+          className="month-list-next"
+          onClick={() => this.props.actions.changeStartMonth('next')}
+          title="Next month ▶">▶</button>
       </div>
     )
   }
