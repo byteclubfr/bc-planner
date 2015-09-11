@@ -36,9 +36,9 @@ export default class MainLoader extends Component {
           <h2 title="filtered / total">Events: {filteredEvents.count()} / {events.count()}</h2>
         </div>
         <div className="header-right">
-          <span className="connexion-status">
+          <span className="connection-status">
             {offline
-              ? <span className="connexion-status-offline">Currently offline</span>
+              ? <span className="connection-status-offline">Currently offline</span>
               : <span>Currently online</span>}
           </span>
           <input
