@@ -13,6 +13,7 @@ const initialState = Map({
   eventFormVisible: false,
   eventId: null,
   fetching: true,
+  offline: true,
   filters: Map({
     title: true,
     location: false,
@@ -77,6 +78,12 @@ export default (state = initialState, action) => {
 
   case actions.UI_SEARCH: return state
     .set('search', action.search)
+
+  case actions.UI_SET_ONLINE: return state
+    .set('offline', false)
+
+  case actions.UI_SET_OFFLINE: return state
+    .set('offline', true)
 
   default: return state
   }

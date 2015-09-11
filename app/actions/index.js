@@ -1,5 +1,5 @@
 import * as types from '../constants/actions'
-import calendar from '../utils/calendar-api'
+import calendar from '../calendar-api'
 
 export function openEventForm (eventId = null) {
   return {
@@ -117,5 +117,17 @@ export function search (search) {
   return {
     type: types.UI_SEARCH,
     search
+  }
+}
+
+export function setOnline () {
+  return {
+    type: types.UI_SET_ONLINE
+  }
+}
+
+export function setOffline () {
+  return {
+    type: types.UI_SET_OFFLINE
   }
 }

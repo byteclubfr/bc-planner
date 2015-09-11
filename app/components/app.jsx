@@ -7,13 +7,14 @@ import { Map, Set } from 'immutable'
 import clubbers from '../constants/clubbers'
 import { buildMonthsRange } from '../utils/date'
 
+// child components
 import EventForm from './event-form'
 import Filters from './filters'
 import MainHeader from './main-header'
 import MainLoader from './main-loader'
 import MonthList from './month-list'
 
-import { onReady } from '../utils/calendar-api'
+import { onReady } from '../calendar-api'
 
 
 export default class App extends Component {
@@ -23,10 +24,6 @@ export default class App extends Component {
     events: PropTypes.instanceOf(Map).isRequired,
     tags: PropTypes.instanceOf(Set).isRequired,
     ui: PropTypes.instanceOf(Map).isRequired
-  }
-
-  componentDidMount () {
-    onReady().then(() => this.props.actions.fetchEvents())
   }
 
   closeEventForm () {
@@ -39,12 +36,15 @@ export default class App extends Component {
     const { startMonth, endMonth, eventFormVisible, fetching } = ui.toObject()
 
     const range = buildMonthsRange(startMonth, endMonth)
+
+    // destructure from ui reducer
+    const confirmed = ui.get('confirmed')
+    const eventId = ui.get('eventId')
     const filters = ui.get('filters')
+    const offline = ui.get('offline')
+    const search = ui.get('search')
     const visibleClubbers = ui.get('visibleClubbers')
     const withTags = ui.get('withTags')
-    const eventId = ui.get('eventId')
-    const search = ui.get('search')
-    const confirmed = ui.get('confirmed')
 
     let { events } = this.props
     let filteredEvents = events
@@ -88,6 +88,7 @@ export default class App extends Component {
             eventFormVisible={eventFormVisible}
             events={events}
             filteredEvents={filteredEvents}
+            offline={offline}
             search={search} />
           <Filters
             actions={actions}

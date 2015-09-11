@@ -9,6 +9,9 @@ export const UI_CHANGE_CONFIRMED = 'UI_CHANGE_CONFIRMED'
 export const UI_TOGGLE_TAG = 'UI_TOGGLE_TAG'
 export const UI_SEARCH = 'UI_SEARCH'
 
+export const UI_SET_ONLINE = 'UI_SET_ONLINE'
+export const UI_SET_OFFLINE = 'UI_SET_OFFLINE'
+
 export const CREATE_EVENT = 'CREATE_EVENT'
 export const UPDATE_EVENT = 'UPDATE_EVENT'
 export const DELETE_EVENT = 'DELETE_EVENT'

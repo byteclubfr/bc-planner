@@ -1,3 +1,5 @@
+import '../styles/main-header'
+
 import React, { Component, PropTypes } from 'react'
 import { Map } from 'immutable'
 
@@ -16,7 +18,10 @@ export default class MainLoader extends Component {
   }
 
   render () {
-    const { actions, events, eventFormVisible, filteredEvents, search } = this.props
+    const { actions, events, eventFormVisible,
+      filteredEvents, offline, search } = this.props
+
+    var button = offline ? 'offline' : 'Add Event +'
 
     return (
       <header className="main-header">
@@ -24,13 +29,18 @@ export default class MainLoader extends Component {
           <h1>BC Planner</h1>
           <button
             className="event-form-open"
-            disabled={eventFormVisible}
-            onClick={actions.openEventForm}>Add Event +</button>
+            disabled={eventFormVisible || offline}
+            onClick={actions.openEventForm}>{button}</button>
         </div>
         <div className="header-center">
           <h2 title="filtered / total">Events: {filteredEvents.count()} / {events.count()}</h2>
         </div>
         <div className="header-right">
+          <span className="connexion-status">
+            {offline
+              ? <span className="connexion-status-offline">Currently offline</span>
+              : <span>Currently online</span>}
+          </span>
           <input
             onChange={::this.changeSearch}
             placeholder="search"
