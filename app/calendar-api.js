@@ -1,29 +1,47 @@
+/*eslint no-console:0 */
+
 import { calendarId, clientId, scopes } from './constants/google-credentials'
 import store from './store'
 import { fetchEvents, setOnline } from './actions'
 import { shapeClientEvent, shapeServerEvent } from './utils/event'
+import { defer, delay } from './utils/promise'
 
+const GAPI_TIMEOUT = 5000
 
 function initialFetch () {
   store.dispatch(setOnline())
   store.dispatch(fetchEvents())
 }
 
-function onAuthorized () {
-  console.debug('gapi authorized')
-  gapi.client.load('calendar', 'v3')
-    .then(::console.debug('gapi calendar loaded'))
-    .then(initialFetch)
+function loadClient () {
+  console.debug('gapi authorized, calendar client loading...')
+  return gapi.client.load('calendar', 'v3')
+    .then(::console.debug('gapi calendar client loaded'))
 }
 
-// JSONP callback
-window.initGapi = function () {
-  gapi.auth.authorize({
-    client_id: clientId,
-    scope: scopes,
-    immediate: false
-  }, onAuthorized)
+// TODO deal with rejection
+function authorize () {
+  console.debug('gapi authorizing...')
+  return new Promise((resolve) => {
+    gapi.auth.authorize({
+      client_id: clientId,
+      scope: scopes,
+      immediate: false
+    }, resolve)
+  })
 }
+
+var gapiLoadDefer = defer()
+
+// JSONP callback
+window.initGapi = gapiLoadDefer.resolve
+
+Promise.race([
+  gapiLoadDefer.promise.then(authorize).then(loadClient),
+  delay(GAPI_TIMEOUT).then(() => { throw new Error('gapi timeout') })
+])
+// TODO deal with offline mode
+.then(initialFetch, () => { ::console.error('stay offline') })
 
 export default {
 
