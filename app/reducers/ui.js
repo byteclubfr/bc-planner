@@ -83,6 +83,7 @@ export default (state = initialState, action) => {
     .set('offline', false)
 
   case actions.UI_SET_OFFLINE: return state
+    .set('fetching', false)
     .set('offline', true)
 
   default: return state

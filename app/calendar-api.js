@@ -2,10 +2,11 @@
 
 import { calendarId, clientId, scopes } from './constants/google-credentials'
 import store from './store'
-import { fetchEvents, setOnline } from './actions'
+import { fetchEvents, setOnline, setOffline } from './actions'
 import { shapeClientEvent, shapeServerEvent } from './utils/event'
 import { defer, delay } from './utils/promise'
 
+// after this delay, events are populated from the localStorage
 const GAPI_TIMEOUT = 5000
 
 function initialFetch () {
@@ -41,7 +42,7 @@ Promise.race([
   delay(GAPI_TIMEOUT).then(() => { throw new Error('gapi timeout') })
 ])
 // TODO deal with offline mode
-.then(initialFetch, () => { ::console.error('stay offline') })
+.then(initialFetch, () => { store.dispatch(setOffline()) })
 
 export default {
 

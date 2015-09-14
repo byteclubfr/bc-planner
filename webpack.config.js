@@ -6,7 +6,7 @@ var CompressionPlugin = require('compression-webpack-plugin')
 
 var port = process.env.PORT || 8080
 
-var skipMomentLocales = new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /fr/);
+var skipMomentLocales = new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /fr/)
 
 module.exports = {
   devServer: {
@@ -16,7 +16,7 @@ module.exports = {
     hot: true,
     historyApiFallback: true
   },
-  devtool: ifprod('source-map', 'cheap-eval-source-map'),
+  devtool: ifprod('source-map', 'source-map'),
   entry: ifprod('./app/index', [
     // Enable hot-reload on "/"
     // Can be skipped if going to "/webpack-dev-server/"
