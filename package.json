@@ -4,12 +4,13 @@
   "description": "ByteClub Planner",
   "main": "index.js",
   "scripts": {
+    "build": "NODE_ENV=production webpack --progress --colors -p && cp app/index.html build/index.html",
     "lint": "eslint app",
-    "test": "echo \"No need for tests, ze code iz perfect\" && exit 1",
-    "watch": "NODE_ENV=development webpack-dev-server",
     "prestart": "npm run build",
-    "start": "http-server build",
-    "build": "NODE_ENV=production webpack --progress --colors -p && cp app/index.html build/index.html"
+    "serve": "http-server build",
+    "start": "npm run serve",
+    "test": "echo \"No need for tests, ze code iz perfect\" && exit 1",
+    "watch": "NODE_ENV=development webpack-dev-server"
   },
   "repository": {
     "type": "git",
