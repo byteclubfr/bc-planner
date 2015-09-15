@@ -23,6 +23,8 @@ const initialState = Map({
   }),
   // three state range input -1 0 1
   confirmed: 0,
+  // delta in seconds, 0 means all events
+  lastUpdate: 0,
   search: '',
   visibleClubbers: Set(clubbers.keys()),
   withTags: Set()
@@ -75,6 +77,9 @@ export default (state = initialState, action) => {
 
   case actions.UI_CHANGE_CONFIRMED: return state
     .set('confirmed', action.confirmed)
+
+  case actions.UI_CHANGE_LAST_UPDATE: return state
+    .set('lastUpdate', action.lastUpdate)
 
   case actions.UI_SEARCH: return state
     .set('search', action.search)

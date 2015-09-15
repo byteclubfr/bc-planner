@@ -3,6 +3,7 @@ import '../styles/fx.styl'
 import React, { Component, PropTypes } from 'react'
 import classNames from 'classnames'
 import { Map, Set } from 'immutable'
+import moment from 'moment'
 
 import clubbers from '../constants/clubbers'
 import { buildMonthsRange } from '../utils/date'
@@ -13,9 +14,6 @@ import Filters from './filters'
 import MainHeader from './main-header'
 import MainLoader from './main-loader'
 import MonthList from './month-list'
-
-import { onReady } from '../calendar-api'
-
 
 export default class App extends Component {
 
@@ -41,6 +39,7 @@ export default class App extends Component {
     const confirmed = ui.get('confirmed')
     const eventId = ui.get('eventId')
     const filters = ui.get('filters')
+    const lastUpdate = ui.get('lastUpdate')
     const offline = ui.get('offline')
     const search = ui.get('search')
     const visibleClubbers = ui.get('visibleClubbers')
@@ -51,13 +50,14 @@ export default class App extends Component {
 
     let editableEvent = eventId ? events.get(eventId) : null
 
-    if (visibleClubbers.count() != clubbers.count() || withTags.count() || confirmed) {
+    if (visibleClubbers.count() != clubbers.count() || withTags.count() || confirmed || lastUpdate) {
       filteredEvents = events.filter(event => {
         let tags = event._tags || []
         let hasClubber = Boolean(visibleClubbers.intersect(event._clubbers).count())
         let hasTag = !Boolean(withTags.count()) || withTags.intersect(tags).count() === withTags.count()
         let c = !confirmed || (event._confirmed && confirmed === 1) || (!event._confirmed && confirmed === -1)
-        return hasClubber && hasTag && c
+        let delta = !lastUpdate ? 0 : Math.abs((moment() - moment(event.updated)) / 1000)
+        return hasClubber && hasTag && c && (!delta || delta <= lastUpdate)
       })
     }
 
@@ -94,6 +94,7 @@ export default class App extends Component {
             actions={actions}
             confirmed={confirmed}
             filters={filters}
+            lastUpdate={lastUpdate}
             nbMonths={range.length}
             tags={tags}
             visibleClubbers={visibleClubbers}

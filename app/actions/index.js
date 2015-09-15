@@ -106,6 +106,13 @@ export function changeConfirmed (confirmed) {
   }
 }
 
+export function changeLastUpdate (lastUpdate) {
+  return {
+    type: types.UI_CHANGE_LAST_UPDATE,
+    lastUpdate
+  }
+}
+
 export function toggleTag (tag) {
   return {
     type: types.UI_TOGGLE_TAG,
