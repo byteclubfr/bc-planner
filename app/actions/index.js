@@ -19,7 +19,7 @@ export function createEvent (formData) {
   }
 }
 
-export const createdEvent = (types.CREATED_EVENT, 'event')
+export const createdEvent = actionCreator(types.CREATED_EVENT, 'event')
 
 export function updateEvent (eventId, formData) {
   return dispatch => {
