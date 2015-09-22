@@ -1,6 +1,12 @@
 import { Map } from 'immutable'
 
 export default Map({
+  'byteclubfr@gmail.com': {
+    color: '#fff',
+    gravatar: '0ae69213ea272de9da50a02caecaeaa0',
+    email: 'byteclubfr@gmail.com',
+    name: 'BC'
+  },
   'delapouite@gmail.com': {
     color: '#eeb',
     gravatar: '1de6337421c1eac0227c88502b275952',

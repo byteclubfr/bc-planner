@@ -30,7 +30,7 @@ export function getDate (event, boundary) {
 
 // based on attendees for now
 export function getClubber (event) {
-  if (!event.attendees) return ['lilian.martineau@gmail.com']
+  if (!event.attendees) return ['byteclubfr@gmail.com']
 
   return event.attendees
     .filter(a => !a.optionnal)
