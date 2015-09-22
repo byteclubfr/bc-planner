@@ -4,7 +4,7 @@
   "description": "ByteClub Planner",
   "main": "index.js",
   "scripts": {
-    "build": "NODE_ENV=production webpack --progress --colors -p && cp app/index.html build/index.html",
+    "build": "NODE_ENV=production webpack --progress --colors && cp app/index.html build/index.html",
     "lint": "eslint app",
     "prestart": "npm run build",
     "serve": "http-server build",

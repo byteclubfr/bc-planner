@@ -33,6 +33,9 @@ module.exports = {
   plugins: ifprod([
     skipMomentLocales,
     new webpack.DefinePlugin({ '__DEV__': false }),
+    // like -p command flag, but configurable
+    new webpack.optimize.UglifyJsPlugin({
+    }),
     new CompressionPlugin({
       asset: '{file}.gz',
       algorithm: 'gzip',
