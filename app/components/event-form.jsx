@@ -124,7 +124,7 @@ export default class EventForm extends Component {
   }
 
   delete () {
-    if (this.state.event.id) {
+    if (window.confirm('Are you sure you want to delete this event?') && this.state.event.id) {
       this.props.actions.deleteEvent(this.state.event.id)
     }
   }
