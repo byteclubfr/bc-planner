@@ -177,11 +177,11 @@ export default class EventForm extends Component {
           Event Form
           <button className="event-form-close" onClick={::this.props.actions.closeEventForm} type="button">Close &times;</button>
         </h2>
-        <label>
+        <label className="date-picker">
           From
           <input name="start" onChange={::this.changeStart} type="date" value={this.state.event.start} />
         </label>
-        <label>
+        <label className="date-picker">
           to
           <input name="end" onChange={::this.changeEnd} type="date" value={this.state.event.end} />
         </label>
