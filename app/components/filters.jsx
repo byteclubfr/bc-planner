@@ -136,7 +136,7 @@ export default class Filters extends Component {
 
     return (
       <fieldset className="update-filter">
-        <legend>Last update</legend>
+        <legend><a href="#last-updates">Last update</a></legend>
         <label>
           <select
             onChange={e => actions.changeLastUpdate(Number(e.target.value))}

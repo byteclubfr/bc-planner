@@ -11,6 +11,7 @@ import { buildMonthsRange } from '../utils/date'
 // child components
 import EventForm from './event-form'
 import Filters from './filters'
+import LastUpdates from './last-updates'
 import MainHeader from './main-header'
 import MainLoader from './main-loader'
 import MonthList from './month-list'
@@ -39,6 +40,7 @@ export default class App extends Component {
     const confirmed = ui.get('confirmed')
     const eventId = ui.get('eventId')
     const filters = ui.get('filters')
+    // <select> value
     const lastUpdate = ui.get('lastUpdate')
     const offline = ui.get('offline')
     const search = ui.get('search')
@@ -106,6 +108,7 @@ export default class App extends Component {
             range={range}
             visibleClubbers={visibleClubbers}
             withTags={withTags} />
+          <LastUpdates events={events} />
         </main></div></div>
       </div>
     )

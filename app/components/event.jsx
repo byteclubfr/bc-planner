@@ -102,7 +102,7 @@ export default class Event extends Component {
     const { actions, event, filters } = this.props
 
     return (
-      <li className="event" key={event.id} onClick={() => actions.openEventForm(event.id)}>
+      <li className="event" key={event.id} id={'event-' + event.id} onClick={() => actions.openEventForm(event.id)}>
         {this.renderPopOver(event)}
         <div className="event-snippet">
           {filters.get('title') ? this.renderTitle(event) : null}
