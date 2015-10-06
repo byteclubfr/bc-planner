@@ -4,17 +4,18 @@ import createLogger from 'redux-logger'
 import persistState from 'redux-localstorage'
 import { Map } from 'immutable'
 
-
 import reducer from './reducers'
 
 const createPersistentStore = compose(
   persistState(['events'], {
+    // to avoid conflict with other redux projects on localhost
     key: 'bc-planner',
     deserialize: str => ({ events: Map(JSON.parse(str).events)})
   }),
 )(createStore)
 
 var middlewares = __DEV__
+  // TODO: use actionTransformer to enhance display of immutable.js objects in logs
   ? applyMiddleware(thunkMiddleware, createLogger({ collapsed: true }))
   : applyMiddleware(thunkMiddleware)
 
