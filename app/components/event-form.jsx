@@ -92,15 +92,14 @@ export default class EventForm extends Component {
   }
 
   toggleClubber (e) {
-    let attendees = []
+    let attendees = (this.state.event.attendees || []).slice()
     if (e.target.checked) {
-      attendees = this.state.event.attendees.slice()
       attendees.push({
         email: e.target.value,
         optional: false
       })
     } else {
-      attendees = this.state.event.attendees.filter(a => a.email !== e.target.value)
+      attendees = attendees.filter(a => a.email !== e.target.value)
     }
     this.setEvent('attendees', attendees)
   }
