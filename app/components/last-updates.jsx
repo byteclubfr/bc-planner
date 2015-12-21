@@ -12,14 +12,14 @@ export default class LastUpdates extends Component {
 
   render () {
     let { events } = this.props
-    events = events.sortBy(event => event.updated).reverse().take(25)
+    events = events.sortBy(event => event.updated).reverse().take(25).toArray()
 
     return (
       <section id="last-updates">
         <h2>Last updates</h2>
         <ul>
           {events.map(event => {
-            return <li><a href={'#event-' + event.id}>{event.title} - @{event.location} - {moment(event.updated).fromNow()}</a></li>
+            return <li key={event.id}><a href={'#event-' + event.id}>{event.title} - @{event.location} - {moment(event.updated).fromNow()}</a></li>
           })}
         </ul>
       </section>

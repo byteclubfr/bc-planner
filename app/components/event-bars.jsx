@@ -12,15 +12,15 @@ export default class EventBars extends Component {
     visibleClubbers: PropTypes.instanceOf(Set).isRequired
   }
 
-  colorBar (clubber, clubberEmail) {
-    const hasEvent = this.props.events.some(e => Boolean(~e._clubbers.indexOf(clubberEmail)))
+  colorBar (clubber) {
+    const hasEvent = this.props.events.some(e => Boolean(~e._clubbers.indexOf(clubber.email)))
     const styles = hasEvent ? {
       backgroundColor: clubber.color
     } : {}
 
     return (
-      this.props.visibleClubbers.includes(clubberEmail)
-      ? <div className="event-bar" key={clubberEmail} style={styles} />
+      this.props.visibleClubbers.includes(clubber.email)
+      ? <div className="event-bar" key={clubber.email} style={styles} />
       : null
     )
   }
@@ -28,7 +28,7 @@ export default class EventBars extends Component {
   render () {
     return (
       <footer className="event-bars">
-        {clubbers.map(::this.colorBar)}
+        {clubbers.toArray().map(::this.colorBar)}
       </footer>
     )
   }

@@ -44,11 +44,12 @@ export default class Day extends Component {
       <div className={klass}>
         <header className="day-date">{date.format('dd')[0]} {date.format('DD')}</header>
         <ul className="event-list">
-          {events.map(event =>
+          {events.toArray().map(event =>
             <Event
               actions={actions}
               event={event}
               filters={filters}
+              key={event.id}
               visibleClubbers={visibleClubbers}
               withTags={withTags} />
           )}
