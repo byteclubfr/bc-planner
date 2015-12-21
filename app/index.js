@@ -2,6 +2,7 @@ import './styles/index.styl'
 
 import moment from 'moment'
 import React from 'react'
+import ReactDOM from 'react-dom'
 import { bindActionCreators } from 'redux'
 import { Provider, connect } from 'react-redux'
 
@@ -31,9 +32,9 @@ function mapDispatchToProps (dispatch) {
 
 const ConnectedApp = connect(mapStateToProps, mapDispatchToProps)(App)
 
-React.render(
+ReactDOM.render(
   <Provider store={store}>
-    {() => <ConnectedApp />}
+    <ConnectedApp />
   </Provider>
 , document.getElementById('root')
 )
