@@ -112,8 +112,9 @@ export default class EventForm extends Component {
   submit () {
     if (!this.isFormValid()) return
 
-    // transform tags back to a simple array
-    this.state.event._tags = this.getTags().map(t => t.text)
+    // transform tags back to a simple array with unique non null values
+    var tags = this.getTags().map(t => t.text)
+    this.state.event._tags = Array.from(new Set(tags))
 
     if (this.state.event.id) {
       this.props.actions.updateEvent(this.state.event.id, this.state.event)
