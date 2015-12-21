@@ -129,7 +129,8 @@ export default class EventForm extends Component {
   }
 
   getTags () {
-    return this.state.event._tags || []
+    // TODO investigate why some null tags were created
+    return (this.state.event._tags || []).filter(t => t)
   }
 
   handleAddTag (tag) {

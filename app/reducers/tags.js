@@ -17,7 +17,10 @@ export default (tags = initialTags, action) => {
   case actions.FETCHED_EVENTS:
     tags = action.events.reduce((acc, event) => {
       return acc.concat(event._tags || [])
-    }, []).sort()
+    }, [])
+    // avoid null tag
+    .filter(t => t)
+    .sort()
     return Set(tags)
 
   default:
