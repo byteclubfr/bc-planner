@@ -10,6 +10,7 @@ export default class MainLoader extends Component {
     eventFormVisible: PropTypes.bool.isRequired,
     events: PropTypes.instanceOf(Map).isRequired,
     filteredEvents: PropTypes.instanceOf(Map).isRequired,
+    offline: PropTypes.bool.isRequired,
     search: PropTypes.string.isRequired
   }
 
