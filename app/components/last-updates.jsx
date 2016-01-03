@@ -18,9 +18,9 @@ export default class LastUpdates extends Component {
       <section id="last-updates">
         <h2>Last updates</h2>
         <ul>
-          {events.map(event => {
-            return <li key={event.id}><a href={'#event-' + event.id}>{event.title} - @{event.location} - {moment(event.updated).fromNow()}</a></li>
-          })}
+          {events.map(event =>
+            <li key={event.id}><a href={'#event-' + event.id}>{event.title} - @{event.location} - {moment(event.updated).fromNow()}</a></li>
+          )}
         </ul>
       </section>
     )

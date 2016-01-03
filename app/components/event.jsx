@@ -62,13 +62,11 @@ export default class Event extends Component {
 
     return (
       <div className="event-gravatars">
-        {(clubbers.map(clubber => {
-          return (
-            <span className="event-gravatar" key={clubber}>
-              <Gravatar email={clubber} />
-            </span>
-          )
-        }))}
+        {(clubbers.map(clubber =>
+          <span className="event-gravatar" key={clubber}>
+            <Gravatar email={clubber} />
+          </span>
+        ))}
       </div>
     )
   }
