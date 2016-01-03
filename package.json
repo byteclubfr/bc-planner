@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "NODE_ENV=production webpack --progress --colors && cp app/index.html build/index.html",
-    "lint": "eslint app",
+    "lint": "eslint --ext=js,jsx app",
     "prestart": "npm run build",
     "serve": "http-server build",
     "start": "npm run serve",
@@ -28,6 +28,7 @@
     "compression-webpack-plugin": "^0.2.0",
     "css-loader": "^0.23.0",
     "cz-conventional-changelog": "^1.1.4",
+    "eslint": "^1.10.3",
     "eslint-plugin-react": "^3.2.3",
     "http-server": "^0.8.0",
     "react-hot-loader": "^1.2.8",
