@@ -1,8 +1,11 @@
-import React, { Component } from 'react'
+import React, { Component, PropTypes } from 'react'
 
 import clubbers from './../constants/clubbers'
 
 export default class Gravatar extends Component {
+  static propTypes = {
+    email: PropTypes.string.isRequired
+  }
 
   shouldComponentUpdate (nextProps) {
     return this.props.email !== nextProps.email
