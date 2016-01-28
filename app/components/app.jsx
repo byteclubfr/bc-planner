@@ -53,12 +53,13 @@ export default class App extends Component {
     let editableEvent = eventId ? events.get(eventId) : null
 
     if (visibleClubbers.count() != clubbers.count() || withTags.count() || confirmed || lastUpdate) {
+      let now = moment()
       filteredEvents = events.filter(event => {
         let tags = event._tags || []
         let hasClubber = Boolean(visibleClubbers.intersect(event._clubbers).count())
         let hasTag = !Boolean(withTags.count()) || withTags.intersect(tags).count() === withTags.count()
         let c = !confirmed || (event._confirmed && confirmed === 1) || (!event._confirmed && confirmed === -1)
-        let delta = !lastUpdate ? 0 : Math.abs((moment() - moment(event.updated)) / 1000)
+        let delta = !lastUpdate ? 0 : Math.abs((now - moment(event.updated)) / 1000)
         return hasClubber && hasTag && c && (!delta || delta <= lastUpdate)
       })
     }
