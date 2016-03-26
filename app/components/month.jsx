@@ -3,7 +3,7 @@ import '../styles/month'
 import React, { Component, PropTypes } from 'react'
 import { Map, Set } from 'immutable'
 import moment from 'moment'
-import range from 'lodash/utility/range'
+import range from 'lodash/range'
 
 import Day from './day'
 
