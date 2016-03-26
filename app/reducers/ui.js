@@ -51,8 +51,8 @@ export default (state = initialState, action) => {
   case actions.FETCHED_EVENTS: return state
     .set('fetching', false)
 
-  case actions.UI_TOGGLE_CLUBBER:
-    return state.set('visibleClubbers', toggle(state.get('visibleClubbers'), action.clubber))
+  case actions.UI_TOGGLE_CLUBBER: return state
+    .set('visibleClubbers', toggle(state.get('visibleClubbers'), action.clubber))
 
   case actions.UI_TOGGLE_FILTER:
     const filters = state.get('filters')
@@ -73,7 +73,7 @@ export default (state = initialState, action) => {
     var newStartMonth = moment(state.get('startMonth')).add(way, 'month')
     var newEndMonth = moment(state.get('endMonth')).add(way, 'month')
     return state.set('startMonth', newStartMonth.toArray())
-      .set('endMonth', newEndMonth.toArray())
+                .set('endMonth', newEndMonth.toArray())
 
   case actions.UI_CHANGE_CONFIRMED: return state
     .set('confirmed', action.confirmed)
