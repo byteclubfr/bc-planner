@@ -115,7 +115,7 @@ export default class Filters extends Component {
             type="range"
             value={confirmed} />
         </label>
-        <label style={{ 'fontWeight': confirmed === 1 ? 'bold' : 'normal' }}>Yes</label>
+        <label style={{ 'fontWeight': confirmed === 1 ? 'bold' : 'normal' }}>✓Yes</label>
       </fieldset>
     )
   }

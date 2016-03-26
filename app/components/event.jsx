@@ -26,9 +26,9 @@ export default class Event extends Component {
 
   renderTitle (event) {
     return (
-      <div className="event-title">
-        <span className="event-confirmed" title="Event confirmed?">
-          {event._confirmed ? '✓' : '✗'}
+      <div className={classNames('event-title', { 'event-unconfirmed': !event._confirmed })}>
+        <span title="Event confirmed?">
+          {event._confirmed ? '✓' : ''}
         </span>
         <span>{event.title}</span>
       </div>
