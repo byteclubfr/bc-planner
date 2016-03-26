@@ -60,7 +60,7 @@ export default {
     })
   },
 
-  list: ({startMonth, endMonth, maxResults = 2500} = {}) => {
+  list: ({startMonth, endMonth, maxResults = 2500} = {}) => { // eslint-disable-line
     return gapi.client.calendar.events.list({ calendarId })
       .then(res => res.result.items)
       // TODO - remove

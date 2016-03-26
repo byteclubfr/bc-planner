@@ -67,13 +67,13 @@ export default (state = initialState, action) => {
     const newEndMonth = startMonth.add(action.nbMonths - 1, 'month')
     return state.set('endMonth', newEndMonth.toArray())
 
-  case actions.UI_CHANGE_START_MONTH:
+  case actions.UI_CHANGE_START_MONTH: {
     const way = action.way === 'previous' ? -1 : 1
-
-    var newStartMonth = moment(state.get('startMonth')).add(way, 'month')
-    var newEndMonth = moment(state.get('endMonth')).add(way, 'month')
+    const newStartMonth = moment(state.get('startMonth')).add(way, 'month')
+    const newEndMonth = moment(state.get('endMonth')).add(way, 'month')
     return state.set('startMonth', newStartMonth.toArray())
                 .set('endMonth', newEndMonth.toArray())
+  }
 
   case actions.UI_CHANGE_CONFIRMED: return state
     .set('confirmed', action.confirmed)
