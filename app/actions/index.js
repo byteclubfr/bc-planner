@@ -61,7 +61,8 @@ export const changeLastUpdate = (lastUpdate) => ({ type: types.UI_CHANGE_LAST_UP
 
 export const toggleTag = (tag) => ({ type: types.UI_TOGGLE_TAG, tag })
 
-export const search = (search) => ({ type: types.UI_SEARCH, search })
+// weird babel 6.7.5 bug
+export const search = (s) => ({ type: types.UI_SEARCH, search: s })
 
 export const setOnline = () => ({ type: types.UI_SET_ONLINE })
 
