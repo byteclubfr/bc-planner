@@ -32,7 +32,10 @@ module.exports = {
   },
   plugins: ifprod([
     skipMomentLocales,
-    new webpack.DefinePlugin({ '__DEV__': false }),
+    new webpack.DefinePlugin({
+      '__DEV__': false,
+      'process.env.NODE_ENV': '"production"'
+    }),
     // like -p command flag, but configurable
     new webpack.optimize.UglifyJsPlugin({
     }),
@@ -45,7 +48,10 @@ module.exports = {
     })
   ], [
     skipMomentLocales,
-    new webpack.DefinePlugin({ '__DEV__': true }),
+    new webpack.DefinePlugin({
+      '__DEV__': true,
+      'process.env.NODE_ENV': '"development"'
+    }),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin()
   ]),
