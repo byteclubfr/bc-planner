@@ -1,3 +1,1 @@
-export function toggle (set, v) {
-  return set.includes(v) ? set.delete(v) : set.add(v)
-}
+export const toggle = (set, v) => set.includes(v) ? set.delete(v) : set.add(v)

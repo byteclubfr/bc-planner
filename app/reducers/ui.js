@@ -54,13 +54,11 @@ export default (state = initialState, action) => {
   case actions.UI_TOGGLE_CLUBBER: return state
     .set('visibleClubbers', toggle(state.get('visibleClubbers'), action.clubber))
 
-  case actions.UI_TOGGLE_FILTER:
-    const filters = state.get('filters')
-    const newFilters = filters.set(action.filter, !filters.get(action.filter, false))
-    return state.set('filters', newFilters)
+  case actions.UI_TOGGLE_FILTER: return state
+    .updateIn(['filters', action.filter], v => !v)
 
-  case actions.UI_TOGGLE_TAG:
-    return state.set('withTags', toggle(state.get('withTags'), action.tag))
+  case actions.UI_TOGGLE_TAG: return state
+    .set('withTags', toggle(state.get('withTags'), action.tag))
 
   case actions.UI_CHANGE_NB_MONTHS:
     const startMonth = moment(state.get('startMonth'))
