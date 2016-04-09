@@ -34,13 +34,13 @@ export default class Filters extends Component {
   }
 
   renderFilterCheckbox (filter, label) {
-    const { filters } = this.props
+    const { actions, filters } = this.props
 
     return (
       <label>
         <input
           checked={filters.get(filter)}
-          onChange={() => this.props.actions.toggleFilter(filter)}
+          onChange={() => actions.toggleFilter(filter)}
           type="checkbox" />
         {label}
       </label>
@@ -48,15 +48,17 @@ export default class Filters extends Component {
   }
 
   renderMonthsFilter () {
+    const { actions, nbMonths } = this.props
+
     return (
       <label>
         <input
           max={12}
           min={1}
-          onChange={e => this.props.actions.changeNbMonths(e.target.value)}
+          onChange={e => actions.changeNbMonths(e.target.value)}
           type="number"
-          value={this.props.nbMonths} />
-        {'months'}
+          value={nbMonths} />
+        months
       </label>
     )
   }
@@ -75,7 +77,7 @@ export default class Filters extends Component {
     )
   }
 
-  // fieldset
+  // fieldsets
 
   renderClubbersFilter () {
     return (
@@ -125,8 +127,8 @@ export default class Filters extends Component {
 
     return (
       <fieldset className="tags-filter">
-        <legend>Tags</legend>
-        {tags.sort().map(::this.tagCheckbox)}
+        <legend>Tags ({tags.length})</legend>
+        {tags.map(::this.tagCheckbox)}
       </fieldset>
     )
   }

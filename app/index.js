@@ -12,25 +12,10 @@ import * as actions from './actions'
 
 moment.locale('fr')
 
-// Connect App to Redux boilerplate
-
-function mapStateToProps (state) {
-  return {
-    events: state.events,
-    tags: state.tags,
-    ui: state.ui
-  }
-}
-
-function mapDispatchToProps (dispatch) {
-  return {
-    actions: bindActionCreators(actions, dispatch)
-  }
-}
-
-// Wrap app
-
-const ConnectedApp = connect(mapStateToProps, mapDispatchToProps)(App)
+const ConnectedApp = connect(
+  ({ events, tags, ui }) => ({ events, tags, ui }),
+  (dispatch) => ({ actions: bindActionCreators(actions, dispatch) })
+)(App)
 
 ReactDOM.render(
   <Provider store={store}>
