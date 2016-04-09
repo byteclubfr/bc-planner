@@ -1,6 +1,7 @@
 import '../styles/last-updates'
 
 import React, { Component, PropTypes } from 'react'
+import { shouldComponentUpdate } from 'react-addons-pure-render-mixin'
 import { Map } from 'immutable'
 import moment from 'moment'
 
@@ -8,6 +9,11 @@ export default class LastUpdates extends Component {
 
   static propTypes = {
     events: PropTypes.instanceOf(Map).isRequired
+  }
+
+  constructor (props) {
+    super(props)
+    this.shouldComponentUpdate = shouldComponentUpdate.bind(this)
   }
 
   render () {
