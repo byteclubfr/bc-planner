@@ -1,8 +1,12 @@
 {
-  "extends": "eslint:recommended",
+  "extends": [
+    "eslint:recommended",
+    "plugin:lodash-fp/recommended"
+  ],
   "parser": "babel-eslint",
   "plugins": [
-    "react"
+    "react",
+    "lodash-fp"
   ],
   "globals": {
     "gapi": true,
