@@ -105,9 +105,11 @@ export default class EventForm extends Component {
   }
 
   // TODO
+  /* eslint-disable */
   isFormValid () {
     return true
   }
+  /* eslint-enable */
 
   submit () {
     if (!this.isFormValid()) return

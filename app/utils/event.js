@@ -1,5 +1,5 @@
 import moment from 'moment'
-import { mapKeys, mapValues } from 'lodash/object'
+import { mapKeys, mapValues, pipe } from 'lodash/fp'
 
 // the following fns are used as translators between events shaped by Google
 // and the ones we need client side
@@ -37,13 +37,14 @@ export function getClubber (event) {
     .map(a => a.email)
 }
 
+const getExProps = pipe(mapValues(JSON.parse), mapKeys(k => '_' + k))
+
 export function extendedPropertiesToUnder (event) {
   if (!event.extendedProperties) return event
 
-  let exProps = mapValues(event.extendedProperties.shared, JSON.parse)
-  exProps = mapKeys(exProps, (v, k) => '_' + k)
-  return {...event, ...exProps}
+  return {...event, ...getExProps(event.extendedProperties.shared)}
 }
+
 
 // TODO - remove
 // format server event -> client event
