@@ -25,7 +25,7 @@ const initialState = Map({
   confirmed: 0,
   // delta in seconds, 0 means all events
   lastUpdate: 0,
-  search: '',
+  searchQuery: '',
   visibleClubbers: Set(clubbers.keys()),
   withTags: Set()
 })
@@ -80,7 +80,7 @@ export default (state = initialState, action) => {
     .set('lastUpdate', action.lastUpdate)
 
   case actions.UI_SEARCH: return state
-    .set('search', action.search)
+    .set('searchQuery', action.searchQuery)
 
   case actions.UI_SET_ONLINE: return state
     .set('offline', false)

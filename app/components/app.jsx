@@ -42,8 +42,7 @@ export default class App extends Component {
     const filters = ui.get('filters')
     // <select> value
     const lastUpdate = ui.get('lastUpdate')
-    const offline = ui.get('offline')
-    const search = ui.get('search')
+    const searchQuery = ui.get('searchQuery')
     const visibleClubbers = ui.get('visibleClubbers')
     const withTags = ui.get('withTags')
 
@@ -64,7 +63,7 @@ export default class App extends Component {
       })
     }
 
-    if (search) {
+    if (searchQuery) {
       filteredEvents = filteredEvents.filter(event => {
         let fullText = [
           event.summary,
@@ -72,7 +71,7 @@ export default class App extends Component {
           event.location,
           (event._tags || []).join(' ')
         ].join(' ').toLowerCase()
-        return fullText.includes(search)
+        return fullText.includes(searchQuery)
       })
     }
 
@@ -87,12 +86,10 @@ export default class App extends Component {
         <div className="fx-pusher" onClick={::this.closeEventForm}>
         <div className="fx-content"><main className="fx-content-inner">
           <MainHeader
-            actions={actions}
             eventFormVisible={eventFormVisible}
             events={events}
             filteredEvents={filteredEvents}
-            offline={offline}
-            search={search} />
+            searchQuery={searchQuery} />
           <Filters
             actions={actions}
             confirmed={confirmed}

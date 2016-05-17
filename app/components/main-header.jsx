@@ -1,26 +1,31 @@
 import '../styles/main-header'
 
 import React, { Component, PropTypes } from 'react'
+import { connect } from 'react-redux'
 import { Map } from 'immutable'
 
-export default class MainLoader extends Component {
+import { openEventForm, search } from '../actions'
+
+class MainLoader extends Component {
 
   static propTypes = {
-    actions: PropTypes.object.isRequired,
     eventFormVisible: PropTypes.bool.isRequired,
     events: PropTypes.instanceOf(Map).isRequired,
     filteredEvents: PropTypes.instanceOf(Map).isRequired,
     offline: PropTypes.bool.isRequired,
-    search: PropTypes.string.isRequired
+    searchQuery: PropTypes.string.isRequired,
+    // actions
+    openEventForm: PropTypes.func.isRequired,
+    search: PropTypes.func.isRequired
   }
 
   changeSearch (e) {
-    this.props.actions.search(e.target.value)
+    this.props.search(e.target.value)
   }
 
   render () {
-    const { actions, events, eventFormVisible,
-      filteredEvents, offline, search } = this.props
+    const { events, eventFormVisible, filteredEvents, offline, searchQuery,
+      openEventForm } = this.props
 
     var button = offline ? 'offline' : 'Add Event +'
 
@@ -31,7 +36,7 @@ export default class MainLoader extends Component {
           <button
             className="event-form-open"
             disabled={eventFormVisible || offline}
-            onClick={actions.openEventForm}>{button}</button>
+            onClick={openEventForm}>{button}</button>
         </div>
         <div className="header-center">
           <h2 title="filtered / total">Events: {filteredEvents.count()} / {events.count()}</h2>
@@ -46,10 +51,18 @@ export default class MainLoader extends Component {
             onChange={::this.changeSearch}
             placeholder="search"
             type="search"
-            value={search} />
+            value={searchQuery} />
         </div>
       </header>
     )
   }
 
 }
+
+const mapStateToProps = ({ ui }) => ({
+  offline: ui.get('offline')
+})
+
+const mapDispatchToProps = { openEventForm, search }
+
+export default connect(mapStateToProps, mapDispatchToProps)(MainLoader)

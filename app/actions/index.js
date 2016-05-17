@@ -61,7 +61,7 @@ export const changeLastUpdate = (lastUpdate) => ({ type: types.UI_CHANGE_LAST_UP
 
 export const toggleTag = (tag) => ({ type: types.UI_TOGGLE_TAG, tag })
 
-export const search = (search) => ({ type: types.UI_SEARCH, search })
+export const search = (searchQuery) => ({ type: types.UI_SEARCH, searchQuery })
 
 export const setOnline = () => ({ type: types.UI_SET_ONLINE })
 
