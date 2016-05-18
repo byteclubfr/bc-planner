@@ -1,8 +1,16 @@
 {
-  "presets": [
-    "stage-0",
-    "babel-preset-es2015",
-    "react"
-  ],
-  "plugins": ["transform-class-properties"]
+  "presets": ["stage-0", "babel-preset-es2015", "react"],
+  "plugins": ["transform-class-properties"],
+  "env": {
+    "debug": {
+      "plugins": [
+        "transform-class-properties",
+        ["react-transform", {
+          "transforms": [{
+            "transform": "react-transform-render-visualizer"
+          }]
+        }]
+      ]
+    }
+  }
 }
