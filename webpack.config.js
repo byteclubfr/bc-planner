@@ -36,11 +36,9 @@ module.exports = {
       '__DEV__': false,
       'process.env.NODE_ENV': '"production"'
     }),
-    // like -p command flag, but configurable
-    new webpack.optimize.UglifyJsPlugin({
-    }),
+    new webpack.optimize.UglifyJsPlugin({}),
     new CompressionPlugin({
-      asset: '{file}.gz',
+      asset: '[file].gz',
       algorithm: 'gzip',
       regExp: /\.js$|\.html$/,
       threshold: 10240,
