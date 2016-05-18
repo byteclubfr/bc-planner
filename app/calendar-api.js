@@ -6,8 +6,8 @@ import { fetchEvents, setOnline, setOffline } from './actions'
 import { shapeClientEvent, shapeServerEvent } from './utils/event'
 import { defer, delay } from './utils/promise'
 
-// after this delay, events are populated from the localStorage
-const GAPI_TIMEOUT = 5000
+// after this delay, give up
+const GAPI_TIMEOUT = 30000
 
 function initialFetch () {
   store.dispatch(setOnline())
@@ -41,7 +41,6 @@ Promise.race([
   gapiLoadDefer.promise.then(authorize).then(loadClient),
   delay(GAPI_TIMEOUT).then(() => { throw new Error('gapi timeout') })
 ])
-// TODO deal with offline mode
 .then(initialFetch, () => { store.dispatch(setOffline()) })
 
 export default {
