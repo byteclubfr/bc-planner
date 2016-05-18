@@ -61,7 +61,12 @@ module.exports = {
       {
         test: /\.jsx?$/,
         loaders: ifprod(['babel'], ['react-hot', 'babel']),
-        exclude: /node_modules/
+        include: [ 'app' ] // Base source files
+          .concat([
+            // Modules that must be parsed by Babel (whitelist)
+            'react-tag-input'
+          ].map(f => path.join('node_modules', f)) // node_modulesize paths
+          ).map(f => path.resolve(__dirname, f)) // absolutize paths
       },
       {
         test: /\.styl$/,
