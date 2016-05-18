@@ -3,7 +3,7 @@ import '../styles/month'
 import React, { Component, PropTypes } from 'react'
 import { Map, Set } from 'immutable'
 import moment from 'moment'
-import range from 'lodash/range'
+import { range } from 'lodash/fp'
 
 import Day from './day'
 
@@ -29,7 +29,7 @@ export default class Month extends Component {
 
   render () {
     const date = moment(this.props.date)
-    const daysInMonth = range(date.daysInMonth())
+    const daysInMonth = range(0, date.daysInMonth())
     const monthStart = moment(date).startOf('month')
     const monthEnd = moment(date).endOf('month')
     const events = this.props.events.filter(event =>
