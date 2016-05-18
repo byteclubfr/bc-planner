@@ -6,6 +6,11 @@ import { Map } from 'immutable'
 
 import reducer from './reducers'
 
+// Initialize persistent state to avoid error when resetting data
+if (!localStorage.getItem('bc-planner')) {
+  localStorage.setItem('bc-planner', '{}')
+}
+
 const createPersistentStore = compose(
   persistState(['events'], {
     // to avoid conflict with other redux projects on localhost
