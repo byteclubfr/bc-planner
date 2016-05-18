@@ -2,38 +2,35 @@ import '../styles/day'
 
 import React, { Component, PropTypes } from 'react'
 import classNames from 'classnames'
-import { Map, Set, is } from 'immutable'
+import { Map } from 'immutable'
+
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import * as actions from '../actions'
+import { dayEvents } from '../reducers/events'
 
 import Event from './event'
 import EventBars from './event-bars'
-import { inclusiveIsBetween, isToday, isWeekend } from './../utils/date'
+import { isToday, isWeekend } from './../utils/date'
 
-export default class Day extends Component {
+
+class Day extends Component {
 
   static propTypes = {
     actions: PropTypes.object.isRequired,
-    date: PropTypes.object.isRequired,
+    date: PropTypes.object.isRequired, // moment instance
     events: PropTypes.instanceOf(Map).isRequired,
-    filters: PropTypes.instanceOf(Map).isRequired,
-    visibleClubbers: PropTypes.instanceOf(Set).isRequired,
-    withTags: PropTypes.instanceOf(Set).isRequired
+    showBars: PropTypes.bool.isRequired
   }
 
   shouldComponentUpdate (nextProps) {
-    return !(
-      is(this.props.events, nextProps.events) &&
-      this.props.filters === nextProps.filters &&
-      this.props.visibleClubbers === nextProps.visibleClubbers &&
-      this.props.withTags === nextProps.withTags
-    )
+    return !this.props.date.isSame(nextProps.date, 'day')
+        || !this.props.events.equals(nextProps.events)
+        || !this.props.showBars !== nextProps.showBars
   }
 
   render () {
-    const { actions, date, filters, visibleClubbers, withTags } = this.props
-    const events = this.props.events
-      .filter(event =>
-        inclusiveIsBetween(date, event.start, event.end)
-      )
+    const { date, showBars, events } = this.props
 
     let klass = classNames('day', {
       'day-weekend': isWeekend(date),
@@ -45,18 +42,22 @@ export default class Day extends Component {
         <header className="day-date">{date.format('dd')[0]} {date.format('DD')}</header>
         <ul className="event-list">
           {events.toArray().map(event =>
-            <Event
-              actions={actions}
-              event={event}
-              filters={filters}
-              key={event.id}
-              visibleClubbers={visibleClubbers}
-              withTags={withTags} />
+            <Event event={event} key={event.id} />
           )}
         </ul>
-        {filters.get('bars') && events.count() ? <EventBars events={events} visibleClubbers={visibleClubbers} /> : null}
+        {showBars && events.count() ? <EventBars events={events} /> : null}
       </div>
     )
   }
 
 }
+
+
+export default connect(
+  ({ events, ui }, { date }) => ({
+    date,
+    showBars: ui.getIn(['filters', 'bars'], false),
+    events: dayEvents(events, date)
+  }),
+  dispatch => ({ actions: bindActionCreators(actions, dispatch) })
+)(Day)

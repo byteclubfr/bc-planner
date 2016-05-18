@@ -1,30 +1,29 @@
 import '../styles/last-updates'
 
 import React, { Component, PropTypes } from 'react'
-import { shouldComponentUpdate } from 'react-addons-pure-render-mixin'
 import { Map } from 'immutable'
 import moment from 'moment'
 
-export default class LastUpdates extends Component {
+import { connect } from 'react-redux'
+import { lastUpdates } from '../reducers/events'
+
+
+class LastUpdates extends Component {
 
   static propTypes = {
     events: PropTypes.instanceOf(Map).isRequired
   }
 
-  constructor (props) {
-    super(props)
-    this.shouldComponentUpdate = shouldComponentUpdate.bind(this)
+  shouldComponentUpdate (nextProps) {
+    return !this.props.events.equals(nextProps.events)
   }
 
   render () {
-    let { events } = this.props
-    events = events.sortBy(event => event.updated).reverse().take(25).toArray()
-
     return (
       <section id="last-updates">
         <h2>Last updates</h2>
         <ul>
-          {events.map(event =>
+          {this.props.events.toArray().map(event =>
             <li key={event.id}><a href={'#event-' + event.id}>{event.title} - @{event.location} - {moment(event.updated).fromNow()}</a></li>
           )}
         </ul>
@@ -35,3 +34,8 @@ export default class LastUpdates extends Component {
 }
 
 
+export default connect(
+  ({ events }) => ({
+    events: lastUpdates(events)
+  })
+)(LastUpdates)

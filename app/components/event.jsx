@@ -2,10 +2,15 @@ import React, { Component, PropTypes } from 'react'
 import classNames from 'classnames'
 import { Map, Set } from 'immutable'
 import moment from 'moment'
+import { isEqual } from 'lodash/fp'
+
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import * as actions from '../actions'
 
 import Gravatar from './gravatar'
 
-export default class Event extends Component {
+class Event extends Component {
 
   static propTypes = {
     actions: PropTypes.object.isRequired,
@@ -16,12 +21,10 @@ export default class Event extends Component {
   }
 
   shouldComponentUpdate (nextProps) {
-    return !(
-      this.props.event === nextProps.event &&
-      this.props.filters === nextProps.filters &&
-      this.props.visibleClubbers === nextProps.visibleClubbers &&
-      this.props.withTags === nextProps.withTags
-    )
+    return !isEqual(this.props.event, nextProps.event)
+        || !this.props.filters.equals(nextProps.filters)
+        || !this.props.visibleClubbers.equals(nextProps.visibleClubbers)
+        || !this.props.withTags.equals(nextProps.withTags)
   }
 
   renderTitle (event) {
@@ -113,3 +116,14 @@ export default class Event extends Component {
   }
 
 }
+
+
+export default connect(
+  ({ events, ui }, { event }) => ({
+    event,
+    filters: ui.get('filters'),
+    withTags: ui.get('withTags'),
+    visibleClubbers: ui.get('visibleClubbers')
+  }),
+  dispatch => ({ actions: bindActionCreators(actions, dispatch) })
+)(Event)

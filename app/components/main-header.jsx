@@ -1,31 +1,38 @@
 import '../styles/main-header'
 
 import React, { Component, PropTypes } from 'react'
+
 import { connect } from 'react-redux'
-import { Map } from 'immutable'
+import { bindActionCreators } from 'redux'
+import * as actions from '../actions'
+import { filteredEvents } from '../reducers/events'
 
-import { openEventForm, search } from '../actions'
 
-class MainLoader extends Component {
+class MainHeader extends Component {
 
   static propTypes = {
     eventFormVisible: PropTypes.bool.isRequired,
-    events: PropTypes.instanceOf(Map).isRequired,
-    filteredEvents: PropTypes.instanceOf(Map).isRequired,
+    nbEvents: PropTypes.number.isRequired,
+    nbFilteredEvents: PropTypes.number.isRequired,
     offline: PropTypes.bool.isRequired,
     searchQuery: PropTypes.string.isRequired,
-    // actions
-    openEventForm: PropTypes.func.isRequired,
-    search: PropTypes.func.isRequired
+    actions: PropTypes.object.isRequired
+  }
+
+  shouldComponentUpdate (nextProps) {
+    return this.props.eventFormVisible !== nextProps.eventFormVisible
+        || this.props.nbEvents !== nextProps.nbEvents
+        || this.props.nbFilteredEvents !== nextProps.nbFilteredEvents
+        || this.props.offline !== nextProps.offline
+        || this.props.searchQuery !== nextProps.searchQuery
   }
 
   changeSearch (e) {
-    this.props.search(e.target.value)
+    this.props.actions.search(e.target.value)
   }
 
   render () {
-    const { events, eventFormVisible, filteredEvents, offline, searchQuery,
-      openEventForm } = this.props
+    const { nbEvents, eventFormVisible, nbFilteredEvents, offline, searchQuery } = this.props
 
     var button = offline ? 'offline' : 'Add Event +'
 
@@ -36,10 +43,10 @@ class MainLoader extends Component {
           <button
             className="event-form-open"
             disabled={eventFormVisible || offline}
-            onClick={openEventForm}>{button}</button>
+            onClick={this.props.actions.openEventForm}>{button}</button>
         </div>
         <div className="header-center">
-          <h2 title="filtered / total">Events: {filteredEvents.count()} / {events.count()}</h2>
+          <h2 title="filtered / total">Events: {nbFilteredEvents} / {nbEvents}</h2>
         </div>
         <div className="header-right">
           <span className="connection-status">
@@ -59,10 +66,14 @@ class MainLoader extends Component {
 
 }
 
-const mapStateToProps = ({ ui }) => ({
-  offline: ui.get('offline')
-})
 
-const mapDispatchToProps = { openEventForm, search }
-
-export default connect(mapStateToProps, mapDispatchToProps)(MainLoader)
+export default connect(
+  ({ events, ui }) => ({
+    nbEvents: events.count(),
+    nbFilteredEvents: filteredEvents(events, ui).count(),
+    offline: ui.get('offline'),
+    eventFormVisible: ui.get('eventFormVisible'),
+    searchQuery: ui.get('searchQuery')
+  }),
+  dispatch => ({ actions: bindActionCreators(actions, dispatch) })
+)(MainHeader)

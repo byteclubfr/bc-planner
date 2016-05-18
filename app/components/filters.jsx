@@ -3,10 +3,17 @@ import '../styles/filters'
 import React, { Component, PropTypes } from 'react'
 import { Map, Set } from 'immutable'
 
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import * as actions from '../actions'
+import { buildMonthsRange } from '../utils/date'
+
 import clubbers from './../constants/clubbers'
 import Gravatar from './gravatar'
 
-export default class Filters extends Component {
+
+class Filters extends Component {
+
   static propTypes = {
     actions: PropTypes.object.isRequired,
     confirmed: PropTypes.number.isRequired,
@@ -16,6 +23,16 @@ export default class Filters extends Component {
     tags: PropTypes.instanceOf(Set),
     visibleClubbers: PropTypes.instanceOf(Set).isRequired,
     withTags: PropTypes.instanceOf(Set).isRequired
+  }
+
+  shouldComponentUpdate (nextProps) {
+    return this.props.confirmed !== nextProps.confirmed
+        || this.props.lastUpdate !== nextProps.lastUpdate
+        || this.props.nbMonths !== nextProps.nbMonths
+        || !this.props.filters.equals(nextProps.filters)
+        || !this.props.tags.equals(nextProps.tags)
+        || !this.props.visibleClubbers.equals(nextProps.visibleClubbers)
+        || !this.props.withTags.equals(nextProps.withTags)
   }
 
   clubberCheckbox (clubber, email) {
@@ -170,3 +187,16 @@ export default class Filters extends Component {
 
 }
 
+
+export default connect(
+  ({ tags, ui }) => ({
+    confirmed: ui.get('confirmed'),
+    filters: ui.get('filters'),
+    lastUpdate: ui.get('lastUpdate'),
+    nbMonths: buildMonthsRange(ui.get('startMonth'), ui.get('endMonth')).length,
+    tags,
+    visibleClubbers: ui.get('visibleClubbers'),
+    withTags: ui.get('withTags')
+  }),
+  dispatch => ({ actions: bindActionCreators(actions, dispatch) })
+)(Filters)

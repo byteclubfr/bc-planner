@@ -3,68 +3,60 @@ import '../styles/react-tags'
 
 import React, { Component, PropTypes } from 'react'
 import { WithContext as ReactTags } from 'react-tag-input'
-import { Set } from 'immutable'
+import { Set, Map } from 'immutable'
 import moment from 'moment'
+
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import * as actions from '../actions'
 
 import clubbers from './../constants/clubbers'
 import Gravatar from './gravatar'
 
-export default class EventForm extends Component {
+const BLANK_EVENT = Map({
+  start: moment().format('YYYY-MM-DD'),
+  end: moment().add(1, 'days').format('YYYY-MM-DD'),
+  summary: '',
+  location: '',
+  description: '',
+  attendees: [],
+
+  _clubbers: [],
+  _confirmed: false,
+  _tags: []
+})
+
+
+class EventForm extends Component {
 
   static propTypes = {
     actions: PropTypes.object.isRequired,
-    event: PropTypes.object,
-    tags: PropTypes.instanceOf(Set).isRequired,
-    visible: PropTypes.bool.isRequired
+    event: PropTypes.instanceOf(Map),
+    tags: PropTypes.instanceOf(Set).isRequired
   }
 
   constructor (props) {
     super(props)
-    this.state = this.getBlankEvent()
+    this.state = { event: BLANK_EVENT }
   }
 
-  getBlankEvent () {
-    return {
-      event: {
-        start: moment().format('YYYY-MM-DD'),
-        end: moment().add(1, 'days').format('YYYY-MM-DD'),
-        summary: '',
-        location: '',
-        description: '',
-        attendees: [],
-
-        _clubbers: [],
-        _confirmed: false,
-        _tags: []
-      }
-    }
+  shouldComponentUpdate (nextProps, nextState) {
+    return !this.props.tags.equals(nextProps.tags)
+        || !this.state.event.equals(nextState.event)
   }
 
   componentWillReceiveProps (props) {
     if (!props.event) {
-      this.setState(this.getBlankEvent())
+      this.setState({ event: BLANK_EVENT })
     } else {
-      this.setState({
-        ...this.state,
-        event: {
-          ...props.event,
-          // format needed by ReactTags
-          _tags: (props.event._tags || []).map(t => ({ id: t, text: t }))
-        }
-      })
+      const tags = (props.event._tags || []).map(t => ({ id: t, text: t }))
+      this.setState({ event: this.state.event.merge(props.event).set('_tags', tags) })
     }
   }
 
   // proxy for set stage
   setEvent (key, value) {
-    let state = {
-      ...this.state,
-      event: {
-        ...this.state.event,
-        [key]: value
-      }
-    }
-    this.setState(state)
+    this.setState({ event: this.state.event.set(key, value) })
   }
 
   changeStart (e) {
@@ -92,7 +84,7 @@ export default class EventForm extends Component {
   }
 
   toggleClubber (e) {
-    let attendees = (this.state.event.attendees || []).slice()
+    let attendees = this.state.event.get('attendees', []).slice()
     if (e.target.checked) {
       attendees.push({
         email: e.target.value,
@@ -116,24 +108,25 @@ export default class EventForm extends Component {
 
     // transform tags back to a simple array with unique non null values
     var tags = this.getTags().map(t => t.text)
-    this.state.event._tags = Array.from(new Set(tags))
+    const event = this.state.event.set('_tags', Array.from(new Set(tags))).toObject()
 
-    if (this.state.event.id) {
-      this.props.actions.updateEvent(this.state.event.id, this.state.event)
+    if (event.id) {
+      this.props.actions.updateEvent(event.id, event)
     } else {
-      this.props.actions.createEvent(this.state.event)
+      this.props.actions.createEvent(event)
     }
   }
 
   delete () {
-    if (window.confirm('Are you sure you want to delete this event?') && this.state.event.id) {
-      this.props.actions.deleteEvent(this.state.event.id)
+    const id = this.state.event.get('id')
+    if (id && window.confirm('Are you sure you want to delete this event?')) {
+      this.props.actions.deleteEvent(id)
     }
   }
 
   getTags () {
     // TODO investigate why some null tags were created
-    return (this.state.event._tags || []).filter(t => t)
+    return this.state.event.get('_tags', []).filter(t => t)
   }
 
   handleAddTag (tag) {
@@ -158,7 +151,7 @@ export default class EventForm extends Component {
   }
 
   clubberCheckbox (clubber, email) {
-    let checked = (this.state.event.attendees || []).some(a => a.email === email)
+    let checked = this.state.event.get('attendees', []).some(a => a.email === email)
 
     return (
       <label className="event-form-clubber clubber-label" key={email} style={{backgroundColor: clubber.color}}>
@@ -174,6 +167,8 @@ export default class EventForm extends Component {
   }
 
   render () {
+    const event = this.state.event
+
     return (
       <form className="event-form fx-menu">
         <h2>
@@ -182,16 +177,16 @@ export default class EventForm extends Component {
         </h2>
         <label className="date-picker">
           From
-          <input name="start" onChange={::this.changeStart} type="date" value={this.state.event.start} />
+          <input name="start" onChange={::this.changeStart} type="date" value={event.get('start')} />
         </label>
         <label className="date-picker">
           to
-          <input name="end" onChange={::this.changeEnd} type="date" value={this.state.event.end} />
+          <input name="end" onChange={::this.changeEnd} type="date" value={event.get('end')} />
         </label>
-        <label>Summary <input name="summary" onChange={::this.changeSummary} value={this.state.event.summary} /></label>
-        <label>Where <input name="location" onChange={::this.changeLocation} value={this.state.event.location} /></label>
-        <label>Description <textarea name="description" onChange={::this.changeDescription} value={this.state.event.description} /></label>
-        <label>Confirmed? <input checked={this.state.event._confirmed} name="confirmed" onChange={::this.changeConfirmed} type="checkbox" /></label>
+        <label>Summary <input name="summary" onChange={::this.changeSummary} value={event.get('summary')} /></label>
+        <label>Where <input name="location" onChange={::this.changeLocation} value={event.get('location')} /></label>
+        <label>Description <textarea name="description" onChange={::this.changeDescription} value={event.get('description')} /></label>
+        <label>Confirmed? <input checked={event.get('_confirmed')} name="confirmed" onChange={::this.changeConfirmed} type="checkbox" /></label>
 
         <label>Clubbers</label>
         <div className="event-form-clubbers">
@@ -207,9 +202,18 @@ export default class EventForm extends Component {
           tags={this.getTags()} />
 
         <button className="event-form-save" onClick={::this.submit} type="button">Save</button>
-        {(this.state.event .id ? <button className="event-form-delete" onClick={::this.delete} type="button">Delete</button> : null)}
+        {(event.get('id') ? <button className="event-form-delete" onClick={::this.delete} type="button">Delete</button> : null)}
       </form>
     )
   }
 
 }
+
+
+export default connect(
+  ({ ui, events, tags }) => ({
+    event: Map(events.get(ui.get('eventId'))),
+    tags
+  }),
+  dispatch => ({ actions: bindActionCreators(actions, dispatch) })
+)(EventForm)

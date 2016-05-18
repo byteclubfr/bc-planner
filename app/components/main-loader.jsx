@@ -1,15 +1,14 @@
 import 'loaders.css/loaders.css'
 import React from 'react'
 import { Loader } from 'react-loaders'
+import { constant } from 'lodash/fp'
+
 
 export default class MainLoader extends React.Component {
 
   constructor (props) {
     super(props)
-  }
-
-  shouldComponentUpdate () {
-    return false
+    this.shouldComponentUpdate = constant(false)
   }
 
   render () {

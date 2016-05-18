@@ -1,59 +1,53 @@
 import '../styles/month'
 
 import React, { Component, PropTypes } from 'react'
-import { Map, Set } from 'immutable'
 import moment from 'moment'
-import { range } from 'lodash/fp'
+import { range, isEqual } from 'lodash/fp'
+
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import * as actions from '../actions'
+
+import { monthEvents } from '../reducers/events'
 
 import Day from './day'
 
-export default class Month extends Component {
+
+class Month extends Component {
 
   static propTypes = {
     actions: PropTypes.object.isRequired,
-    date: PropTypes.any.isRequired,
-    events: PropTypes.instanceOf(Map).isRequired,
-    filters: PropTypes.instanceOf(Map).isRequired,
-    visibleClubbers: PropTypes.instanceOf(Set).isRequired,
-    withTags: PropTypes.instanceOf(Set).isRequired
+    nbEvents: PropTypes.number.isRequired,
+    date: PropTypes.arrayOf(PropTypes.number).isRequired
   }
 
   shouldComponentUpdate (nextProps) {
-    return !(
-      this.props.events === nextProps.events &&
-      this.props.filters === nextProps.filters &&
-      this.props.visibleClubbers === nextProps.visibleClubbers &&
-      this.props.withTags === nextProps.withTags
-    )
+    return !isEqual(this.props.date, nextProps.date)
   }
 
   render () {
-    const date = moment(this.props.date)
-    const daysInMonth = range(0, date.daysInMonth())
-    const monthStart = moment(date).startOf('month')
-    const monthEnd = moment(date).endOf('month')
-    const events = this.props.events.filter(event =>
-      // Event occurs in this month if it starts before end of month AND it ends after start of month
-      // <=> end of month is after start of event AND start of month is before end of event
-      monthEnd.isAfter(event.start) && (monthStart.isBefore(event.end) || monthStart.isSame(event.end, 'day'))
-    )
+    const { nbEvents, date } = this.props
+    const mdate = moment(date)
+    const daysInMonth = range(0, mdate.daysInMonth())
+    const dates = daysInMonth.map(day => moment(date).date(day + 1))
 
     return (
       <div className="month">
-        <header className="month-title">{date.format('MMMM YYYY')} ({events.count()})</header>
-
-        {daysInMonth.map(day => moment(date).date(day + 1)).map(d =>
-          <Day
-            actions={this.props.actions}
-            date={d}
-            events={events}
-            filters={this.props.filters}
-            key={d.format()}
-            visibleClubbers={this.props.visibleClubbers}
-            withTags={this.props.withTags} />
+        <header className="month-title">{mdate.format('MMMM YYYY')} ({nbEvents})</header>
+        {dates.map(d =>
+          <Day date={d} key={d.format()} />
         )}
       </div>
     )
   }
 
 }
+
+
+export default connect(
+  ({ events, ui }, { date }) => ({
+    date,
+    nbEvents: monthEvents(events, date).count()
+  }),
+  dispatch => ({ actions: bindActionCreators(actions, dispatch) })
+)(Month)

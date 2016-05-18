@@ -1,27 +1,26 @@
 import '../styles/month-list'
 
 import React, { Component, PropTypes } from 'react'
-import { Map, Set } from 'immutable'
+
+import { isEqual } from 'lodash/fp'
+import { buildMonthsRange } from '../utils/date'
+
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import * as actions from '../actions'
 
 import Month from './month'
 
 
-export default class MonthList extends Component {
+class MonthList extends Component {
 
   static propTypes = {
     actions: PropTypes.object.isRequired,
-    events: PropTypes.instanceOf(Map),
-    filters: PropTypes.instanceOf(Map).isRequired,
-    range: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
-    visibleClubbers: PropTypes.instanceOf(Set).isRequired,
-    withTags: PropTypes.instanceOf(Set).isRequired
+    range: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired
   }
 
   shouldComponentUpdate (nextProps) {
-    var { events, range } = this.props
-    var newRange = range.join() !== nextProps.range.join()
-    var noNewEvents = !events.count() && !nextProps.events.count()
-    return newRange || !noNewEvents
+    return !isEqual(this.props.range, nextProps.range)
   }
 
   render () {
@@ -32,14 +31,7 @@ export default class MonthList extends Component {
           onClick={() => this.props.actions.changeStartMonth('previous')}
           title="◀ Prev month">◀</button>
         {this.props.range.map(month =>
-          <Month
-            actions={this.props.actions}
-            date={month}
-            events={this.props.events}
-            filters={this.props.filters}
-            key={month}
-            visibleClubbers={this.props.visibleClubbers}
-            withTags={this.props.withTags} />
+          <Month date={month} key={month} />
         )}
         <button
           className="month-list-next"
@@ -50,3 +42,11 @@ export default class MonthList extends Component {
   }
 
 }
+
+
+export default connect(
+  ({ ui }) => ({
+    range: buildMonthsRange(ui.get('startMonth'), ui.get('endMonth'))
+  }),
+  dispatch => ({ actions: bindActionCreators(actions, dispatch) })
+)(MonthList)
