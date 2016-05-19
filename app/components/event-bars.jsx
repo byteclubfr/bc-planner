@@ -25,8 +25,8 @@ class EventBars extends Component {
       }
     }
 
-    return !this.props.visibleClubbers.equals(nextProps.visibleClubbers)
-        || !this.props.events.equals(nextProps.events)
+    return this.props.visibleClubbers !== nextProps.visibleClubbers
+        || this.props.events !== nextProps.events
   }
 
   colorBar (clubber) {

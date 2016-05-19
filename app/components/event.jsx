@@ -37,10 +37,10 @@ class Event extends Component {
       }
     }
 
-    return !isEqual(this.props.event, nextProps.event)
-        || !this.props.filters.equals(nextProps.filters)
-        || !this.props.visibleClubbers.equals(nextProps.visibleClubbers)
-        || !this.props.withTags.equals(nextProps.withTags)
+    return this.props.event !== nextProps.event
+        || this.props.filters !== nextProps.filters
+        || this.props.visibleClubbers !== nextProps.visibleClubbers
+        || this.props.withTags !== nextProps.withTags
   }
 
   renderTitle (event) {

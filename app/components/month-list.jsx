@@ -26,7 +26,7 @@ class MonthList extends Component {
       }
     }
 
-    return !isEqualWith(isSameMonth, this.props.range, nextProps.range)
+    return this.props.range !== nextProps.range
   }
 
   render () {

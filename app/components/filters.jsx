@@ -44,10 +44,10 @@ class Filters extends Component {
     return this.props.confirmed !== nextProps.confirmed
         || this.props.lastUpdate !== nextProps.lastUpdate
         || this.props.nbMonths !== nextProps.nbMonths
-        || !this.props.filters.equals(nextProps.filters)
-        || !this.props.tags.equals(nextProps.tags)
-        || !this.props.visibleClubbers.equals(nextProps.visibleClubbers)
-        || !this.props.withTags.equals(nextProps.withTags)
+        || this.props.filters !== nextProps.filters
+        || this.props.tags !== nextProps.tags
+        || this.props.visibleClubbers !== nextProps.visibleClubbers
+        || this.props.withTags !== nextProps.withTags
   }
 
   clubberCheckbox (clubber, email) {

@@ -52,8 +52,8 @@ class EventForm extends Component {
       }
     }
 
-    return !this.props.tags.equals(nextProps.tags)
-        || !this.state.event.equals(nextState.event)
+    return this.props.tags !== nextProps.tags
+        || this.state.event !== nextState.event
   }
 
   componentWillReceiveProps (props) {

@@ -21,7 +21,7 @@ class LastUpdates extends Component {
       }
     }
 
-    return !this.props.events.equals(nextProps.events)
+    return this.props.events !== nextProps.events
   }
 
   render () {

@@ -21,7 +21,7 @@ class Month extends Component {
   }
 
   shouldComponentUpdate (nextProps) {
-    return !this.props.date !== nextProps.date
+    return this.props.date !== nextProps.date
   }
 
   render () {

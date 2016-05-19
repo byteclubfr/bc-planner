@@ -30,9 +30,9 @@ class Day extends Component {
       }
     }
 
-    return !this.props.date !== nextProps.date
-        || !this.props.events.equals(nextProps.events)
-        || !this.props.showBars !== nextProps.showBars
+    return this.props.date !== nextProps.date
+        || this.props.events !== nextProps.events
+        || this.props.showBars !== nextProps.showBars
   }
 
   render () {
