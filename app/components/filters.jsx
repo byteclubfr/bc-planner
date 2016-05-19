@@ -189,6 +189,7 @@ class Filters extends Component {
 
 
 export default connect(
+  // TODO memoize?
   ({ tags, ui }) => ({
     confirmed: ui.get('confirmed'),
     filters: ui.get('filters'),

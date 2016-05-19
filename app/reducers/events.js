@@ -2,7 +2,7 @@ import { Map } from 'immutable'
 import * as actions from '../constants/actions'
 
 import clubbers from '../constants/clubbers'
-import { inclusiveIsBetween, startOfMonth, endOfMonth, isAfter, isBefore, isSameDay } from '../utils/date'
+import { inclusiveIsBetween, startOfMonth, endOfMonth, isAfter, isBefore } from '../utils/date'
 
 
 const initialEvents = Map() // id:string => event:Event
@@ -37,37 +37,44 @@ export const filteredEvents = (events, ui) => {
   const searchQuery = ui.get('searchQuery')
   const visibleClubbers = ui.get('visibleClubbers')
   const withTags = ui.get('withTags')
+  const startMonth = ui.get('startMonth')
+  const endMonth = ui.get('endMonth')
 
-  let filteredEvents = events
+  let filteredEvents = events.filter(e =>
+    isBefore(startMonth, e.end) && isAfter(endMonth, e.start))
 
-  if (visibleClubbers.count() != clubbers.count() || withTags.count() || confirmed || lastUpdate) {
+  if (visibleClubbers.count() != clubbers.count()) {
+    filteredEvents = filteredEvents.filter(e =>
+      visibleClubbers.intersect(e._clubbers).count() > 0)
+  }
+
+  if (confirmed) {
+    filteredEvents = filteredEvents.filter(e =>
+      (e._confirmed && confirmed === 1) || (!e._confirmed && confirmed === -1))
+  }
+
+  if (lastUpdate) {
     let now = new Date()
-    filteredEvents = events.filter(event => {
-      let tags = event._tags || []
-      let hasClubber = Boolean(visibleClubbers.intersect(event._clubbers).count())
-      let hasTag = !withTags.count() || withTags.intersect(tags).count() === withTags.count()
-      let c = !confirmed || (event._confirmed && confirmed === 1) || (!event._confirmed && confirmed === -1)
-      let delta = !lastUpdate ? 0 : Math.abs((now - new Date(event.updated)) / 1000)
-      return hasClubber && hasTag && c && (!delta || delta <= lastUpdate)
-    })
+    filteredEvents = filteredEvents.filter(e =>
+      Math.abs((now - new Date(e.updated)) / 1000) <= lastUpdate)
+  }
+
+  if (withTags.count()) {
+    filteredEvents = filteredEvents.filter(e =>
+      withTags.intersect(e._tags || []).count() === withTags.count())
   }
 
   if (searchQuery) {
-    filteredEvents = filteredEvents.filter(event => {
-      let fullText = [
-        event.summary,
-        event.description,
-        event.location,
-        (event._tags || []).join(' ')
-      ].join(' ').toLowerCase()
-      return fullText.includes(searchQuery)
-    })
+    filteredEvents = filteredEvents.filter(e =>
+      [ e.summary, e.description, e.location, (e._tags || []).join(' ') ]
+      .join(' ').toLowerCase().indexOf(searchQuery) !== -1)
   }
 
   return filteredEvents
 }
 
 // TODO memoize
+// (Map, Date) => Map
 export const monthEvents = (events, month) => {
   const monthStart = startOfMonth(month)
   const monthEnd = endOfMonth(month)
@@ -75,10 +82,11 @@ export const monthEvents = (events, month) => {
   return events.filter(event =>
     // Event occurs in this month if it starts before end of month AND it ends after start of month
     // <=> end of month is after start of event AND start of month is before end of event
-    isAfter(monthEnd, event.start) && (isBefore(monthStart, event.end) || isSameDay(monthStart, event.end))
+    isAfter(monthEnd, event.start) && isBefore(monthStart, event.end)
   )
 }
 
 // TODO memoize
+// (Map, Date) => Map
 export const dayEvents = (events, day) =>
   events.filter(e => inclusiveIsBetween(day, e.start, e.end))

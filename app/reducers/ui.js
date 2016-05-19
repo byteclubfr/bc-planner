@@ -1,15 +1,15 @@
-import moment from 'moment'
 import { Map, Set } from 'immutable'
 import { toggle } from './../utils/immutable'
 
 import * as actions from '../constants/actions'
 import clubbers from './../constants/clubbers'
 
-const today = moment()
+import { serialize, addMonth } from '../utils/date'
+
 
 const initialState = Map({
-  startMonth: today.toArray(),
-  endMonth: moment(today).add(5, 'month').toArray(),
+  startMonth: serialize(new Date(), true),
+  endMonth: serialize(addMonth(new Date(), 5), true),
   eventFormVisible: false,
   eventId: null,
   fetching: true,
@@ -61,16 +61,12 @@ export default (state = initialState, action) => {
     .set('withTags', toggle(state.get('withTags'), action.tag))
 
   case actions.UI_CHANGE_NB_MONTHS:
-    const startMonth = moment(state.get('startMonth'))
-    const newEndMonth = startMonth.add(action.nbMonths - 1, 'month')
-    return state.set('endMonth', newEndMonth.toArray())
+    return state.set(serialize(addMonth(state.get('startMonth'), actions.nbMonths - 1), true))
 
   case actions.UI_CHANGE_START_MONTH: {
-    const way = action.way === 'previous' ? -1 : 1
-    const newStartMonth = moment(state.get('startMonth')).add(way, 'month')
-    const newEndMonth = moment(state.get('endMonth')).add(way, 'month')
-    return state.set('startMonth', newStartMonth.toArray())
-                .set('endMonth', newEndMonth.toArray())
+    const nb = action.way === 'previous' ? -1 : 1
+    return state.set('startMonth', serialize(addMonth(state.get('startMonth'), nb), true))
+                .set('endMonth', serialize(addMonth(state.get('endMonth'), nb), true))
   }
 
   case actions.UI_CHANGE_CONFIRMED: return state

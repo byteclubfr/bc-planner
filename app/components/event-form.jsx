@@ -4,18 +4,20 @@ import '../styles/react-tags'
 import React, { Component, PropTypes } from 'react'
 import { WithContext as ReactTags } from 'react-tag-input'
 import { Set, Map } from 'immutable'
-import moment from 'moment'
 
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as actions from '../actions'
 
 import clubbers from './../constants/clubbers'
+import { serialize, addDay } from '../utils/date'
+
 import Gravatar from './gravatar'
 
+
 const BLANK_EVENT = Map({
-  start: moment().format('YYYY-MM-DD'),
-  end: moment().add(1, 'days').format('YYYY-MM-DD'),
+  start: serialize(new Date()),
+  end: serialize(addDay(new Date(), 1)),
   summary: '',
   location: '',
   description: '',

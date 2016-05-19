@@ -1,8 +1,9 @@
 import React, { Component, PropTypes } from 'react'
 import classNames from 'classnames'
 import { Map, Set } from 'immutable'
-import moment from 'moment'
 import { isEqual } from 'lodash/fp'
+
+import { formatDay, formatAgo } from '../utils/date'
 
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -75,12 +76,10 @@ class Event extends Component {
   }
 
   renderDates (event) {
-    let f = 'ddd D MMM'
-
     return (
       <div className="event-dates">
-        {moment(event.start).format(f)}
-        {event.start !== event.end ? ' - ' + moment(event.end).format(f) : null}
+        {formatDay(event.start)}
+        {event.start !== event.end ? ' - ' + formatDay(event.end) : null}
       </div>
     )
   }
@@ -94,7 +93,7 @@ class Event extends Component {
         {this.renderLocation(event)}
         {this.renderTags(event)}
         <div className="event-description">{event.description}</div>
-        <div className="event-updated">Last update: {moment(event.updated).fromNow()}</div>
+        <div className="event-updated">Last update: {formatAgo(event.updated)}</div>
       </div>
     )
   }

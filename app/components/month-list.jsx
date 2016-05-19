@@ -2,8 +2,8 @@ import '../styles/month-list'
 
 import React, { Component, PropTypes } from 'react'
 
-import { isEqual } from 'lodash/fp'
-import { buildMonthsRange } from '../utils/date'
+import { isEqualWith } from 'lodash/fp'
+import { buildMonthsRange, isSameMonth } from '../utils/date'
 
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -16,11 +16,11 @@ class MonthList extends Component {
 
   static propTypes = {
     actions: PropTypes.object.isRequired,
-    range: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired
+    range: PropTypes.arrayOf(PropTypes.instanceOf(Date)).isRequired
   }
 
   shouldComponentUpdate (nextProps) {
-    return !isEqual(this.props.range, nextProps.range)
+    return !isEqualWith(isSameMonth, this.props.range, nextProps.range)
   }
 
   render () {

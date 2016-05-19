@@ -1,5 +1,5 @@
-import moment from 'moment'
 import { mapKeys, mapValues, pipe } from 'lodash/fp'
+import { serialize, addDay } from './date'
 
 // the following fns are used as translators between events shaped by Google
 // and the ones we need client side
@@ -12,20 +12,19 @@ export function getTitle (event) {
 }
 
 // boundary: 'start' || 'end'
-export function getDate (event, boundary) {
-  var d
-  var date = event[boundary]
-  // all day event
-  if (date.date) {
-    // start is inclusive, end is exclusive
-    d = date.date
-    if (boundary === 'end') {
-      d = moment(d).subtract(1, 'days')
-    }
-  } else {
-    d = date.dateTime
-  }
-  return moment(d).format('YYYY-MM-DD')
+function getDate (event, boundary) {
+  const date = event[boundary]
+
+  return serialize(date.date
+    // all day event
+    ? boundary === 'end'
+      // end is exclusive
+      ? addDay(date.date, -1)
+      // start is inclusive
+      : date.date
+    // in-day event
+    : date.dateTime
+  )
 }
 
 // based on attendees for now
@@ -63,7 +62,7 @@ export function shapeServerEvent (event) {
 export function shapeClientEvent (event) {
   event = { ...event }
   event.start = { date: event.start }
-  event.end = { date: moment(event.end).add(1, 'days').format('YYYY-MM-DD') }
+  event.end = { date: serialize(addDay(event.end, 1)) }
   if (!event.extendedProperties) event.extendedProperties = {}
 
   // move back under props in shared
