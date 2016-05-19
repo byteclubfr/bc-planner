@@ -210,6 +210,7 @@ class EventForm extends Component {
           handleDelete={::this.handleDeleteTag}
           handleDrag={::this.handleDragTag}
           suggestions={this.props.tags.toArray()}
+          shouldRenderSuggestions={q => q.length > 0}
           tags={this.getTags()} />
 
         <button className="event-form-save" onClick={::this.submit} type="button">Save</button>
