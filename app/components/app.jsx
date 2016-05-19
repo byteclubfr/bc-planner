@@ -25,8 +25,8 @@ class App extends Component {
   }
 
   shouldComponentUpdate (nextProps) {
-    return !nextProps.fetching !== nextProps.fetching
-        || !nextProps.eventFormVisible !== nextProps.eventFormVisible
+    return this.props.fetching !== nextProps.fetching
+        || this.props.eventFormVisible !== nextProps.eventFormVisible
   }
 
   closeEventForm () {
