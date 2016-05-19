@@ -4,11 +4,11 @@ import memoize from 'memoize-immutable'
 moment.locale('fr')
 
 // Date => string
-export function serialize (date, isMonth) {
+export function serialize (date) {
   const d = parse(date)
   const Y = d.getFullYear()
   const M = d.getMonth() + 1
-  const D = isMonth ? 1 : d.getDate()
+  const D = d.getDate()
 
   return '' + Y + '-' + (M < 10 ? '0' : '') + M + '-' + (D < 10 ? '0' : '') + D
 }
@@ -33,10 +33,10 @@ export const buildMonthsRange = memoize((start, end) => {
   let curr = startOfMonth(start)
   end = endOfMonth(end)
 
-  while (isBefore(curr, end)) {
-    range.push(serialize(curr, true))
+  do {
+    range.push(serialize(curr))
     curr = addMonth(curr, 1)
-  }
+  } while (!isSameMonth(curr, end))
 
   return range
 })

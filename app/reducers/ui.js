@@ -4,13 +4,13 @@ import { toggle } from './../utils/immutable'
 import * as actions from '../constants/actions'
 import clubbers from './../constants/clubbers'
 
-import { serialize, addMonth } from '../utils/date'
+import { serialize, addMonth, startOfMonth, endOfMonth } from '../utils/date'
 import cacheRef from '../utils/cache-refs'
 
 
 const initialState = Map({
-  startMonth: serialize(new Date(), true),
-  endMonth: serialize(addMonth(new Date(), 5), true),
+  startMonth: serialize(startOfMonth(new Date())),
+  endMonth: serialize(endOfMonth(addMonth(new Date(), 5))),
   eventFormVisible: false,
   eventId: null,
   fetching: true,
@@ -62,12 +62,12 @@ export default (state = initialState, action) => {
     .set('withTags', cacheRef('withTags', toggle(state.get('withTags'), action.tag)))
 
   case actions.UI_CHANGE_NB_MONTHS:
-    return state.set(serialize(addMonth(state.get('startMonth'), actions.nbMonths - 1), true))
+    return state.set('endMonth', serialize(endOfMonth(addMonth(state.get('startMonth'), actions.nbMonths - 1))))
 
   case actions.UI_CHANGE_START_MONTH: {
     const nb = action.way === 'previous' ? -1 : 1
-    return state.set('startMonth', serialize(addMonth(state.get('startMonth'), nb), true))
-                .set('endMonth', serialize(addMonth(state.get('endMonth'), nb), true))
+    return state.set('startMonth', serialize(startOfMonth(addMonth(state.get('startMonth'), nb))))
+                .set('endMonth', serialize(endOfMonth(addMonth(state.get('endMonth'), nb))))
   }
 
   case actions.UI_CHANGE_CONFIRMED: return state
