@@ -1,4 +1,5 @@
 import moment from 'moment'
+import memoize from 'memoize-immutable'
 
 moment.locale('fr')
 
@@ -26,9 +27,8 @@ function clone (any) {
   return new Date(any)
 }
 
-// TODO memoize
 // (Date, Date) => Array<Date>
-export function buildMonthsRange (start, end) {
+export const buildMonthsRange = memoize((start, end) => {
   let range = []
   let curr = startOfMonth(start)
   end = endOfMonth(end)
@@ -39,7 +39,7 @@ export function buildMonthsRange (start, end) {
   }
 
   return range
-}
+})
 
 export function buildMonthDaysRange (date) {
   let range = []

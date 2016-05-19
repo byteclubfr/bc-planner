@@ -52,6 +52,7 @@
     "immutable": "^3.7.4",
     "loaders.css": "^0.1.1",
     "lodash": "^4.9.0",
+    "memoize-immutable": "^1.1.1",
     "moment": "^2.11.0",
     "react": "^15.0.2",
     "react-dnd": "^2.1.4",
