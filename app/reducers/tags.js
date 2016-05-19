@@ -20,7 +20,6 @@ export default (tags = initialTags, action) => {
     }, [])
     // avoid null tag
     .filter(t => t)
-    .sort()
     return Set(tags)
 
   default:

@@ -4,6 +4,7 @@ import * as actions from '../constants/actions'
 import clubbers from '../constants/clubbers'
 import { inclusiveIsBetween, startOfMonth, endOfMonth, isAfter, isBefore } from '../utils/date'
 import { isEqual } from 'lodash/fp'
+import memoize from 'memoize-immutable'
 
 
 const initialEvents = Map() // id:string => event:Event
@@ -22,9 +23,14 @@ export default (events = initialEvents, action) => {
     return events.delete(action.eventId)
 
   case actions.FETCHED_EVENTS:
-    return action.events.reduce((map, e) =>
-      isEqual(e, map.get(e.id)) ? map : map.set(e.id, e)
-    , events)
+    return action.events.reduce((map, e) => {
+      // MUTATION WARNING: EDGE CASE
+      // This has been reviewed and causes no trouble. YET.
+      e._clubbers.sort()
+      e._tags.sort()
+
+      return isEqual(e, map.get(e.id)) ? map : map.set(e.id, e))
+    }, events)
 
   default:
     return events
@@ -32,19 +38,19 @@ export default (events = initialEvents, action) => {
 }
 
 
-// TODO memoize
-export const lastUpdates = events =>
-  events.sortBy(event => event.updated).reverse().take(25)
+export const lastUpdates = memoize(events =>
+  events.sortBy(event => event.updated).reverse().take(25))
 
-// TODO memoize
-export const filteredEvents = (events, ui) => {
-  const confirmed = ui.get('confirmed')
-  const lastUpdate = ui.get('lastUpdate')
-  const searchQuery = ui.get('searchQuery')
-  const visibleClubbers = ui.get('visibleClubbers')
-  const withTags = ui.get('withTags')
-  const startMonth = ui.get('startMonth')
-  const endMonth = ui.get('endMonth')
+const _filteredEvents = memoize((
+  events,
+  confirmed,
+  lastUpdate,
+  searchQuery,
+  visibleClubbers,
+  withTags,
+  startMonth,
+  endMonth
+) => {
 
   let filteredEvents = events.filter(e =>
     isBefore(startMonth, e.end) && isAfter(endMonth, e.start))
@@ -77,11 +83,23 @@ export const filteredEvents = (events, ui) => {
   }
 
   return filteredEvents
+}, true)
+
+export function filteredEvents (events, ui) {
+  return _filteredEvents(
+    events,
+    ui.get('confirmed'),
+    ui.get('lastUpdate'),
+    ui.get('searchQuery'),
+    ui.get('visibleClubbers'),
+    ui.get('withTags'),
+    ui.get('startMonth'),
+    ui.get('endMonth')
+  )
 }
 
-// TODO memoize
 // (Map, Date) => Map
-export const monthEvents = (events, month) => {
+export const monthEvents = memoize((events, month) => {
   const monthStart = startOfMonth(month)
   const monthEnd = endOfMonth(month)
 
@@ -90,9 +108,9 @@ export const monthEvents = (events, month) => {
     // <=> end of month is after start of event AND start of month is before end of event
     isAfter(monthEnd, event.start) && isBefore(monthStart, event.end)
   )
-}
+})
 
-// TODO memoize
 // (Map, Date) => Map
-export const dayEvents = (events, day) =>
-  events.filter(e => inclusiveIsBetween(day, e.start, e.end))
+export const dayEvents = memoize((events, day) => {
+  return events.filter(e => inclusiveIsBetween(day, e.start, e.end))
+})

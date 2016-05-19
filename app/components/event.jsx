@@ -73,11 +73,11 @@ class Event extends Component {
   renderTags (event) {
     if (!event._tags) return null
 
-    return <ul className="event-tags">{event._tags.sort().map(::this.renderTag)}</ul>
+    return <ul className="event-tags">{event._tags.map(::this.renderTag)}</ul>
   }
 
   renderGravatars (event) {
-    let clubbers = event._clubbers.filter(c => this.props.visibleClubbers.includes(c)).sort()
+    let clubbers = event._clubbers.filter(c => this.props.visibleClubbers.includes(c))
 
     return (
       <div className="event-gravatars">

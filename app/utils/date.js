@@ -41,7 +41,7 @@ export const buildMonthsRange = memoize((start, end) => {
   return range
 })
 
-export function buildMonthDaysRange (date) {
+export const buildMonthDaysRange = memoize(date => {
   let range = []
   let curr = startOfMonth(date)
   let end = endOfMonth(date)
@@ -52,7 +52,7 @@ export function buildMonthDaysRange (date) {
   }
 
   return range
-}
+})
 
 // (Date, number) => Date
 export function addMonth (date, nbMonths) {

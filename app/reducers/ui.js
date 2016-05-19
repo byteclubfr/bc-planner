@@ -6,7 +6,6 @@ import clubbers from './../constants/clubbers'
 
 import { serialize, addMonth } from '../utils/date'
 
-
 const initialState = Map({
   startMonth: serialize(new Date(), true),
   endMonth: serialize(addMonth(new Date(), 5), true),
@@ -52,13 +51,13 @@ export default (state = initialState, action) => {
     .set('fetching', false)
 
   case actions.UI_TOGGLE_CLUBBER: return state
-    .set('visibleClubbers', toggle(state.get('visibleClubbers'), action.clubber))
+    .set('visibleClubbers', cacheRef('visibleClubbers', toggle(state.get('visibleClubbers'), action.clubber)))
 
   case actions.UI_TOGGLE_FILTER: return state
     .updateIn(['filters', action.filter], v => !v)
 
   case actions.UI_TOGGLE_TAG: return state
-    .set('withTags', toggle(state.get('withTags'), action.tag))
+    .set('withTags', cacheRef('withTags', toggle(state.get('withTags'), action.tag)))
 
   case actions.UI_CHANGE_NB_MONTHS:
     return state.set(serialize(addMonth(state.get('startMonth'), actions.nbMonths - 1), true))
@@ -86,5 +85,17 @@ export default (state = initialState, action) => {
     .set('offline', true)
 
   default: return state
+  }
+}
+
+
+const cachedRefs = {}
+function cacheRef (key, ref) {
+  const kkey = key + '/' + JSON.stringify(ref)
+  if (kkey in cachedRefs) {
+    return cachedRefs[kkey]
+  } else {
+    cachedRefs[kkey] = ref
+    return ref
   }
 }
