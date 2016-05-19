@@ -3,6 +3,7 @@ import * as actions from '../constants/actions'
 
 import clubbers from '../constants/clubbers'
 import { inclusiveIsBetween, startOfMonth, endOfMonth, isAfter, isBefore } from '../utils/date'
+import { isEqual } from 'lodash/fp'
 
 
 const initialEvents = Map() // id:string => event:Event
@@ -12,13 +13,18 @@ export default (events = initialEvents, action) => {
 
   case actions.CREATED_EVENT:
   case actions.UPDATED_EVENT:
+    if (isEqual(action.event, events.get(action.event.id))) {
+      return events
+    }
     return events.set(action.event.id, action.event)
 
   case actions.DELETED_EVENT:
     return events.delete(action.eventId)
 
   case actions.FETCHED_EVENTS:
-    return Map(action.events.map(e => [e.id, e]))
+    return action.events.reduce((map, e) =>
+      isEqual(e, map.get(e.id)) ? map : map.set(e.id, e)
+    , events)
 
   default:
     return events
