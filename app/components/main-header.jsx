@@ -5,14 +5,15 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as actions from '../actions'
-import { filteredEvents } from '../reducers/events'
+import { visibleEvents, filteredEvents } from '../reducers/events'
 
 
 class MainHeader extends Component {
 
   static propTypes = {
     eventFormVisible: PropTypes.bool.isRequired,
-    nbEvents: PropTypes.number.isRequired,
+    nbTotalEvents: PropTypes.number.isRequired,
+    nbVisibleEvents: PropTypes.number.isRequired,
     nbFilteredEvents: PropTypes.number.isRequired,
     offline: PropTypes.bool.isRequired,
     searchQuery: PropTypes.string.isRequired,
@@ -21,7 +22,8 @@ class MainHeader extends Component {
 
   shouldComponentUpdate (nextProps) {
     return this.props.eventFormVisible !== nextProps.eventFormVisible
-        || this.props.nbEvents !== nextProps.nbEvents
+        || this.props.nbTotalEvents !== nextProps.nbTotalEvents
+        || this.props.nbVisibleEvents !== nextProps.nbVisibleEvents
         || this.props.nbFilteredEvents !== nextProps.nbFilteredEvents
         || this.props.offline !== nextProps.offline
         || this.props.searchQuery !== nextProps.searchQuery
@@ -32,7 +34,8 @@ class MainHeader extends Component {
   }
 
   render () {
-    const { nbEvents, eventFormVisible, nbFilteredEvents, offline, searchQuery } = this.props
+    const { nbTotalEvents, nbVisibleEvents, eventFormVisible, nbFilteredEvents,
+      offline, searchQuery } = this.props
 
     var button = offline ? 'offline' : 'Add Event +'
 
@@ -46,7 +49,7 @@ class MainHeader extends Component {
             onClick={this.props.actions.openEventForm}>{button}</button>
         </div>
         <div className="header-center">
-          <h2 title="filtered / total">Events: {nbFilteredEvents} / {nbEvents}</h2>
+          <h2 title="filtered / total">Events: {nbFilteredEvents} / {nbVisibleEvents} <small>(total {nbTotalEvents})</small></h2>
         </div>
         <div className="header-right">
           <span className="connection-status">
@@ -69,7 +72,8 @@ class MainHeader extends Component {
 
 export default connect(
   ({ events, ui }) => ({
-    nbEvents: events.count(),
+    nbTotalEvents: events.count(),
+    nbVisibleEvents: visibleEvents(events, ui).count(),
     nbFilteredEvents: filteredEvents(events, ui).count(),
     offline: ui.get('offline'),
     eventFormVisible: ui.get('eventFormVisible'),

@@ -48,12 +48,9 @@ const _filteredEvents = memoize((
   lastUpdate,
   searchQuery,
   visibleClubbers,
-  withTags,
-  startMonth,
-  endMonth
+  withTags
 ) => {
-  let filteredEvents = events.filter(e =>
-    isBefore(startMonth, e.end) && isAfter(endMonth, e.start))
+  let filteredEvents = events
 
   if (visibleClubbers.count() != clubbers.count()) {
     filteredEvents = filteredEvents.filter(e =>
@@ -87,12 +84,26 @@ const _filteredEvents = memoize((
 
 export function filteredEvents (events, ui) {
   return _filteredEvents(
-    events,
+    visibleEvents(events, ui),
     ui.get('confirmed'),
     ui.get('lastUpdate'),
     ui.get('searchQuery'),
     ui.get('visibleClubbers'),
-    ui.get('withTags'),
+    ui.get('withTags')
+  )
+}
+
+const _visibleEvents = memoize((
+  events,
+  startMonth,
+  endMonth
+) =>
+  events.filter(e => isBefore(startMonth, e.end) && isAfter(endMonth, e.start))
+)
+
+export function visibleEvents (events, ui) {
+  return _visibleEvents(
+    events,
     ui.get('startMonth'),
     ui.get('endMonth')
   )
