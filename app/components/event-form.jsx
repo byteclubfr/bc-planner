@@ -43,6 +43,15 @@ class EventForm extends Component {
   }
 
   shouldComponentUpdate (nextProps, nextState) {
+    if (process.env.NODE_ENV === 'development') {
+      if (this.props.tags.equals(nextProps.tags) !== (this.props.tags === nextProps.tags)) {
+        console.warn('EventForm.tags: EQUAL BUT NOT SAME REF')
+      }
+      if (this.state.event.equals(nextState.event) !== (this.state.event === nextState.event)) {
+        console.warn('EventForm.event: EQUAL BUT NOT SAME REF')
+      }
+    }
+
     return !this.props.tags.equals(nextProps.tags)
         || !this.state.event.equals(nextState.event)
   }

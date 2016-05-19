@@ -20,6 +20,12 @@ class MonthList extends Component {
   }
 
   shouldComponentUpdate (nextProps) {
+    if (process.env.NODE_ENV === 'development') {
+      if (isEqualWith(isSameMonth, this.props.range, nextProps.range) !== (this.props.range === nextProps.range)) {
+        console.warn('MonthList.range: EQUAL BUT NOT SAME REF')
+      }
+    }
+
     return !isEqualWith(isSameMonth, this.props.range, nextProps.range)
   }
 

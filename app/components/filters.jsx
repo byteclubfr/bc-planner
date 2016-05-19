@@ -26,6 +26,21 @@ class Filters extends Component {
   }
 
   shouldComponentUpdate (nextProps) {
+    if (process.env.NODE_ENV === 'development') {
+      if (this.props.filters.equals(nextProps.filters) !== (this.props.filters === nextProps.filters)) {
+        console.warn('Filters.filters: EQUAL BUT NOT SAME REF')
+      }
+      if (this.props.tags.equals(nextProps.tags) !== (this.props.tags === nextProps.tags)) {
+        console.warn('Filters.tags: EQUAL BUT NOT SAME REF')
+      }
+      if (this.props.visibleClubbers.equals(nextProps.visibleClubbers) !== (this.props.visibleClubbers === nextProps.visibleClubbers)) {
+        console.warn('Filters.visibleClubbers: EQUAL BUT NOT SAME REF')
+      }
+      if (this.props.withTags.equals(nextProps.withTags) !== (this.props.withTags === nextProps.withTags)) {
+        console.warn('Filters.withTags: EQUAL BUT NOT SAME REF')
+      }
+    }
+
     return this.props.confirmed !== nextProps.confirmed
         || this.props.lastUpdate !== nextProps.lastUpdate
         || this.props.nbMonths !== nextProps.nbMonths

@@ -22,6 +22,21 @@ class Event extends Component {
   }
 
   shouldComponentUpdate (nextProps) {
+    if (process.env.NODE_ENV === 'development') {
+      if (isEqual(this.props.event, nextProps.event) !== (this.props.event === nextProps.event)) {
+        console.warn('Event.event: EQUAL BUT NOT SAME REF')
+      }
+      if (this.props.filters.equals(nextProps.filters) !== (this.props.filters === nextProps.filters)) {
+        console.warn('Event.filters: EQUAL BUT NOT SAME REF')
+      }
+      if (this.props.visibleClubbers.equals(nextProps.visibleClubbers) !== (this.props.visibleClubbers === nextProps.visibleClubbers)) {
+        console.warn('Event.visibleClubbers: EQUAL BUT NOT SAME REF')
+      }
+      if (this.props.withTags.equals(nextProps.withTags) !== (this.props.withTags === nextProps.withTags)) {
+        console.warn('Event.withTags: EQUAL BUT NOT SAME REF')
+      }
+    }
+
     return !isEqual(this.props.event, nextProps.event)
         || !this.props.filters.equals(nextProps.filters)
         || !this.props.visibleClubbers.equals(nextProps.visibleClubbers)

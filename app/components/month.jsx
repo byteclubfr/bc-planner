@@ -21,6 +21,12 @@ class Month extends Component {
   }
 
   shouldComponentUpdate (nextProps) {
+    if (process.env.NODE_ENV === 'development') {
+      if (isSameMonth(this.props.date, nextProps.date) !== (this.props.date === nextProps.date)) {
+        console.warn('Month.date: EQUAL BUT NOT SAME REF')
+      }
+    }
+
     return !isSameMonth(this.props.date, nextProps.date)
   }
 

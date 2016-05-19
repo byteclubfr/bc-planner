@@ -15,6 +15,12 @@ class LastUpdates extends Component {
   }
 
   shouldComponentUpdate (nextProps) {
+    if (process.env.NODE_ENV === 'development') {
+      if (this.props.events.equals(nextProps.events) !== (this.props.events === nextProps.events)) {
+        console.warn('LastUpdate.events: EQUAL BUT NOT SAME REF')
+      }
+    }
+
     return !this.props.events.equals(nextProps.events)
   }
 

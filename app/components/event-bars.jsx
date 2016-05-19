@@ -16,6 +16,15 @@ class EventBars extends Component {
   }
 
   shouldComponentUpdate (nextProps) {
+    if (process.env.NODE_ENV === 'development') {
+      if (this.props.visibleClubbers.equals(nextProps.visibleClubbers) !== (this.props.visibleClubbers === nextProps.visibleClubbers)) {
+        console.warn('EventBars.visibleClubbers: EQUAL BUT NOT SAME REF')
+      }
+      if (this.props.events.equals(nextProps.events) !== (this.props.events === nextProps.events)) {
+        console.warn('EventBars.events: EQUAL BUT NOT SAME REF')
+      }
+    }
+
     return !this.props.visibleClubbers.equals(nextProps.visibleClubbers)
         || !this.props.events.equals(nextProps.events)
   }
