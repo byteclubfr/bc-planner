@@ -5,6 +5,8 @@ import * as actions from '../constants/actions'
 import clubbers from './../constants/clubbers'
 
 import { serialize, addMonth } from '../utils/date'
+import cacheRef from '../utils/cache-refs'
+
 
 const initialState = Map({
   startMonth: serialize(new Date(), true),
@@ -85,17 +87,5 @@ export default (state = initialState, action) => {
     .set('offline', true)
 
   default: return state
-  }
-}
-
-
-const cachedRefs = {}
-function cacheRef (key, ref) {
-  const kkey = key + '/' + JSON.stringify(ref)
-  if (kkey in cachedRefs) {
-    return cachedRefs[kkey]
-  } else {
-    cachedRefs[kkey] = ref
-    return ref
   }
 }

@@ -7,7 +7,7 @@ import { bindActionCreators } from 'redux'
 import * as actions from '../actions'
 
 import { filteredEvents, monthEvents } from '../reducers/events'
-import { isSameMonth, buildMonthDaysRange, formatMonth } from '../utils/date'
+import { buildMonthDaysRange, formatMonth } from '../utils/date'
 
 import Day from './day'
 
@@ -17,27 +17,22 @@ class Month extends Component {
   static propTypes = {
     actions: PropTypes.object.isRequired,
     nbEvents: PropTypes.number.isRequired,
-    date: PropTypes.instanceOf(Date).isRequired
+    date: PropTypes.string.isRequired
   }
 
   shouldComponentUpdate (nextProps) {
-    if (process.env.NODE_ENV === 'development') {
-      if (isSameMonth(this.props.date, nextProps.date) !== (this.props.date === nextProps.date)) {
-        console.warn('Month.date: EQUAL BUT NOT SAME REF')
-      }
-    }
-
-    return !isSameMonth(this.props.date, nextProps.date)
+    return !this.props.date !== nextProps.date
   }
 
   render () {
-    const { nbEvents, date } = this.props
+    const { nbEvents } = this.props
+    const date = new Date(this.props.date)
     const dates = buildMonthDaysRange(date)
 
     return (
       <div className="month">
         <header className="month-title">{formatMonth(date)} ({nbEvents})</header>
-        {dates.map(d => <Day date={d} key={String(d)} />)}
+        {dates.map(d => <Day date={d} key={d} />)}
       </div>
     )
   }

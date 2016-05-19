@@ -18,28 +18,26 @@ class Day extends Component {
 
   static propTypes = {
     actions: PropTypes.object.isRequired,
-    date: PropTypes.instanceOf(Date).isRequired,
+    date: PropTypes.string.isRequired,
     events: PropTypes.instanceOf(Map).isRequired,
     showBars: PropTypes.bool.isRequired
   }
 
   shouldComponentUpdate (nextProps) {
     if (process.env.NODE_ENV === 'development') {
-      if (isSameDay(this.props.date, nextProps.date) !== (this.props.date === nextProps.date)) {
-        console.warn('Day.date: EQUAL BUT NOT SAME REF')
-      }
       if (this.props.events.equals(nextProps.events) !== (this.props.events === nextProps.events)) {
         console.warn('Day.events: EQUAL BUT NOT SAME REF')
       }
     }
 
-    return !isSameDay(this.props.date, nextProps.date)
+    return !this.props.date !== nextProps.date
         || !this.props.events.equals(nextProps.events)
         || !this.props.showBars !== nextProps.showBars
   }
 
   render () {
-    const { date, showBars, events } = this.props
+    const { showBars, events } = this.props
+    const date = new Date(this.props.date)
 
     let klass = classNames('day', {
       'day-weekend': isWeekend(date),

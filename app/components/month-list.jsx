@@ -16,7 +16,7 @@ class MonthList extends Component {
 
   static propTypes = {
     actions: PropTypes.object.isRequired,
-    range: PropTypes.arrayOf(PropTypes.instanceOf(Date)).isRequired
+    range: PropTypes.arrayOf(PropTypes.string).isRequired
   }
 
   shouldComponentUpdate (nextProps) {

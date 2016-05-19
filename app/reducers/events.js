@@ -5,6 +5,7 @@ import clubbers from '../constants/clubbers'
 import { inclusiveIsBetween, startOfMonth, endOfMonth, isAfter, isBefore } from '../utils/date'
 import { isEqual } from 'lodash/fp'
 import memoize from 'memoize-immutable'
+import cacheRef from '../utils/cache-refs'
 
 
 const initialEvents = Map() // id:string => event:Event
@@ -29,7 +30,7 @@ export default (events = initialEvents, action) => {
       e._clubbers.sort()
       e._tags.sort()
 
-      return isEqual(e, map.get(e.id)) ? map : map.set(e.id, e))
+      return isEqual(e, map.get(e.id)) ? map : map.set(e.id, e)
     }, events)
 
   default:
@@ -51,7 +52,6 @@ const _filteredEvents = memoize((
   startMonth,
   endMonth
 ) => {
-
   let filteredEvents = events.filter(e =>
     isBefore(startMonth, e.end) && isAfter(endMonth, e.start))
 
@@ -83,7 +83,7 @@ const _filteredEvents = memoize((
   }
 
   return filteredEvents
-}, true)
+})
 
 export function filteredEvents (events, ui) {
   return _filteredEvents(
@@ -98,19 +98,21 @@ export function filteredEvents (events, ui) {
   )
 }
 
-// (Map, Date) => Map
+// (Map, string) => Map
 export const monthEvents = memoize((events, month) => {
   const monthStart = startOfMonth(month)
   const monthEnd = endOfMonth(month)
 
-  return events.filter(event =>
+  return cacheRef('monthEvents', events.filter(event =>
     // Event occurs in this month if it starts before end of month AND it ends after start of month
     // <=> end of month is after start of event AND start of month is before end of event
     isAfter(monthEnd, event.start) && isBefore(monthStart, event.end)
-  )
+  ))
 })
 
-// (Map, Date) => Map
+// (Map, string) => Map
 export const dayEvents = memoize((events, day) => {
-  return events.filter(e => inclusiveIsBetween(day, e.start, e.end))
+  return cacheRef('dayEvents', events.filter(e =>
+    inclusiveIsBetween(day, e.start, e.end)
+  ))
 })

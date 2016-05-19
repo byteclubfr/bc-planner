@@ -27,27 +27,28 @@ function clone (any) {
   return new Date(any)
 }
 
-// (Date, Date) => Array<Date>
+// (Date, Date) => Array<string>
 export const buildMonthsRange = memoize((start, end) => {
   let range = []
   let curr = startOfMonth(start)
   end = endOfMonth(end)
 
   while (isBefore(curr, end)) {
-    range.push(curr)
+    range.push(serialize(curr, true))
     curr = addMonth(curr, 1)
   }
 
   return range
 })
 
+// Date => Array<string>
 export const buildMonthDaysRange = memoize(date => {
   let range = []
   let curr = startOfMonth(date)
   let end = endOfMonth(date)
 
   while (isBefore(curr, end)) {
-    range.push(curr)
+    range.push(serialize(curr))
     curr = addDay(curr, 1)
   }
 
