@@ -2,7 +2,7 @@ import { compose, createStore, applyMiddleware } from 'redux'
 import thunkMiddleware from 'redux-thunk' // lets us dispatch() functions
 import createLogger from 'redux-logger'
 import persistState from 'redux-localstorage'
-import { Map } from 'immutable'
+import Immutable, { Map } from 'immutable'
 
 import reducer from './reducers'
 
@@ -19,9 +19,19 @@ const createPersistentStore = compose(
   }),
 )(createStore)
 
+// Better logging for Immutable data structure
+const stateTransformer = (state) => {
+  let newState = {}
+  for (var i of Object.keys(state)) {
+    newState[i] = Immutable.Iterable.isIterable(state[i])
+      ? state[i].toJS()
+      : state[i]
+  }
+  return newState
+}
+
 var middlewares = __DEV__
-  // TODO: use actionTransformer to enhance display of immutable.js objects in logs
-  ? applyMiddleware(thunkMiddleware, createLogger({ collapsed: true }))
+  ? applyMiddleware(thunkMiddleware, createLogger({ collapsed: true, stateTransformer }))
   : applyMiddleware(thunkMiddleware)
 
 const store = middlewares(createPersistentStore)(reducer)
