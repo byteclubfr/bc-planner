@@ -27,6 +27,12 @@ function clone (any) {
   return new Date(any)
 }
 
+// reminder: month is 1 based
+// july daysInMonth(7, 2009) → 31
+function daysInMonth (month, year) {
+  return new Date(year, month, 0).getDate()
+}
+
 // (Date, Date) => Array<string>
 export const buildMonthsRange = memoize((start, end) => {
   let range = []
@@ -58,7 +64,12 @@ export const buildMonthDaysRange = memoize(date => {
 // (Date, number) => Date
 export function addMonth (date, nbMonths) {
   const d = clone(date)
+  const origDay = d.getDate() // remember to set back later
+  d.setDate(15) // neutral date
   d.setMonth(d.getMonth() + nbMonths)
+
+  const days = daysInMonth(d.getMonth() + 1, d.getFullYear())
+  d.setDate(days < origDay ? days : origDay) // cap?
   return d
 }
 
@@ -94,8 +105,7 @@ export function startOfMonth (date) {
 
 // Date => Date
 export function endOfMonth (date) {
-  const d = clone(date)
-  d.setMonth(d.getMonth() + 1)
+  const d = addMonth(date, 1)
   d.setDate(0)
   return d
 }
