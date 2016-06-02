@@ -30,7 +30,7 @@ const enhancer = compose(
 )
 const enhancedCreateStore = enhancer(createStore)
 
-// keu to avoid conflict with other redux projects on localhost
+// key to avoid conflict with other redux projects on localhost
 const KEY = 'bc-planner'
 // Initialize persistent state to avoid error when resetting data
 if (!localStorage.getItem(KEY)) {
