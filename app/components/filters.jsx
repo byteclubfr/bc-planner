@@ -82,12 +82,21 @@ class Filters extends Component {
   renderMonthsFilter () {
     const { actions, nbMonths } = this.props
 
+    const onChange = e => {
+      if (e.target.value) {
+        const nbMonths = Number(e.target.value)
+        setTimeout(() => {
+          actions.changeNbMonths(nbMonths)
+        }, 50)
+      }
+    }
+
     return (
       <label>
         <input
           max={12}
           min={1}
-          onChange={e => actions.changeNbMonths(e.target.value)}
+          onChange={onChange}
           type="number"
           value={nbMonths} />
         months
