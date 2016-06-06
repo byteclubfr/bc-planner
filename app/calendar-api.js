@@ -1,7 +1,6 @@
 /*eslint no-console:0 */
 
 import { calendarId, clientId, scopes } from './constants/google-credentials'
-import store from './store'
 import { fetchEvents, setOnline, setOffline } from './actions'
 import { shapeClientEvent, shapeServerEvent } from './utils/event'
 import { defer, delay } from './utils/promise'
@@ -9,9 +8,9 @@ import { defer, delay } from './utils/promise'
 // after this delay, give up
 const GAPI_TIMEOUT = 30000
 
-function initialFetch () {
-  store.dispatch(setOnline())
-  store.dispatch(fetchEvents())
+function initialFetch (dispatch) {
+  dispatch(setOnline())
+  dispatch(fetchEvents())
 }
 
 function loadClient () {
@@ -32,18 +31,23 @@ function authorize () {
   })
 }
 
-var gapiLoadDefer = defer()
-
-// JSONP callback
-window.initGapi = gapiLoadDefer.resolve
-
-Promise.race([
-  gapiLoadDefer.promise.then(authorize).then(loadClient),
-  delay(GAPI_TIMEOUT).then(() => { throw new Error('gapi timeout') })
-])
-.then(initialFetch, () => { store.dispatch(setOffline()) })
+if (typeof window !== 'undefined') {
+  // Browser environment
+  var gapiLoadDefer = defer()
+  // JSONP callback
+  window.initGapi = gapiLoadDefer.resolve
+}
 
 export default {
+
+  init: dispatch => {
+    return Promise.race([
+      gapiLoadDefer.promise.then(authorize).then(loadClient),
+      delay(GAPI_TIMEOUT).then(() => { throw new Error('gapi timeout') })
+    ])
+    .then(() => initialFetch(dispatch))
+    .catch(() => dispatch(setOffline()))
+  },
 
   insert: (data) => {
     return gapi.client.calendar.events.insert({
