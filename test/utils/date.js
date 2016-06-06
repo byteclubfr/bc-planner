@@ -1,14 +1,13 @@
 import { expect } from 'chai'
 import {
-  // Tested
   serialize, addMonth, addDay, endOfMonth, startOfMonth,
   buildMonthsRange, buildMonthDaysRange,
   inclusiveIsBetween, isWeekend, isToday, isAfter, isBefore, isSameDay, isSameMonth,
-  // Untested
   formatDay, formatAgo, formatMonth, formatMonthDay
 } from '../../app/utils/date'
 
 describe('utils/date', () => {
+
   it('serialize', () => {
     expect(serialize('2011-11-11')).to.equal('2011-11-11')
     expect(serialize('2016-02-29')).to.equal('2016-02-29')
@@ -235,7 +234,24 @@ describe('utils/date', () => {
       const result = isSameMonth(date1, date2)
       expect(result, date1 + ' ~ ' + date2).to.equal(expected)
     })
+  })
 
+  it('formatDay (uses moment)', () => {
+    expect(formatDay('2016-07-01')).to.equal('ven. 1 juil.')
+  })
+
+  it('formatAgo (uses moment)', () => {
+    const today = new Date()
+    const twoDaysAgo = addDay(today, -2)
+    expect(formatAgo(twoDaysAgo)).to.equal('il y a 2 jours')
+  })
+
+  it('formatMonthMonth (uses moment)', () => {
+    expect(formatMonth('2016-07-01')).to.equal('juillet 2016')
+  })
+
+  it('formatMonthDay (uses moment)', () => {
+    expect(formatMonthDay('2016-07-01')).to.equal('V 01')
   })
 
 })
