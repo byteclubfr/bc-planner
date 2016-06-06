@@ -39,6 +39,14 @@ export const buildMonthsRange = memoize((start, end) => {
   let curr = startOfMonth(start)
   end = endOfMonth(end)
 
+  if (isSameMonth(curr, end)) {
+    return [ serialize(curr) ]
+  }
+
+  if (end < curr) {
+    return []
+  }
+
   do {
     range.push(serialize(curr))
     curr = addMonth(curr, 1)
