@@ -62,7 +62,7 @@ export default (state = initialState, action) => {
     .set('withTags', cacheRef('withTags', toggle(state.get('withTags'), action.tag)))
 
   case actions.UI_CHANGE_NB_MONTHS:
-    return state.set('endMonth', serialize(endOfMonth(addMonth(state.get('startMonth'), actions.nbMonths - 1))))
+    return state.set('endMonth', serialize(endOfMonth(addMonth(state.get('startMonth'), action.nbMonths - 1))))
 
   case actions.UI_CHANGE_START_MONTH: {
     const nb = action.way === 'previous' ? -1 : 1
