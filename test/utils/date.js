@@ -1,10 +1,18 @@
 import { expect } from 'chai'
-import * as date from '../../app/utils/date'
+import {
+  // Tested
+  serialize, addMonth, endOfMonth,
+  // Untested
+  buildMonthsRange, buildMonthDaysRange, addDay,
+  inclusiveIsBetween, isWeekend, isToday, startOfMonth,
+  isAfter, isBefore, isSameDay, isSameMonth, formatDay, formatAgo,
+  formatMonth, formatMonthDay
+} from '../../app/utils/date'
 
 describe('utils/date', () => {
   it('should serialize dates', () => {
-    expect(date.serialize('2011-11-11')).to.equal('2011-11-11')
-    expect(date.serialize('2016-02-29')).to.equal('2016-02-29')
+    expect(serialize('2011-11-11')).to.equal('2011-11-11')
+    expect(serialize('2016-02-29')).to.equal('2016-02-29')
   })
 
   it('should add 1 month', () => {
@@ -17,7 +25,7 @@ describe('utils/date', () => {
       ['2016-01-31', '2016-02-29']
     ]
     dates.forEach(([a, b]) => {
-      const res = date.addMonth(new Date(a), 1).getTime()
+      const res = addMonth(new Date(a), 1).getTime()
       const expected = (new Date(b)).getTime()
       expect(res).to.equal(expected)
     })
@@ -38,7 +46,7 @@ describe('utils/date', () => {
       ['2017-01-31', '2017-01-31']
     ]
     dates.forEach(([a, b]) => {
-      const res = date.endOfMonth(new Date(a)).getTime()
+      const res = endOfMonth(new Date(a)).getTime()
       const expected = (new Date(b)).getTime()
       expect(res).to.equal(expected)
     })
