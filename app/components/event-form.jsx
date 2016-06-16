@@ -45,10 +45,10 @@ class EventForm extends Component {
   shouldComponentUpdate (nextProps, nextState) {
     if (process.env.NODE_ENV === 'development') {
       if (this.props.tags.equals(nextProps.tags) !== (this.props.tags === nextProps.tags)) {
-        console.warn('EventForm.tags: EQUAL BUT NOT SAME REF')
+        console.warn('EventForm.tags: EQUAL BUT NOT SAME REF') // eslint-disable-line no-console
       }
       if (this.state.event.equals(nextState.event) !== (this.state.event === nextState.event)) {
-        console.warn('EventForm.event: EQUAL BUT NOT SAME REF')
+        console.warn('EventForm.event: EQUAL BUT NOT SAME REF') // eslint-disable-line no-console
       }
     }
 
@@ -223,9 +223,12 @@ class EventForm extends Component {
 
 
 export default connect(
-  ({ ui, events, tags }) => ({
-    event: Map(events.get(ui.get('eventId'))),
-    tags
-  }),
+  ({ ui, events, tags }) => {
+    const event = events.get(ui.get('eventId'))
+    return {
+      event: event && Map(event), // conversion to Map, memoization could save a few renders here but it's not heavy
+      tags
+    }
+  },
   dispatch => ({ actions: bindActionCreators(actions, dispatch) })
 )(EventForm)
