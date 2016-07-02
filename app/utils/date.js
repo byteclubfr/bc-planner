@@ -172,3 +172,7 @@ export function formatMonthDay (date) {
   const m = moment(date)
   return m.format('dd')[0] + ' ' + m.format('DD')
 }
+
+export function formatWeek (date) {
+  return 'W ' + moment(parse(date)).format('W')
+}

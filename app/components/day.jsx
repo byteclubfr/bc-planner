@@ -11,7 +11,7 @@ import { filteredEvents, dayEvents } from '../reducers/events'
 
 import Event from './event'
 import EventBars from './event-bars'
-import { isToday, isWeekend, isSameDay, formatMonthDay } from './../utils/date'
+import { isToday, isWeekend, formatMonthDay, formatWeek } from './../utils/date'
 
 
 class Day extends Component {
@@ -35,6 +35,18 @@ class Day extends Component {
         || this.props.showBars !== nextProps.showBars
   }
 
+  renderHeader (date) {
+    const monthDay = formatMonthDay(date)
+    const monday = monthDay.startsWith('L')
+
+    return (
+      <header className="day-date">
+        {monthDay}
+        {monday ? <div className="day-week">{formatWeek(date)}</div> : null}
+      </header>
+    )
+  }
+
   render () {
     const { showBars, events } = this.props
     const date = new Date(this.props.date)
@@ -46,7 +58,7 @@ class Day extends Component {
 
     return (
       <div className={klass}>
-        <header className="day-date">{formatMonthDay(date)}</header>
+        {this.renderHeader(date)}
         <ul className="event-list">
           {events.toArray().map(event =>
             <Event event={event} key={event.id} />
