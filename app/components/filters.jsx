@@ -20,6 +20,7 @@ class Filters extends Component {
     confirmed: PropTypes.number.isRequired,
     filters: PropTypes.instanceOf(Map).isRequired,
     lastUpdate: PropTypes.number.isRequired,
+    lastUpdateEvents: PropTypes.instanceOf(Map),
     nbMonths: PropTypes.number.isRequired,
     tags: PropTypes.instanceOf(Set),
     visibleClubbers: PropTypes.instanceOf(Set).isRequired,
@@ -178,7 +179,7 @@ class Filters extends Component {
   renderUpdateFilter () {
     const { actions, lastUpdate, lastUpdatedEvents } = this.props
 
-    const lastEvent = lastUpdatedEvents.toArray()[0]
+    const lastEvent = lastUpdatedEvents.toArray()[0] || {}
 
     return (
       <fieldset className="update-filter">
