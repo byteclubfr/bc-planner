@@ -46,7 +46,7 @@ class MainHeader extends Component {
           <button
             className="event-form-open"
             disabled={eventFormVisible || offline}
-            onClick={() => this.props.actions.openEventForm(null) }>{button}</button>
+            onClick={() => this.props.actions.openEventForm(null)}>{button}</button>
         </div>
         <div className="header-center">
           <h2 title="filtered / total">Events: {nbFilteredEvents} / {nbVisibleEvents} <small>(total {nbTotalEvents})</small></h2>
