@@ -6,7 +6,8 @@ import { Map, Set } from 'immutable'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as actions from '../actions'
-import { buildMonthsRange } from '../utils/date'
+import { lastUpdates } from '../reducers/events'
+import { buildMonthsRange, formatAgo } from '../utils/date'
 
 import clubbers from './../constants/clubbers'
 import Gravatar from './gravatar'
@@ -175,11 +176,13 @@ class Filters extends Component {
   }
 
   renderUpdateFilter () {
-    const { actions, lastUpdate } = this.props
+    const { actions, lastUpdate, lastUpdatedEvents } = this.props
+
+    const lastEvent = lastUpdatedEvents.toArray()[0]
 
     return (
       <fieldset className="update-filter">
-        <legend><a href="#last-updates">Last update</a></legend>
+        <legend><a href="#last-updates" title={lastEvent.updated}>Last update {formatAgo(lastEvent.updated)}</a></legend>
         <label>
           <select
             onChange={e => actions.changeLastUpdate(Number(e.target.value))}
@@ -214,10 +217,11 @@ class Filters extends Component {
 
 export default connect(
   // TODO memoize?
-  ({ tags, ui }) => ({
+  ({ events, tags, ui }) => ({
     confirmed: ui.get('confirmed'),
     filters: ui.get('filters'),
     lastUpdate: ui.get('lastUpdate'),
+    lastUpdatedEvents: lastUpdates(events),
     nbMonths: buildMonthsRange(ui.get('startMonth'), ui.get('endMonth')).length,
     tags,
     visibleClubbers: ui.get('visibleClubbers'),
