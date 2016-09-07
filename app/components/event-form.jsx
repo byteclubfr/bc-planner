@@ -14,19 +14,22 @@ import { serialize, addDay } from '../utils/date'
 
 import Gravatar from './gravatar'
 
+const getBlankEvent = (defaultDate) => {
+  const d = defaultDate ? defaultDate : serialize(new Date())
 
-const BLANK_EVENT = Map({
-  start: serialize(new Date()),
-  end: serialize(addDay(new Date(), 1)),
-  summary: '',
-  location: '',
-  description: '',
-  attendees: [],
+  return Map({
+    start: d,
+    end: d,
+    summary: '',
+    location: '',
+    description: '',
+    attendees: [],
 
-  _clubbers: [],
-  _confirmed: false,
-  _tags: []
-})
+    _clubbers: [],
+    _confirmed: false,
+    _tags: []
+  })
+}
 
 
 class EventForm extends Component {
@@ -39,7 +42,7 @@ class EventForm extends Component {
 
   constructor (props) {
     super(props)
-    this.state = { event: BLANK_EVENT }
+    this.state = { event: getBlankEvent(props.defaultDate) }
   }
 
   shouldComponentUpdate (nextProps, nextState) {
@@ -54,11 +57,12 @@ class EventForm extends Component {
 
     return this.props.tags !== nextProps.tags
         || this.state.event !== nextState.event
+        || this.state.event.start !== nextProps.defaultDate
   }
 
   componentWillReceiveProps (props) {
     if (!props.event) {
-      this.setState({ event: BLANK_EVENT })
+      this.setState({ event: getBlankEvent(props.defaultDate) })
     } else {
       const tags = (props.event._tags || []).map(t => ({ id: t, text: t }))
       this.setState({ event: this.state.event.merge(props.event).set('_tags', tags) })
@@ -227,6 +231,7 @@ export default connect(
     const event = events.get(ui.get('eventId'))
     return {
       event: event && Map(event), // conversion to Map, memoization could save a few renders here but it's not heavy
+      defaultDate: ui.get('eventFormDefaultDate'),
       tags
     }
   },

@@ -11,8 +11,11 @@ import cacheRef from '../utils/cache-refs'
 const initialState = Map({
   startMonth: serialize(startOfMonth(new Date())),
   endMonth: serialize(endOfMonth(addMonth(new Date(), 5))),
+  // form
   eventFormVisible: false,
+  eventFormDefaultDate: null,
   eventId: null,
+
   fetching: true,
   offline: true,
   filters: Map({
@@ -36,6 +39,7 @@ export default (state = initialState, action) => {
 
   case actions.UI_OPEN_EVENT_FORM: return state
     .set('eventFormVisible', true)
+    .set('eventFormDefaultDate', action.defaultDate)
     .set('eventId', action.eventId)
 
   // close form after submission

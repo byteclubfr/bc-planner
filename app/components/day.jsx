@@ -47,9 +47,23 @@ class Day extends Component {
     )
   }
 
+  renderEventsList (events) {
+    return (
+      <ul className="event-list">
+        {events.toArray().map(event => <Event event={event} key={event.id} />)}
+      </ul>
+    )
+  }
+
+  renderButton () {
+    return <button className="day-add-event"
+      onClick={() => this.props.actions.openEventForm(null, this.props.date)}>Add event</button>
+  }
+
   render () {
     const { showBars, events } = this.props
     const date = new Date(this.props.date)
+    const count = events.count()
 
     let klass = classNames('day', {
       'day-weekend': isWeekend(date),
@@ -59,12 +73,8 @@ class Day extends Component {
     return (
       <div className={klass}>
         {this.renderHeader(date)}
-        <ul className="event-list">
-          {events.toArray().map(event =>
-            <Event event={event} key={event.id} />
-          )}
-        </ul>
-        {showBars && events.count() ? <EventBars events={events} /> : null}
+        {count ? this.renderEventsList(events) : this.renderButton() }
+        {showBars && count ? <EventBars events={events} /> : null}
       </div>
     )
   }

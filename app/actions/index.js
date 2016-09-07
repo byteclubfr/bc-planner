@@ -1,12 +1,8 @@
 import * as types from '../constants/actions'
 import calendar from '../calendar-api'
 
-export function openEventForm (eventId = null) {
-  return {
-    type: types.UI_OPEN_EVENT_FORM,
-    eventId
-  }
-}
+// eventId is used to edit, defaultDate is used for new events after clicking on a day
+export const openEventForm = (eventId = null, defaultDate) => ({ type: types.UI_OPEN_EVENT_FORM, eventId, defaultDate })
 
 export const closeEventForm = () => ({ type: types.UI_CLOSE_EVENT_FORM })
 
