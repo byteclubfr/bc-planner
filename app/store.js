@@ -1,28 +1,12 @@
 import { compose, createStore, applyMiddleware } from 'redux'
 import thunkMiddleware from 'redux-thunk'
-import createLogger from 'redux-logger'
 import persistState from 'redux-localstorage'
-import Immutable, { Map } from 'immutable'
+import { Map } from 'immutable'
 
 import reducer from './reducers'
 
 // lets us dispatch() functions
 const middlewares = [thunkMiddleware]
-if (__DEV__) {
-  middlewares.push(createLogger({
-    collapsed: true,
-    // Better logging for Immutable data structure
-    stateTransformer: (state) => {
-      let newState = {}
-      for (var i of Object.keys(state)) {
-        newState[i] = Immutable.Iterable.isIterable(state[i])
-          ? state[i].toJS()
-          : state[i]
-      }
-      return newState
-    }
-  }))
-}
 
 const enhancer = compose(
   applyMiddleware(...middlewares),
