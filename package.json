@@ -10,7 +10,7 @@
     "serve": "http-server build",
     "start": "npm run serve",
     "test": "mocha --recursive --compilers js:babel-register",
-    "watch": "NODE_ENV=development webpack-dev-server",
+    "watch": "NODE_ENV=development webpack-dashboard -- webpack-dev-server",
     "watch-debug": "NODE_ENV=development BABEL_ENV=debug webpack-dev-server"
   },
   "repository": {
@@ -47,6 +47,7 @@
     "stylus": "^0.54.2",
     "stylus-loader": "^2.0.0",
     "webpack": "^1.11.0",
+    "webpack-dashboard": "^0.1.8",
     "webpack-dev-server": "^1.10.1"
   },
   "dependencies": {

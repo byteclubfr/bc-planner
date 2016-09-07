@@ -3,6 +3,7 @@
 var path = require('path')
 var webpack = require('webpack')
 var CompressionPlugin = require('compression-webpack-plugin')
+var DashboardPlugin = require('webpack-dashboard/plugin')
 
 var port = process.env.PORT || 8080
 
@@ -45,6 +46,7 @@ module.exports = {
       minRatio: 0.8
     })
   ], [
+    new DashboardPlugin(),
     skipMomentLocales,
     new webpack.DefinePlugin({
       '__DEV__': true,
