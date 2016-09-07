@@ -34,7 +34,7 @@
     "babel-register": "^6.9.0",
     "chai": "^3.5.0",
     "compression-webpack-plugin": "^0.3.1",
-    "css-loader": "^0.23.0",
+    "css-loader": "^0.25.0",
     "cz-conventional-changelog": "^1.1.4",
     "eslint": "^3.0.0",
     "eslint-plugin-lodash-fp": "^1.2.0",
