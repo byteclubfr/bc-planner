@@ -7,10 +7,11 @@ import { Provider } from 'react-redux'
 import store from './store'
 import App from './components/app'
 
-import api from './calendar-api'
+import calendar from './calendar-api'
+import firebase from './firebase-api'
 
-api.init(store.dispatch.bind(store))
-
+calendar.init(::store.dispatch)
+firebase.init(::store.dispatch)
 
 ReactDOM.render(
   <Provider store={store}>

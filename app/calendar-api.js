@@ -40,7 +40,7 @@ if (typeof window !== 'undefined') {
 
 export default {
 
-  init: dispatch => {
+  init: (dispatch) => {
     return Promise.race([
       gapiLoadDefer.promise.then(authorize).then(loadClient),
       delay(GAPI_TIMEOUT).then(() => { throw new Error('gapi timeout') })

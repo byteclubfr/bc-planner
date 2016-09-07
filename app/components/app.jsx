@@ -8,6 +8,7 @@ import { bindActionCreators } from 'redux'
 import * as actions from '../actions'
 
 // child components
+import Contacts from './contacts'
 import EventForm from './event-form'
 import Filters from './filters'
 import LastUpdates from './last-updates'
@@ -49,7 +50,10 @@ class App extends Component {
               <MainHeader />
               <Filters />
               <MonthList />
-              <LastUpdates />
+              <div className="cols">
+                <LastUpdates />
+                <Contacts />
+              </div>
             </main>
           </div>
         </div>

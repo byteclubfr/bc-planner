@@ -62,3 +62,5 @@ export const search = (searchQuery) => ({ type: types.UI_SEARCH, searchQuery })
 export const setOnline = () => ({ type: types.UI_SET_ONLINE })
 
 export const setOffline = () => ({ type: types.UI_SET_OFFLINE })
+
+export const fetchedContacts = (contacts) => ({ type: types.FETCHED_CONTACTS, contacts })
