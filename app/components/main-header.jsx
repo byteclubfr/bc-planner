@@ -33,11 +33,6 @@ class MainHeader extends Component {
     this.props.actions.search(e.target.value)
   }
 
-  clearCache () {
-    localStorage.clear()
-    window.location.reload()
-  }
-
   render () {
     const { nbTotalEvents, nbVisibleEvents, eventFormVisible, nbFilteredEvents,
       offline, searchQuery } = this.props
@@ -57,7 +52,6 @@ class MainHeader extends Component {
           <h2 title="filtered / total">Events: {nbFilteredEvents} / {nbVisibleEvents} <small>(total {nbTotalEvents})</small></h2>
         </div>
         <div className="header-right">
-          <button className="clear-cache" onClick={() => this.clearCache()}>clear cache</button>
           <span className="connection-status">
             {offline
               ? <span className="connection-status-offline">Currently offline</span>
