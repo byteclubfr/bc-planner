@@ -1,7 +1,7 @@
 import '../styles/day'
 
 import React, { Component, PropTypes } from 'react'
-import classNames from 'classnames'
+import cx from 'classnames'
 import { Map } from 'immutable'
 
 import { connect } from 'react-redux'
@@ -65,7 +65,7 @@ class Day extends Component {
     const date = new Date(this.props.date)
     const count = events.count()
 
-    let klass = classNames('day', {
+    let klass = cx('day', {
       'day-weekend': isWeekend(date),
       'day-today': isToday(date)
     })

@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react'
-import classNames from 'classnames'
+import cx from 'classnames'
 import { Map, Set } from 'immutable'
 import { isEqual } from 'lodash/fp'
 
@@ -45,7 +45,7 @@ class Event extends Component {
 
   renderTitle (event) {
     return (
-      <div className={classNames('event-title', { 'event-unconfirmed': !event._confirmed })}>
+      <div className={cx('event-title', { 'event-unconfirmed': !event._confirmed })}>
         <span title="Event confirmed?">
           {event._confirmed ? '✓' : ''}
         </span>
@@ -63,7 +63,7 @@ class Event extends Component {
   renderTag (tag) {
     let selTag = this.props.withTags.includes(tag)
     return (
-      <li className={classNames('event-tag', { 'event-tag-selected': selTag })}
+      <li className={cx('event-tag', { 'event-tag-selected': selTag })}
           key={tag}>
         {tag}
       </li>

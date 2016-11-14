@@ -2,9 +2,10 @@ import '../styles/filters'
 
 import React, { Component, PropTypes } from 'react'
 import { Map, Set } from 'immutable'
-
+import cx from 'classnames'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
+
 import * as actions from '../actions'
 import { lastUpdates } from '../reducers/events'
 import { buildMonthsRange, formatAgo } from '../utils/date'
@@ -108,11 +109,12 @@ class Filters extends Component {
 
   tagCheckbox (tag) {
     const { actions, withTags } = this.props
+    const checked = withTags.includes(tag)
 
     return (
-      <label className="tag-filter" key={tag}>
+      <label className={cx('tag-filter', { active: checked })} key={tag}>
         <input
-          checked={withTags.includes(tag)}
+          checked={checked}
           onChange={() => actions.toggleTag(tag)}
           type="checkbox" />
         {tag}
