@@ -1,7 +1,7 @@
 import '../styles/fx.styl'
 
 import React, { Component, PropTypes } from 'react'
-import classNames from 'classnames'
+import cx from 'classnames'
 
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -11,6 +11,7 @@ import * as actions from '../actions'
 import Contacts from './contacts'
 import EventForm from './event-form'
 import Filters from './filters'
+import Grid from './grid'
 import LastUpdates from './last-updates'
 import MainHeader from './main-header'
 import MainLoader from './main-loader'
@@ -41,7 +42,7 @@ class App extends Component {
     const { fetching, eventFormVisible } = this.props
 
     return (
-      <div className={classNames('container', 'fx-container', { 'fx-menu-open': eventFormVisible })}>
+      <div className={cx('container', 'fx-container', { 'fx-menu-open': eventFormVisible })}>
         {fetching ? <MainLoader /> : null}
         <EventForm />
         <div className="fx-pusher" onClick={::this.closeEventForm}>
@@ -54,6 +55,7 @@ class App extends Component {
                 <LastUpdates />
                 <Contacts />
               </div>
+              <Grid />
             </main>
           </div>
         </div>
