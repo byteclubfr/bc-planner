@@ -64,8 +64,9 @@ export default {
   },
 
   list: ({startMonth, endMonth, maxResults = 2500} = {}) => { // eslint-disable-line
-    return gapi.client.calendar.events.list({ calendarId })
+    return gapi.client.calendar.events.list({ calendarId, maxResults })
       .then(res => res.result.items)
+      .then(events => { console.debug(events.length, 'events loaded'); return events })
       // TODO - remove
       .then(events => events.map(shapeServerEvent))
   },
