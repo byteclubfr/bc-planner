@@ -1,12 +1,13 @@
 import '../styles/event-form'
 import '../styles/react-tags'
+import 'react-select/dist/react-select.css'
 
 import React, { Component, PropTypes } from 'react'
-import { WithContext as ReactTags } from 'react-tag-input'
+import { Creatable } from 'react-select';
 import { Set, Map } from 'immutable'
-
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
+
 import * as actions from '../actions'
 
 import clubbers from './../constants/clubbers'
@@ -64,7 +65,7 @@ class EventForm extends Component {
     if (!props.event) {
       this.setState({ event: getBlankEvent(props.defaultDate) })
     } else {
-      const tags = (props.event._tags || []).map(t => ({ id: t, text: t }))
+      const tags = (props.event.get('_tags') || [])
       this.setState({ event: this.state.event.merge(props.event).set('_tags', tags) })
     }
   }
@@ -122,7 +123,7 @@ class EventForm extends Component {
     if (!this.isFormValid()) return
 
     // transform tags back to a simple array with unique non null values
-    var tags = this.getTags().map(t => t.text)
+    var tags = this.getTags()
     const event = this.state.event.set('_tags', Array.from(new Set(tags))).toObject()
 
     if (event.id) {
@@ -140,29 +141,7 @@ class EventForm extends Component {
   }
 
   getTags () {
-    // TODO investigate why some null tags were created
     return this.state.event.get('_tags', []).filter(t => t)
-  }
-
-  handleAddTag (tag) {
-    tag = tag.toLowerCase()
-    var tags = this.getTags()
-    tags.push({ id: tag, text: tag })
-    this.setEvent('_tags', tags)
-  }
-
-  handleDeleteTag (i) {
-    var tags = this.getTags()
-    tags.splice(i, 1)
-    this.setEvent('_tags', tags)
-  }
-
-  handleDragTag (tag, curPos, newPos) {
-    var tags = this.getTags()
-    // mutate
-    tags.splice(curPos, 1)
-    tags.splice(newPos, 0, tag)
-    this.setEvent('_tags', tags)
   }
 
   clubberCheckbox (clubber, email) {
@@ -178,6 +157,30 @@ class EventForm extends Component {
         <Gravatar email={email} />
         {clubber.name}
       </label>
+    )
+  }
+
+  handleOnChangeTags (values) {
+    this.setEvent('_tags', values.map(v => v.value))
+  }
+
+  renderTags () {
+    const toOption = t => ({ label: t.toLowerCase(), value: t.toLowerCase() })
+
+    const options = this.props.tags.toArray().map(toOption)
+    const values = this.getTags().map(toOption)
+
+    return (
+      <div className="event-form-tags">
+        <label>Tags</label>
+        <Creatable
+          multi={true}
+          options={options}
+          value={values}
+          onChange={::this.handleOnChangeTags}
+          promptTextCreator={ (tag) => `Create tag "${tag}"` }
+          />
+      </div>
     )
   }
 
@@ -208,14 +211,7 @@ class EventForm extends Component {
           {clubbers.map(::this.clubberCheckbox).toArray()}
         </div>
 
-        <label>Tags</label>
-        <ReactTags
-          handleAddition={::this.handleAddTag}
-          handleDelete={::this.handleDeleteTag}
-          handleDrag={::this.handleDragTag}
-          suggestions={this.props.tags.toArray()}
-          shouldRenderSuggestions={q => q.length > 0}
-          tags={this.getTags()} />
+        {this.renderTags()}
 
         <button className="event-form-save" onClick={::this.submit} type="button">Save</button>
         {(event.get('id') ? <button className="event-form-delete" onClick={::this.delete} type="button">Delete</button> : null)}
