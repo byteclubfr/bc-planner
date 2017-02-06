@@ -1,6 +1,7 @@
 .day
   border 1px solid #eee
   display flex
+  min-height 2.6em
 
   ul
     padding .5em
@@ -28,13 +29,23 @@
   font-weight bold
 
 .day-add-event
+  background #e77
+  border 2px solid #eee
+  border-radius 5px
+  color #fff
   cursor pointer
   display none
-  font-size 0.9em
+  font-weight bold
+  &:hover
+    background #e55
 
 .day:hover
+  .day-date-tag
+    display none
+  .day-week
+    display none
   .day-add-event
-    display inline
+    display block
 
 .event-list
   flex-grow 1

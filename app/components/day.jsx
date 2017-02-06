@@ -41,8 +41,9 @@ class Day extends Component {
 
     return (
       <header className="day-date">
-        {monthDay}
+        <div className="day-date-tag">{monthDay}</div>
         {monday ? <div className="day-week">{formatWeek(date)}</div> : null}
+        { this.renderButton(monthDay) }
       </header>
     )
   }
@@ -55,9 +56,10 @@ class Day extends Component {
     )
   }
 
-  renderButton () {
+  renderButton (monthDay) {
     return <button className="day-add-event"
-      onClick={() => this.props.actions.openEventForm(null, this.props.date)}>Add event</button>
+      onClick={() => this.props.actions.openEventForm(null, this.props.date)}
+      title={`Add Event on ${monthDay}`}>+</button>
   }
 
   render () {
@@ -73,7 +75,7 @@ class Day extends Component {
     return (
       <div className={klass}>
         {this.renderHeader(date)}
-        {count ? this.renderEventsList(events) : this.renderButton() }
+        {count ? this.renderEventsList(events) : null }
         {showBars && count ? <EventBars events={events} /> : null}
       </div>
     )
