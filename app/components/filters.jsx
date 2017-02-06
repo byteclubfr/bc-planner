@@ -20,6 +20,7 @@ class Filters extends Component {
     actions: PropTypes.object.isRequired,
     confirmed: PropTypes.number.isRequired,
     filters: PropTypes.instanceOf(Map).isRequired,
+    invoiced: PropTypes.number.isRequired,
     lastUpdate: PropTypes.number.isRequired,
     lastUpdateEvents: PropTypes.instanceOf(Map),
     nbMonths: PropTypes.number.isRequired,
@@ -45,6 +46,7 @@ class Filters extends Component {
     }
 
     return this.props.confirmed !== nextProps.confirmed
+        || this.props.invoiced !== nextProps.invoiced
         || this.props.lastUpdate !== nextProps.lastUpdate
         || this.props.nbMonths !== nextProps.nbMonths
         || this.props.filters !== nextProps.filters
@@ -167,6 +169,26 @@ class Filters extends Component {
     )
   }
 
+  renderInvoicedFilter () {
+    const { actions, invoiced } = this.props
+
+    return (
+      <fieldset className="invoiced-filter">
+        <legend>€ Invoiced?</legend>
+        <label style={{ 'fontWeight': invoiced === -1 ? 'bold' : 'normal' }}>No</label>
+        <label>
+          <input
+            max="1"
+            min="-1"
+            onChange={e => actions.changeInvoiced(Number(e.target.value))}
+            type="range"
+            value={invoiced} />
+        </label>
+        <label style={{ 'fontWeight': invoiced === 1 ? 'bold' : 'normal' }}>✓Yes</label>
+      </fieldset>
+    )
+  }
+
   renderTagsFilter () {
     const tags = this.props.tags.toArray().sort()
 
@@ -209,6 +231,7 @@ class Filters extends Component {
         {this.renderClubbersFilter()}
         {this.renderDisplayOptions()}
         {this.renderConfirmedFilter()}
+        {this.renderInvoicedFilter()}
         {this.renderUpdateFilter()}
         {this.renderTagsFilter()}
       </form>
@@ -222,6 +245,7 @@ export default connect(
   // TODO memoize?
   ({ events, tags, ui }) => ({
     confirmed: ui.get('confirmed'),
+    invoiced: ui.get('invoiced'),
     filters: ui.get('filters'),
     lastUpdate: ui.get('lastUpdate'),
     lastUpdatedEvents: lastUpdates(events),

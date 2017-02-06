@@ -69,12 +69,14 @@ export function shapeClientEvent (event) {
   event.extendedProperties.shared = {
     ...event.extendedProperties.shared,
     confirmed: event._confirmed,
+    invoiced: event._invoiced,
     tags: JSON.stringify(event._tags)
   }
 
   // TODO
   delete event._clubbers
   delete event._confirmed
+  delete event._invoiced
   delete event._tags
 
   return event

@@ -44,6 +44,8 @@ export const changeStartMonth = (way) => ({ type: types.UI_CHANGE_START_MONTH, w
 
 export const changeConfirmed = (confirmed) => ({ type: types.UI_CHANGE_CONFIRMED, confirmed })
 
+export const changeInvoiced = (invoiced) => ({ type: types.UI_CHANGE_INVOICED, invoiced })
+
 export const changeLastUpdate = (lastUpdate) => ({ type: types.UI_CHANGE_LAST_UPDATE, lastUpdate })
 
 export const toggleTag = (tag) => ({ type: types.UI_TOGGLE_TAG, tag })

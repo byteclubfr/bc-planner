@@ -45,6 +45,7 @@ export const lastUpdates = memoize(events =>
 const _filteredEvents = memoize((
   events,
   confirmed,
+  invoiced,
   lastUpdate,
   searchQuery,
   visibleClubbers,
@@ -60,6 +61,11 @@ const _filteredEvents = memoize((
   if (confirmed) {
     filteredEvents = filteredEvents.filter(e =>
       (e._confirmed && confirmed === 1) || (!e._confirmed && confirmed === -1))
+  }
+
+  if (invoiced) {
+    filteredEvents = filteredEvents.filter(e =>
+      (e._invoiced && invoiced === 1) || (!e._invoiced && invoiced === -1))
   }
 
   if (lastUpdate) {
@@ -86,6 +92,7 @@ export function filteredEvents (events, ui) {
   return _filteredEvents(
     visibleEvents(events, ui),
     ui.get('confirmed'),
+    ui.get('invoiced'),
     ui.get('lastUpdate'),
     ui.get('searchQuery'),
     ui.get('visibleClubbers'),

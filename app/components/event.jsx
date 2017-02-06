@@ -49,6 +49,9 @@ class Event extends Component {
         <span title="Event confirmed?">
           {event._confirmed ? '✓' : ''}
         </span>
+        <span title="Event invoiced?">
+          {event._invoiced ? '€ ' : ''}
+        </span>
         <span>{event.title}</span>
       </div>
     )

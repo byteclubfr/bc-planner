@@ -28,6 +28,7 @@ const getBlankEvent = (defaultDate) => {
 
     _clubbers: [],
     _confirmed: false,
+    _invoiced: false,
     _tags: []
   })
 }
@@ -97,6 +98,10 @@ class EventForm extends Component {
 
   changeConfirmed (e) {
     this.setEvent('_confirmed', e.target.checked)
+  }
+
+  changeInvoiced (e) {
+    this.setEvent('_invoiced', e.target.checked)
   }
 
   toggleClubber (e) {
@@ -205,6 +210,7 @@ class EventForm extends Component {
         <label>Where <input name="location" onChange={::this.changeLocation} value={event.get('location')} /></label>
         <label>Description <textarea name="description" onChange={::this.changeDescription} value={event.get('description')} /></label>
         <label>Confirmed? <input checked={event.get('_confirmed')} name="confirmed" onChange={::this.changeConfirmed} type="checkbox" /></label>
+        <label>Invoiced? <input checked={event.get('_invoiced')} name="invoiced" onChange={::this.changeInvoiced} type="checkbox" /></label>
 
         <label>Clubbers</label>
         <div className="event-form-clubbers">
