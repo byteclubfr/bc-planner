@@ -13,20 +13,20 @@ function initialFetch (dispatch) {
   dispatch(fetchEvents())
 }
 
-function loadClient () {
-  console.debug('gapi authorized, calendar client loading...')
+function loadClient (token) {
+  console.debug('gapi authorized, calendar client loading...', token)
   return gapi.client.load('calendar', 'v3')
     .then(::console.debug('gapi calendar client loaded'))
 }
 
 // TODO deal with rejection
-function authorize () {
+function authorize (immediate) {
   console.debug('gapi authorizing...')
   return new Promise((resolve) => {
     gapi.auth.authorize({
       client_id: clientId,
       scope: scopes,
-      immediate: false
+      immediate: Boolean(immediate)
     }, resolve)
   })
 }
@@ -36,6 +36,10 @@ if (typeof window !== 'undefined') {
   var gapiLoadDefer = defer()
   // JSONP callback
   window.initGapi = gapiLoadDefer.resolve
+
+  setInterval(() => {
+    authorize(true)
+  }, 45 * 60 * 1000)
 }
 
 export default {
